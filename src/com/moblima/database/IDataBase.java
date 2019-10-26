@@ -4,7 +4,6 @@ package com.moblima.database;
 
 public interface IDataBase 
 {
-	
-	public void readFromDataBase();
-	public void writeToDataBase();
+	public String[] readFromDataBase(String path);
+	public void writeToDataBase(String[] lines);
 }
