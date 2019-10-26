@@ -4,6 +4,7 @@ package com.moblima.util;
  */
 import	java.util.Scanner;
 
+import com.moblima.database.DataBaseCommunication;
 import com.moblima.user.User;	
 /**
  * @author Kamil Florowski
@@ -19,12 +20,11 @@ public class MoblimaApp {
 		welcome();
 		
 		Scanner sc = new Scanner(System.in);
-		
+		System.out.println(DataBaseCommunication.getInformation("movies.txt"));
 		System.out.println("Are you a movie-goer or part of a staff?");
 		System.out.println("Are you a movie-goer or part of a staff?");
 		System.out.print("Select respectively g/s:");	
 		char moduleEntering = sc.next().charAt(0);
-		
 		if(moduleEntering == 's') {
 			/*
 			1. Login

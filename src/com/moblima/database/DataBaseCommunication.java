@@ -11,6 +11,10 @@ public class DataBaseCommunication implements IDataBase
 	{
 		
 	}
+	public static List<String> getInformation(String path)
+	{
+		return IDataBase.readFromDataBase(path);
+	}
 	
 	public static String retrievePasswordFromDatabase(String username)
 	{
@@ -19,9 +23,11 @@ public class DataBaseCommunication implements IDataBase
 		List<String> users = IDataBase.readFromDataBase("users.txt");
 		for(int i = 0;i<users.size();i++)
 		{
-			if(users.get(i).split(";")[0]==username)
+			System.out.println(users.get(i).split(";")[0]);
+			if(users.get(i).split(";")[0].equals(username))
 			{
 				password = users.get(i).split(";")[1];
+				userExists = true;
 				break;
 			}
 		}
