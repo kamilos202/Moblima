@@ -1,3 +1,4 @@
+package com.moblima.util;
 /**
  * 
  */
@@ -32,8 +33,8 @@ public class MoblimaApp {
 		;}	
 		else if (moduleEntering == 'g') {
 			
-			MovieGoerModule movieGoer = new MovieGoerModule();
-			movieGoer.listMovies();
+			//MovieGoerModule movieGoer = new MovieGoerModule();
+			//movieGoer.listMovies();
 				/*
 				1. Search/List movie
 				2. View movie details –including reviews and ratings
@@ -44,6 +45,8 @@ public class MoblimaApp {
 				5. ranking by ticket sales OR byoverall reviewers’ratings
 				*/
 		}
+		
+		sc.close();
 		
 
 		
