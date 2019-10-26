@@ -3,7 +3,7 @@
  */
 import	java.util.Scanner;	
 /**
- * @author Kamil Florowski
+ * @author
  *
  */
 public class MoblimaApp {
