@@ -1,5 +1,6 @@
 package com.moblima.user;
 
-public class User {
+public class User 
+{
 
 }
