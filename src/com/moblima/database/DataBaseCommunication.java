@@ -11,7 +11,7 @@ public class DataBaseCommunication implements IDataBase
 	{
 		
 	}
-	public static List<String> getInformation(String path)
+	public static List<String> readFile(String path)
 	{
 		return IDataBase.readFromDataBase(path);
 	}
