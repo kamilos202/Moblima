@@ -3,7 +3,7 @@ package com.moblima.database;
 import java.util.List;
 
 
-public class DataBaseCommuncation implements IDataBase
+public class DataBaseCommunication implements IDataBase
 {
 	
 	
@@ -19,7 +19,11 @@ public class DataBaseCommuncation implements IDataBase
 		List<String> users = IDataBase.readFromDataBase("users.txt");
 		for(int i = 0;i<users.size();i++)
 		{
-			if(users.get(i).split)
+			if(users.get(i).split(";")[0]==username)
+			{
+				password = users.get(i).split(";")[1];
+				break;
+			}
 		}
 		return userExists? password : null;
 	}

@@ -2,7 +2,9 @@ package com.moblima.util;
 /**
  * 
  */
-import	java.util.Scanner;	
+import	java.util.Scanner;
+
+import com.moblima.user.User;	
 /**
  * @author Kamil Florowski
  *
@@ -45,8 +47,13 @@ public class MoblimaApp {
 				5. ranking by ticket sales OR byoverall reviewers’ratings
 				*/
 		}
+		else if(moduleEntering == 'l')
+		{
+			User user = new User();
+			user.login();
+		}
 		
-		sc.close();
+		//sc.close();
 		
 
 		
