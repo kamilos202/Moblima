@@ -5,9 +5,6 @@ import java.util.Scanner;
 import com.moblima.database.DataBaseCommunication;
 import com.moblima.util.ILogin;
 
-<<<<<<< HEAD
-    
-=======
 public class User implements ILogin
 {
 	private String username;
@@ -50,5 +47,4 @@ public class User implements ILogin
 			return false;
 		}
 	}
->>>>>>> 7ff74cf90bc958af96e8c91e0ba070e5cdcd5349
 }

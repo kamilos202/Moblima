@@ -13,16 +13,16 @@ public interface IDataBase
 	{
 		try
 		{
-			System.out.println(new FileReader("./bin/com/moblima/database/"+path));
+			//System.out.println(new FileReader("./bin/com/moblima/database/users.txt"));
 			Scanner sc = new Scanner(new FileReader("./bin/com/moblima/database/"+path));
 			List<String> lines = new ArrayList<String>();
 			while(sc.hasNextLine())
 			{
 				//if(!sc.nextLine().startsWith("#")) 
-					lines.add(sc.next());
+					lines.add(sc.nextLine());
 			}
 			sc.close();
-			System.out.println(lines);
+			//System.out.println(lines);
 			return lines;
 		}
 		catch(FileNotFoundException e)
