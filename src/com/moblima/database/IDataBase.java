@@ -24,8 +24,13 @@ public interface IDataBase
 		catch(FileNotFoundException e)
 		{
 			System.out.println("File not found");
-			return null;
 		}
+		catch(Exception e)
+		{
+			e.printStackTrace();;
+		}
+		return null;
+
 		
 	}
 	public void writeToDataBase(String[] lines);

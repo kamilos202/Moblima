@@ -2,7 +2,10 @@ package com.moblima.util;
 /**
  * 
  */
-import	java.util.Scanner;	
+import	java.util.Scanner;
+
+import com.moblima.movie.MovieListing;
+import com.moblima.user.MovieGoer;	
 /**
  * @author
  *
@@ -21,6 +24,8 @@ public class MoblimaApp {
 		System.out.println("Are you a movie-goer or part of a staff?");
 		System.out.println("Are you a movie-goer or part of a staff?");
 		System.out.print("Select respectively g/s:");	
+		System.out.print("Select r to see movies:");	
+
 		char moduleEntering = sc.next().charAt(0);
 		
 		if(moduleEntering == 's') {
@@ -44,7 +49,11 @@ public class MoblimaApp {
 				6. List the Top 
 				5. ranking by ticket sales OR byoverall reviewers’ratings
 				*/
+		}else if (moduleEntering == 'r'){
+			MovieListing movielist = new MovieListing();
+			movielist.showMovies();
 		}
+
 		
 		sc.close();
 		

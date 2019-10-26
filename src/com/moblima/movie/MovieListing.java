@@ -1,9 +1,23 @@
 package com.moblima.movie;
 
-import com.moblima.database.DataBaseCommuncation;
+import java.util.ArrayList;
+import java.util.List;
 
-public class MovieListing
+import com.moblima.database.IDataBase;
+
+public class MovieListing implements IDataBase
 {
-    DataBaseCommuncation readingMovies;
+    public void showMovies(){
+
+        List<String> array = new List<String>();
+        array = (newIDataBase.readFromDataBase("movies.txt"));
+        System.out.println(a);
+    }
     
+
+    public void writeToDataBase(String[] lines){
+        ;
+    }
+
+
 }
