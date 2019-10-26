@@ -4,8 +4,13 @@ package com.moblima.util;
  */
 import	java.util.Scanner;
 
+<<<<<<< HEAD
 import com.moblima.movie.MovieListing;
 import com.moblima.user.MovieGoer;	
+=======
+import com.moblima.database.DataBaseCommunication;
+import com.moblima.user.User;	
+>>>>>>> 058d347d11e9de13d5e0b33b88757dfdc7ebbf47
 /**
  * @author
  *
@@ -20,14 +25,13 @@ public class MoblimaApp {
 		welcome();
 		
 		Scanner sc = new Scanner(System.in);
-		
+		System.out.println(DataBaseCommunication.getInformation("movies.txt"));
 		System.out.println("Are you a movie-goer or part of a staff?");
 		System.out.println("Are you a movie-goer or part of a staff?");
 		System.out.print("Select respectively g/s:");	
 		System.out.print("Select r to see movies:");	
 
 		char moduleEntering = sc.next().charAt(0);
-		
 		if(moduleEntering == 's') {
 			/*
 			1. Login
@@ -50,8 +54,7 @@ public class MoblimaApp {
 				5. ranking by ticket sales OR byoverall reviewers’ratings
 				*/
 		}else if (moduleEntering == 'r'){
-			MovieListing movielist = new MovieListing();
-			movielist.showMovies();
+			System.out.println(DataBaseCommunication.getMovies());
 		}
 		
 		//sc.close();

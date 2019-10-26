@@ -1,5 +1,6 @@
 package com.moblima.database;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -9,7 +10,7 @@ public class DataBaseCommunication implements IDataBase
 	
 	public void writeToDataBase(String[] lines)
 	{
-		
+		;
 	}
 	
 	public static String retrievePasswordFromDatabase(String username)
@@ -26,6 +27,9 @@ public class DataBaseCommunication implements IDataBase
 			}
 		}
 		return userExists? password : null;
+	}
+	public static List<String> getMovies(){
+		return IDataBase.readFromDataBase("movies.txt");
 	}
 	
 }
