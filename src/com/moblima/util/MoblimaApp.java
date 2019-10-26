@@ -53,9 +53,8 @@ public class MoblimaApp {
 			MovieListing movielist = new MovieListing();
 			movielist.showMovies();
 		}
-
 		
-		sc.close();
+		//sc.close();
 		
 
 		

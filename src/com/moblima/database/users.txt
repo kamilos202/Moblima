@@ -1,1 +1,4 @@
 #name;password;adminBoolean
+admin1;test;true
+admin2;blabla;true
+user1;lol;false

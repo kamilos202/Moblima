@@ -3,5 +3,5 @@ package com.moblima.util;
 public interface ILogin 
 {
 	
-	public boolean verifyLogin();
+	public boolean verifyLogin(String username,String password);
 }

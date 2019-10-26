@@ -9,9 +9,7 @@ public class MovieListing implements IDataBase
 {
     public void showMovies(){
 
-        List<String> array = new List<String>();
-        array = (newIDataBase.readFromDataBase("movies.txt"));
-        System.out.println(a);
+        System.out.println(IDataBase.readFromDataBase("movies.txt").get(0));
     }
     
 
