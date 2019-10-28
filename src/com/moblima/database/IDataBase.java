@@ -6,9 +6,16 @@ import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-
+/**
+ * Interface for txt files manipulation.
+ */
 public interface IDataBase 
 {
+	/**
+	 * 
+	 * @param path
+	 * @return
+	 */
 	public static List<String> readFromDataBase(String path)
 	{
 		try
@@ -39,5 +46,9 @@ public interface IDataBase
 
 		
 	}
+	/**
+	 * 
+	 * @param lines
+	 */
 	public void writeToDataBase(String[] lines);
 }

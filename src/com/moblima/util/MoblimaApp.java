@@ -1,8 +1,7 @@
 package com.moblima.util;
 import	java.util.Scanner;
-
-
 import com.moblima.database.DataBaseCommunication;
+import com.moblima.movie.MovieListing;
 import com.moblima.user.User;	
 /**
  * @author
@@ -10,16 +9,19 @@ import com.moblima.user.User;
  */
 public class MoblimaApp {
 
+
+
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
 		
 		welcome();
+		MovieListing mov = new MovieListing();
+
 		
 		Scanner sc = new Scanner(System.in);
 		System.out.println(DataBaseCommunication.readFile("movies.txt"));
-		System.out.println("Are you a movie-goer or part of a staff?");
 		System.out.println("Are you a movie-goer or part of a staff?");
 		System.out.print("Select respectively g/s:");	
 		System.out.print("Select r to see movies:");	
@@ -47,7 +49,8 @@ public class MoblimaApp {
 				5. ranking by ticket sales OR byoverall reviewers’ratings
 				*/
 		}else if (moduleEntering == 'r'){
-			System.out.println(DataBaseCommunication.getMovies());
+			mov.createMovies();
+			mov.printMovieTitle();
 		}
 		
 		//sc.close();
@@ -56,7 +59,9 @@ public class MoblimaApp {
 		
 	}
 
-	
+	/**
+	 * 
+	 */
 	public static void welcome() {
 		System.out.println("                    .-'''-.                                                  ");
 		System.out.println("                   \'   _    \\            .---.                               ");
