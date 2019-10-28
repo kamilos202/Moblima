@@ -3,6 +3,8 @@ package com.moblima.database;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -20,7 +22,6 @@ public interface IDataBase
 	{
 		try
 		{
-			//System.out.println(new FileReader("./bin/com/moblima/database/users.txt"));
 			Scanner sc = new Scanner(new FileReader("./bin/com/moblima/database/"+path));
 			List<String> lines = new ArrayList<String>();
 			while(sc.hasNextLine())
@@ -29,13 +30,15 @@ public interface IDataBase
 					lines.add(sc.nextLine());
 			}
 			sc.close();
-			//System.out.println(lines);
+			System.out.println(lines);
 			return lines;
 		}
-		catch(FileNotFoundException e)
-		{
+		//When the file is not found an empty list will be returned (this should only happen in the case the user
+		catch(FileNotFoundException e) 
+		{							   
 			System.err.println(e);
 			System.out.println("File not found");
+			
 
 		}
 		catch(Exception e)
@@ -46,9 +49,39 @@ public interface IDataBase
 
 		
 	}
+	
 	/**
 	 * 
 	 * @param lines
+	 * @param path
+	 * @throws IOException
+	 * Writes an array of Strings back to the database. NOTE: old data will be overwritten
+	 * 
 	 */
-	public void writeToDataBase(String[] lines);
+	public static void writeToDataBase(String[] lines, String path) throws IOException 
+	{
+		FileWriter writer = new FileWriter(new File("./bin/com/moblima/database/"+path),false); //the false indicates not appending --> overwriting
+		for(int i =0;i<lines.length;i++)
+		{
+			writer.write(lines[i]);
+		}
+		writer.close();
+	}
+	
+	/**
+	 * 
+	 * @param lines
+	 * @param path
+	 * @throws IOException
+	 * Append new data to the bottom of one of the database files
+	 */
+	public static void appendToDataBase(String[] lines,String path) throws IOException
+	{
+		FileWriter writer = new FileWriter(new File("./bin/com/moblima/database/"+path),true); //The true indicates appending
+		for(int i =0;i<lines.length;i++)
+		{
+			writer.write(lines[i]);
+		}
+		writer.close();
+	}
 }

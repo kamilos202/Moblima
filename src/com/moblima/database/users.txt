@@ -1,4 +1,4 @@
-#name;password;adminBoolean
-admin1;test;true
-admin2;blabla;true
-user1;lol;false
+#name;password;adminBoolean;id;birthdate
+admin1;test;true;10/2/2000
+admin2;blabla;true;14/5/1982
+user1;lol;false;23/8/1998
