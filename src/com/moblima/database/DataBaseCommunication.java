@@ -15,7 +15,9 @@ import java.util.regex.Pattern;
 public class DataBaseCommunication implements IDataBase
 {
 	
-	
+	public static Boolean ifExists(String file){
+		return IDataBase.ifExists(file);
+	}
 	/**
 	 * 
 	 * @param lines
@@ -163,6 +165,7 @@ public class DataBaseCommunication implements IDataBase
 
 		return moviesMap;
 	}
+
 
 
 	

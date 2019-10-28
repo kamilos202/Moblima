@@ -8,6 +8,7 @@ public class Movie
     private String cast;
     private String status;
     private double rating;
+    private String movieType;
 
 
     public Movie(String title, String synopString, String director, String cast, String status){

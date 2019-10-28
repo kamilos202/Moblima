@@ -5,6 +5,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -30,7 +32,7 @@ public interface IDataBase
 					lines.add(sc.nextLine());
 			}
 			sc.close();
-			System.out.println(lines);
+			//System.out.println(lines);
 			return lines;
 		}
 		//When the file is not found an empty list will be returned (this should only happen in the case the user
@@ -83,5 +85,12 @@ public interface IDataBase
 			writer.write(lines[i]);
 		}
 		writer.close();
+	}
+
+	public static Boolean ifExists(String fileName)
+	{
+		//File file = new File("/Users/pankaj/source.txt");
+		//final Path path = Files.createTempFile(fileName, ".txt");
+		return (new File("./bin/com/moblima/database/"+fileName).isFile());
 	}
 }
