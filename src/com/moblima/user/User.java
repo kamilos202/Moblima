@@ -10,6 +10,9 @@ import com.moblima.database.DataBaseCommunication;
 import com.moblima.util.ILogin;
 import com.moblima.util.UserInputs;
 
+/**
+ * 
+ */
 public class User implements ILogin
 {
 	static Scanner sc = new Scanner(System.in);
@@ -22,7 +25,11 @@ public class User implements ILogin
 	public void performActions(){}
 	
 	
-	//Create a new set of info in the data base, which then can be used to initiate a new instance of user during login
+	
+	/**
+	 *Create a new set of info in the data base, which then can be used to initiate a new instance of user during login 
+	 * @throws IOException
+	 */
 	public static void registerUser() throws IOException
 	{
 		//Input user details

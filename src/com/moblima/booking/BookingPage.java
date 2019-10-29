@@ -23,7 +23,7 @@ public class BookingPage
         cineplexes.get(1).createCinema("Screen1", false);
         cineplexes.get(1).createCinema("Screen2", false);
         cineplexes.get(1).createCinema("Screen3", false);
-        cineplexes.get(1).createCinema("Screen3", false);
+        cineplexes.get(1).createCinema("Screen4", false);
 
 
     }
@@ -35,7 +35,7 @@ public class BookingPage
     public void bookMovie(){
         System.out.println("Welcome to booking system\nChoose Cineplex\n");
 
-        while(true){
+        //while(true){
             int i=0;
             for(CinemaHall cineplex : cineplexes){
                 i++;
@@ -45,7 +45,7 @@ public class BookingPage
             int choice = scanner.nextInt();
             
 
-        }
+        //}
 
 
         System.out.println("\n");

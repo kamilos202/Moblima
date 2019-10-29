@@ -11,6 +11,7 @@ public class MovieListing
 {
     ArrayList<Movie> movies= new ArrayList<Movie>();
 
+    
     public void createMovies(){
         //DataBaseCommunication data = new DataBaseCommunication();
         Map<Integer,List<String>> map = new HashMap<Integer,List<String>>();

@@ -2,7 +2,7 @@ package com.moblima.cinema;
 
 import com.moblima.database.DataBaseCommunication;
 
-public class Cinema
+public class CinemaScreen
 {
     String cineplexName;
     String cinemaName;
@@ -12,7 +12,7 @@ public class Cinema
 
     Boolean suite;
 
-    public Cinema(String cineplexName, String cinemaName, double basicPrice, Boolean suite){
+    public CinemaScreen(String cineplexName, String cinemaName, double basicPrice, Boolean suite){
         this.cineplexName = cineplexName;
         this.cinemaName = cinemaName;
         this.suite = false;
@@ -20,9 +20,9 @@ public class Cinema
         if(suite == true){
             this.suite = true;
             cinemaPrice+=7;
-            cinemaLayout = CinemaHall.suiteLayout();
+            cinemaLayout = Cineplex.suiteLayout();
         }else{
-            cinemaLayout = CinemaHall.standardLayout();
+            cinemaLayout = Cineplex.standardLayout();
         }
 
         if(DataBaseCommunication.ifExists(cineplexName+"_"+cinemaName+".txt"))
@@ -32,7 +32,7 @@ public class Cinema
         else
         {
             //Creating cinema layout
-            String [] layout = new String[cinemaLayout.length+1];//+1 for ----Screen---
+            String [] layout = new String[cinemaLayout.length+1];
             char row = 'A';
             layout[0] = "-------------------------SCREEN-------------------------\n";
             for(int i=0;i<cinemaLayout.length;i++){

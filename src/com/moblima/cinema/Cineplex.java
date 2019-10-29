@@ -2,19 +2,19 @@ package com.moblima.cinema;
 
 import java.util.ArrayList;
 
-public class CinemaHall {
+public class Cineplex {
     private String cineplexName;
     private double basicPrice;
-    ArrayList<Cinema> cinemas = new ArrayList<Cinema>();
+    ArrayList<CinemaScreen> cinemas = new ArrayList<CinemaScreen>();
 
-    public CinemaHall(String cineplexName, double basicPrice)
+    public Cineplex(String cineplexName, double basicPrice)
     {
         this.cineplexName = cineplexName;
         this.basicPrice = basicPrice;
     }
 
     public void createCinema(String cinemaName, Boolean suite){
-        cinemas.add(new Cinema(cineplexName, cinemaName, basicPrice, suite));
+        cinemas.add(new CinemaScreen(cineplexName, cinemaName, basicPrice, suite));
     }
 
     public void listCinemas(){
