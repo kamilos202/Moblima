@@ -1,15 +1,12 @@
 package com.moblima.util;
-import	java.util.Scanner;
-
-import com.moblima.booking.BookingPage;
-import com.moblima.database.DataBaseCommunication;
-import com.moblima.movie.MovieListing;
 import java.io.IOException;
 import java.text.ParseException;
 /**
  * 
  */
 
+import com.moblima.booking.BookingPage;
+import com.moblima.movie.MovieListing;
 import com.moblima.user.User;	
 /**
  * @author

@@ -159,7 +159,29 @@ public class DataBaseCommunication implements IDataBase
 			}
 			singleMovie.add(cast);
 
-
+			p = Pattern.compile("DURATION:(.*?);");
+			m = p.matcher(allMovies.get(i));
+		
+			String duration="";
+			while (m.find()) {
+				duration = m.group(1);
+			}
+			if(duration == ""){
+				duration = "0";
+			}
+			singleMovie.add(duration);
+			
+			p = Pattern.compile("SHOWINGS:(.*?);");
+			m = p.matcher(allMovies.get(i));
+		
+			String showings="";
+			while (m.find()) {
+				showings = m.group(1);
+			}
+			if(showings == ""){
+				showings = "";
+			}
+			singleMovie.add(showings);
 
 			moviesMap.put(i, singleMovie);
 		}

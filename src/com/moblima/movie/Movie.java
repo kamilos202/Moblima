@@ -1,5 +1,7 @@
 package com.moblima.movie;
 
+import java.util.ArrayList;
+
 public class Movie 
 {
     private String title;
@@ -9,9 +11,11 @@ public class Movie
     private String status;
     private double rating;
     private String movieType;
+    private double duration;
+    private ArrayList<MovieShowing> showings;
 
 
-    public Movie(String title, String synopString, String director, String cast, String status){
+    public Movie(String title, String synopString, String director, String cast, String status, double duration,ArrayList<MovieShowing> showings){
 
         this.title = title;
         this.synopString = synopString;
@@ -19,6 +23,8 @@ public class Movie
         this.cast = cast;
         this.status = status;
         this.rating = 0.0;  //to be retrieved from rating.txt
+        this.duration = duration;
+        this.showings = showings;
     }
 
     
@@ -44,6 +50,9 @@ public class Movie
         return rating;
     }
 
+    public ArrayList<MovieShowing> getShowings() {return showings;}
+    
+    public void setShowings(ArrayList<MovieShowing> newShowings) {showings = newShowings;}
     
 
 }

@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class Cineplex {
     private String cineplexName;
     private double basicPrice;
-    ArrayList<CinemaScreen> cinemas = new ArrayList<CinemaScreen>();
+    ArrayList<CinemaRoom> cinemas = new ArrayList<CinemaRoom>();
 
     public Cineplex(String cineplexName, double basicPrice)
     {
@@ -14,7 +14,7 @@ public class Cineplex {
     }
 
     public void createCinema(String cinemaName, Boolean suite){
-        cinemas.add(new CinemaScreen(cineplexName, cinemaName, basicPrice, suite));
+        cinemas.add(new CinemaRoom(cineplexName, cinemaName, basicPrice, suite));
     }
 
     public void listCinemas(){
