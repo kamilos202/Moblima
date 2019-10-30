@@ -9,13 +9,16 @@ public class MovieShowing
 {
 	private Cineplex cinema;
 	private CinemaRoom room;
+	private Movie movie;
 	private Date date;
 	private boolean isWeekly;
 	private double scheduleDuration;
+	private int [][] layoutArray;
 	
 	@SuppressWarnings("deprecation")
 	public MovieShowing(String[] details)
 	{
+		//System.out.println(details[0]);
 		this.cinema = Cineplex.getCineplexByName(details[0]);
 		this.room = cinema.getRoomByName(details[1]);
 		this.date = new Date(Integer.parseInt(details[2]),Integer.parseInt(details[3]),Integer.parseInt(details[4]),
@@ -31,7 +34,13 @@ public class MovieShowing
 		this.date = date;
 		this.isWeekly = weekly;
 		this.scheduleDuration = schedule;
+		layoutArray = room.getLayout();
 	}
+
+	public void setOccupied(int row,int column){
+		layoutArray[row][column] = 1;
+	}
+	
 	
 	public String toString()
 	{
@@ -43,6 +52,7 @@ public class MovieShowing
 	public Date getDate() {return date;}
 	public boolean isWeekly() {return isWeekly;}
 	public double getScheduleDuration() {return scheduleDuration;}
-	
+	public void setMovie(Movie movie){this.movie = movie;}
+	public Movie getMovie(){return movie;}
 	
 }

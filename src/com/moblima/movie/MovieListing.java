@@ -26,10 +26,15 @@ public class MovieListing
         	ArrayList<MovieShowing> showings = new ArrayList<MovieShowing>();
         	for(int j =0;j<showingInfo.length;j++)
         	{
-        		showings.add(new MovieShowing(showingInfo[j].split("\\|")));
+				showings.add(new MovieShowing(showingInfo[j].split("\\|")));
         	}
             movies.add(new Movie(map.get(i).get(0), map.get(i).get(1), map.get(i).get(2), map.get(i).get(3), map.get(i).get(4),
-            		Double.parseDouble(map.get(i).get(5)),showings));
+					Double.parseDouble(map.get(i).get(5)),showings));
+					
+			// setting title for every showing
+			for(int a=0;a<showingInfo.length;a++){
+				showings.get(a).setMovie(movies.get(i));
+			}
         }
         
         createWeeklyShowings();

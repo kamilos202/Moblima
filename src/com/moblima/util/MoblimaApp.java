@@ -6,6 +6,7 @@ import java.text.ParseException;
  */
 
 import com.moblima.booking.BookingPage;
+import com.moblima.movie.Movie;
 import com.moblima.movie.MovieListing;
 import com.moblima.user.User;	
 /**
@@ -65,7 +66,10 @@ public class MoblimaApp {
 			mov.printMovieTitle();
 		boolean programIsRunning = true;
 		*/
-		
+		BookingPage page = new BookingPage();
+
+		page.initiateCinemas();
+
 		//While the program is running user can continuously use the program functions, until he/she decides to quit the program
 		while(programIsRunning)
 		{
@@ -97,12 +101,11 @@ public class MoblimaApp {
 					break;
 				case 4:
 					MovieListing list = new MovieListing();
-					list.createMovies();
+					MovieListing.createMovies();
 					list.printMovieTitle();	
 					break;
 				case 5:
-					BookingPage page = new BookingPage();
-					page.initiateCinemas();
+					/// cinemas are already initiatet befor the while loop
 					page.bookMovie();
 					break;
 				//User gives an invalid input
