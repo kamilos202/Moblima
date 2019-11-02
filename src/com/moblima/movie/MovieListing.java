@@ -38,8 +38,8 @@ public class MovieListing
         }
         
         createWeeklyShowings();
-    }
-
+	}
+	
     
     public static void createWeeklyShowings()
     {

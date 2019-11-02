@@ -3,6 +3,8 @@ import java.util.*;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import javax.sql.rowset.serial.SerialArray;
+
 import com.moblima.cinema.CinemaRoom;
 import com.moblima.cinema.Cineplex;
 import com.moblima.movie.Movie;
@@ -31,13 +33,14 @@ public class BookingPage
         MovieListing.createMovies();
 
         //set layout
+        /*
         for(int a=0;a<cineplexes.size();a++){
             ArrayList<CinemaRoom> screens = new ArrayList<CinemaRoom>();
             screens = cineplexes.get(a).getScreens();
             for(int b=0;b<screens.size();b++){
                 screens.get(b).setLayouts();
             }
-        }
+        }*/
         
         ArrayList<MovieShowing> occupation = cineplexes.get(0).getRoomByName("Screen1").getHallOccupation();
         System.out.println("cinema 1");
@@ -149,9 +152,49 @@ public class BookingPage
                 break;
             }
 
-            System.out.println(showsForUser.get(choiceDate-1).getCinemaRoom().getLayout(showsForUser.get(choiceDate-1)));
+            String [] layoutInArray = new String[showsForUser.get(choiceDate-1).getCinemaRoom().getLayout().length+2];
+            layoutInArray = showsForUser.get(choiceDate-1).getCinemaRoom().getLayout(showsForUser.get(choiceDate-1));
+
+            System.out.println("\nChose your seat:  \n1 - already occupied\n0 - free\n");
+
+            for(int u=0;u<showsForUser.get(choiceDate-1).getCinemaRoom().getLayout().length+2;u++){
+                System.out.println(layoutInArray[u]);
+
+            }
+
+            System.out.print("How many seats you want to book?");
+            int seatsNum;
+            while(true){
+                seatsNum = UserInputs.getValidIntegerInput();
+
+                if(seatsNum<1){
+                    System.out.println("Please enter valid input. Try again!");
+                }else if(seatsNum>10){
+                    System.out.println("You can book maximum 10 seats per booking. Sorry :( Try again!");
+                }
+                else{
+                    break;
+                }
+            }
+
+            System.out.println("Type respectively letter of chosen row and number of column example: (A 1)");
 
 
+            for(int seat=0;seat<seatsNum;seat++){
+
+                char r = UserInputs.gatValidCharInput();
+                int c = UserInputs.getValidIntegerInput();
+
+                showsForUser.get(choiceDate-1).setOccupied((int)r-65, c-1);
+                
+            }
+            showsForUser.get(choiceDate-1).getCinemaRoom().setLayouts();
+
+            for(int u=0;u<showsForUser.get(choiceDate-1).getCinemaRoom().getLayout().length+2;u++){
+                System.out.println(layoutInArray[u]);
+
+            }
+            
         
             //chosen time slot tempArrMoviesPerCineplex.get(choiceMov-1).getShowings().get(choiceDate-1).
             //System.out.println(tempArrMoviesPerCineplex.get(choiceMov-1).getShowings().get(choiceDate-1).getCinemaRoom().getLayout(tempArrMoviesPerCineplex.get(choiceMov-1).getShowings().get(choiceDate-1)));
@@ -160,10 +203,7 @@ public class BookingPage
             break;
         }
 
-
         System.out.println("\n");
-
-
     }
 
     public int cineplexesNum(){

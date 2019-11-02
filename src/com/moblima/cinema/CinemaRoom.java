@@ -33,12 +33,63 @@ public class CinemaRoom
             cinemaLayout = Cineplex.standardLayout();
         }
 
+        
 
     }
 
     public int [][] getLayout(){
         return cinemaLayout;
     }
+
+
+    public int [][] retrieveLayoutForShowing(MovieShowing showing){
+
+        String layt[] = new String[cinemaLayout.length+2];
+
+                    if(DataBaseCommunication.ifExists(cineplexName+"_"+cinemaName+".txt"))
+                    {
+                        try{
+
+                            if(layt[0] !=  ""){
+                                layt = this.getLayout(showing);
+                                int [][] layoutToBePassedToMovieShowing = new int[cinemaLayout.length][cinemaLayout[0].length];
+                                layoutToBePassedToMovieShowing = cinemaLayout;
+                                //System.out.println(layt[0]);
+
+                                for(int o=2;o<cinemaLayout.length+2;o++){
+
+                                    String [] row = new String[12];
+                                    row = layt[o].split(" ");
+
+                                    for(int p=0;p<cinemaLayout[0].length;p++){
+                                        int seatIndex = 1+p;
+
+                                        //System.out.print(row[seatIndex]);
+
+
+                                        //cinemaLayout[]
+                                    // System.out.print(row[seatIndex]);
+
+                                    if(row[seatIndex] == "1" || row[seatIndex] == "0"){
+                                            layoutToBePassedToMovieShowing[o-2][p] = Integer.parseInt(row[seatIndex]);
+                                    }
+                                        System.out.print(layoutToBePassedToMovieShowing[o-2][p]);
+                                    // String seat = layt[seatIndex];
+                                        //cinemaLayout[o][p] = Integer.parseInt();
+                                    }
+                                    System.out.println("\n");
+                                }
+                                //showingList.get(j).setLayout(layoutToBePassedToMovieShowing);
+                                return layoutToBePassedToMovieShowing;
+                            }
+                     
+                            }catch(Exception e){
+                                e.printStackTrace();
+                            }
+                    }
+return cinemaLayout;
+    }
+
 
     public void setLayouts(){
 
@@ -58,10 +109,16 @@ public class CinemaRoom
 
             for(int j=0;j<showingList.size();j++)
             {
+                //check if layout already exist
+
                 if(showingList.get(j).getCineplex().getCineplexName() == cineplexName && showingList.get(j).getCinemaRoom().getCinemaName() == cinemaName){
-                    movieNum++;
+                    //showingList.get(j).setLayout(cinemaLayout);
+
+                                        movieNum++;
                 }
             }
+
+            //cinemaLayout = showingList.get(index)
 
             String [] layout = new String[movieNum];
 
@@ -75,20 +132,22 @@ public class CinemaRoom
                 //check if movie showing is for this particular screen
                 if(showingList.get(j).getCineplex().getCineplexName() == cineplexName && showingList.get(j).getCinemaRoom().getCinemaName() == cinemaName){
                     layout[movieField] = new String("");
+                    int [][] arrShowLayout = showingList.get(j).getMovieLayout();
                    // System.out.println("Layout creating:    Movie title:::::"+showingList.get(j).getMovie().getTitle());
                     //layout[movieField] += "\n"+showingList.get(j).getMovie().getTitle();
                     layout[movieField] += "\n"+showingList.get(j).getDate() + "\n";
-
+////change here
+                    //cinemaLayout = showingList.get(j).getMovieLayout();
 
                     //Creating cinema layout
                     // String [] layout = new String[cinemaLayout.length+1];//+1 for ----Screen---
                     char row = 'A';
                     layout[movieField] += "-------------------------SCREEN-------------------------\n";
                     for(int a=0;a<cinemaLayout.length;a++){
-                        layout[movieField] += ""+row;
+                        layout[movieField] += ""+row+" ";
                         for(int b=0;b<cinemaLayout[a].length;b++){
                             //cinemaLayout[a][b] = 0;
-                            layout[movieField]+=(" "+cinemaLayout[a][b]+" ");
+                            layout[movieField]+=(arrShowLayout[a][b]+" ");
                         }
                         layout[movieField]+=(row+"\n");
                         row++;
@@ -108,26 +167,35 @@ public class CinemaRoom
 
   //  }
 
-    public String getLayout(MovieShowing sh){
+    public String [] getLayout(MovieShowing sh){
 
-        System.out.println("\nChose your seat:  \n1 - already occupied\n0 - free");
         List<String> allLayouts = new ArrayList<String>();
-        allLayouts = IDataBase.readFromDataBase(cineplexName+"_"+cinemaName+".txt");
+        if(DataBaseCommunication.ifExists(cineplexName+"_"+cinemaName+".txt"))
+        {
+            allLayouts = IDataBase.readFromDataBase(cineplexName+"_"+cinemaName+".txt");
+        }else{
+            String [] layout= new String[cinemaLayout.length+2];
+            layout[0] = "";
+            return layout;
+        }
         
-        String layout="";
+        String [] layout= new String[cinemaLayout.length+2];
+        layout[0] = "";
         int bound = -1;
         for(String line : allLayouts)
         {
-    
-            if(bound>=0 && bound<=10)
-            {   bound++;
-                layout+=line+"\n";
-            }else if(bound>=10)
-                break;
-            
             if(line.contains(sh.getDate().toString())){
                 bound=0;
             }
+    
+            if(bound>=0 && bound<=11)
+            {   
+                layout[bound]=line+"\n";
+                bound++;
+            }else if(bound>11)
+                break;
+            
+
         }
 
         return layout;

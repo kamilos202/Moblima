@@ -22,6 +22,19 @@ public class UserInputs
 		}
 		return sc.nextInt();
 	}
+
+	public static char gatValidCharInput()
+	{
+		char chr;
+		while(true)
+		{
+			chr = sc.next().charAt(0);
+			if(chr>='A' && chr<='J')
+				break;
+			System.out.println("Please enter a valid row");
+		}
+		return chr;
+	}
 	
 	//Close the inputstream at the end of the program
 	public static void closeScanner()
