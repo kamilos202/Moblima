@@ -19,6 +19,9 @@ public class Admin extends User
 	}
 	
 	@Override
+	public String getUsername() {return username;}
+	
+	@Override
 	public void performActions()
 	{
 		boolean loggedIn = true;
@@ -140,6 +143,9 @@ public class Admin extends User
 						case 1:
 							notConfirmed = false;
 							DataBaseCommunication.writeToDataBase(updatedUsers, "users.txt");
+							User.users.remove(User.getUserByName(username));
+							String[] userInfo = DataBaseCommunication.getUserDetails(username).split(";");
+							User.users.add(new Admin(username,userInfo[1],Integer.parseInt(userInfo[3])));
 							System.out.println(username + " succesfully promoted to administrator");
 							break;
 						case 2:

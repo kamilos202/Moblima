@@ -3,6 +3,7 @@ package com.moblima.user;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -12,10 +13,40 @@ import com.moblima.util.UserInputs;
 
 public class User implements ILogin
 {
+	private String username;
 	static Scanner sc = new Scanner(System.in);
+	public static ArrayList<User> users = new ArrayList<User>();
+	
 	public User()
 	{
-		System.out.println("initiate scanner");
+	}
+	
+	public String getUsername() {return null;}
+	
+	public static void initiateUsers() 
+	{
+		List<String> usersInDataBase = DataBaseCommunication.readFile("users.txt");
+		for(int i =1;i<usersInDataBase.size();i++)
+		{
+			String[] userInfo = usersInDataBase.get(i).split(";");
+			System.out.println(userInfo[0]);
+			if(Boolean.parseBoolean(userInfo[2]))
+			{
+				users.add(new Admin(userInfo[0],userInfo[1],Integer.parseInt(userInfo[3])));
+			}
+			else
+			{
+				try { //initiated by database,will never fail
+					users.add(new MovieGoer(userInfo[0],userInfo[1],Integer.parseInt(userInfo[3]),userInfo[4]));
+				} catch (NumberFormatException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
 	}
 	
 	//overwritten by both admin and moviegoer to distinguish between their performable actions
@@ -69,6 +100,12 @@ public class User implements ILogin
 		else
 		{
 			DataBaseCommunication.appendToDataBase(details, "users.txt");
+			try {
+				users.add(new MovieGoer(username,password,id,birthdate));
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			System.out.println("Registration succesful!");
 		}
 		
@@ -104,6 +141,17 @@ public class User implements ILogin
 		return true;
 	}
 	
+	public static User getUserByName(String name)
+	{
+		for(int i =0;i<users.size();i++)
+		{
+			System.out.println(users.get(i).getUsername());
+			if(users.get(i).getUsername().equals(name)) return users.get(i);
+		}
+		System.out.println("failed to retrieve user: " + name);
+		return null;
+	}
+	
 	
 	//Creates a new instance of either Admin or Moviegoer, depending on the login details supplied by extracting data from the database
 	public static User getUser() throws NumberFormatException, ParseException
@@ -120,11 +168,12 @@ public class User implements ILogin
 		else
 		{
 			//format the data from database back to usable format
-			String[] userDetails = userDetailsRaw.split(";");
+			//String[] userDetails = userDetailsRaw.split(";");
 			
 			//UserDetails[2] contains either true (user is an admin) or false (user is a moviegoer)
-			if(Boolean.parseBoolean(userDetails[2])) return new Admin(username,password,Integer.parseInt(userDetails[3]));
-			else return new MovieGoer(username,password,Integer.parseInt(userDetails[3]),userDetails[4]);
+			return getUserByName(username);
+			//if(Boolean.parseBoolean(userDetails[2])) return new Admin(username,password,Integer.parseInt(userDetails[3]));
+			//else return new MovieGoer(username,password,Integer.parseInt(userDetails[3]),userDetails[4]);
 		}
 		
 	}

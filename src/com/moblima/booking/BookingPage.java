@@ -9,9 +9,9 @@ import com.moblima.movie.MovieShowing;
 
 public class BookingPage 
 {
-    ArrayList<Cineplex> cineplexes = new ArrayList<Cineplex>();
+    static ArrayList<Cineplex> cineplexes = new ArrayList<Cineplex>();
 
-    public void initiateCinemas(){
+    public static void initiateCinemas(){
         cineplexes.add(new Cineplex("The Cathay Cineplex",13.5,14));
 
         cineplexes.get(0).createCinema("Screen1", false);
@@ -25,8 +25,17 @@ public class BookingPage
         cineplexes.get(1).createCinema("Screen3", false);
         cineplexes.get(1).createCinema("Screen3", false);
         
-        MovieListing.createMovies();
-        ArrayList<MovieShowing> occupation = cineplexes.get(0).getRoomByName("Screen1").getHallOccupation();
+        
+        
+        
+        
+
+
+    }
+    
+    public void showShowings()
+    {
+    	ArrayList<MovieShowing> occupation = cineplexes.get(0).getRoomByName("Screen1").getHallOccupation();
         System.out.println("cinema 1");
         for(int i =0;i<occupation.size();i++)
         {
@@ -39,10 +48,6 @@ public class BookingPage
         {
         	System.out.println(occupation2.get(j).toString());
         }
-        
-        
-
-
     }
 
     //CinemaHall cathy = new CinemaHall("Cathy", 13.5);

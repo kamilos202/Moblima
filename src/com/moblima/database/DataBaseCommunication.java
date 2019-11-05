@@ -75,8 +75,9 @@ public class DataBaseCommunication implements IDataBase
 		List<String> users = IDataBase.readFromDataBase("users.txt");
 		for(int i = 0;i<users.size();i++)
 		{
-			if(users.get(i).split(";")[0]==username)
+			if(users.get(i).split(";")[0].equals(username))
 			{
+				userExists = true;
 				password = users.get(i).split(";")[1];
 				break;
 			}
