@@ -42,70 +42,16 @@ public class CinemaRoom
     }
 
 
-    public int [][] retrieveLayoutForShowing(MovieShowing showing){
-
-        String layt[] = new String[cinemaLayout.length+2];
-
-                    if(DataBaseCommunication.ifExists(cineplexName+"_"+cinemaName+".txt"))
-                    {
-                        try{
-
-                            if(layt[0] !=  ""){
-                                layt = this.getLayout(showing);
-                                int [][] layoutToBePassedToMovieShowing = new int[cinemaLayout.length][cinemaLayout[0].length];
-                                layoutToBePassedToMovieShowing = cinemaLayout;
-                                //System.out.println(layt[0]);
-
-                                for(int o=2;o<cinemaLayout.length+2;o++){
-
-                                    String [] row = new String[12];
-                                    row = layt[o].split(" ");
-
-                                    for(int p=0;p<cinemaLayout[0].length;p++){
-                                        int seatIndex = 1+p;
-
-                                        //System.out.print(row[seatIndex]);
-
-
-                                        //cinemaLayout[]
-                                    // System.out.print(row[seatIndex]);
-
-                                    if(row[seatIndex] == "1" || row[seatIndex] == "0"){
-                                            layoutToBePassedToMovieShowing[o-2][p] = Integer.parseInt(row[seatIndex]);
-                                    }
-                                        System.out.print(layoutToBePassedToMovieShowing[o-2][p]);
-                                    // String seat = layt[seatIndex];
-                                        //cinemaLayout[o][p] = Integer.parseInt();
-                                    }
-                                    System.out.println("\n");
-                                }
-                                //showingList.get(j).setLayout(layoutToBePassedToMovieShowing);
-                                return layoutToBePassedToMovieShowing;
-                            }
-                     
-                            }catch(Exception e){
-                                e.printStackTrace();
-                            }
-                    }
-return cinemaLayout;
-    }
 
 
     public void setLayouts(){
 
-        //if(DataBaseCommunication.ifExists(cineplexName+"_"+cinemaName+".txt"))
-        //{
-        //    System.out.println("File already exist");
-        //}
-        //else
-        //{ 
+        
             ArrayList<MovieShowing> showingList = new ArrayList<MovieShowing>();
             showingList = this.getHallOccupation();
 
             int movieNum =0;
-            //System.out.println("]]]]]]]]]]]]]]]"+showingList.toString());
-            //Counting number of films displaying in one cimema room
-            //System.out.println("showinglist size:::::"+showingList.size());
+
 
             for(int j=0;j<showingList.size();j++)
             {

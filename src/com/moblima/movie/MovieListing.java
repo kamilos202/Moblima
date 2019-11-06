@@ -40,7 +40,6 @@ public class MovieListing
         createWeeklyShowings();
 	}
 	
-    
     public static void createWeeklyShowings()
     {
     	for(int i =0;i<movies.size();i++)
