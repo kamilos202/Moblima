@@ -26,9 +26,9 @@ public class MoblimaApp {
 	 * @throws IOException 
 	 */
 	public static void main(String[] args) throws NumberFormatException, ParseException, IOException {
-		
 		welcome();
-		MovieListing mov = new MovieListing();
+		init();
+		//MovieListing.createMovies();
 		Boolean programIsRunning = true;
 
 		/*
@@ -68,7 +68,7 @@ public class MoblimaApp {
 		*/
 		BookingPage page = new BookingPage();
 
-		page.initiateCinemas();
+		//page.initiateCinemas();
 
 		//While the program is running user can continuously use the program functions, until he/she decides to quit the program
 		while(programIsRunning)
@@ -101,11 +101,12 @@ public class MoblimaApp {
 					break;
 				case 4:
 					MovieListing list = new MovieListing();
-					MovieListing.createMovies();
+					//MovieListing.createMovies();
 					list.printMovieTitle();	
 					break;
 				case 5:
-					/// cinemas are already initiatet befor the while loop
+					//BookingPage page = new BookingPage();
+					page.showShowings();
 					page.bookMovie();
 					break;
 				//User gives an invalid input
@@ -121,6 +122,16 @@ public class MoblimaApp {
 	/**
 	 * Show a pretty welcome message
 	 */
+	
+	public static void init()
+	{
+		User.initiateUsers();
+		BookingPage.initiateCinemas();
+	
+		MovieListing.createMovies();
+	}
+	
+	
 	public static void welcome() {
 		System.out.println("                    .-'''-.                                                  ");
 		System.out.println("                   \'   _    \\            .---.                               ");

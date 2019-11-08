@@ -77,6 +77,7 @@ public class DataBaseCommunication implements IDataBase
 		{
 			if(users.get(i).split(";")[0].equals(username))
 			{
+				userExists = true;
 				password = users.get(i).split(";")[1];
 				userExists = true;
 				break;

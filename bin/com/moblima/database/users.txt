@@ -2,3 +2,6 @@
 admin1;test;true;1;10/2/2000
 admin2;blabla;true;2;14/5/1982
 user1;lol;false;3;23/8/1998
+user2;lol;false;4;23/8/1999
+
+user3;useruser;false;5;20/11/1998
