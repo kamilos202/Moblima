@@ -21,8 +21,17 @@ public class Movie
     private ArrayList<Rating> ratings = new ArrayList<Rating>();
     private double averageRating;
 
-
-    public Movie(String title, String synopString, String director, String cast, String status, double duration,ArrayList<MovieShowing> showings){
+    /**
+     * 
+     * @param title
+     * @param synopString
+     * @param status
+     * @param director
+     * @param cast
+     * @param duration
+     * @param showings
+     */
+    public Movie(String title, String synopString, String status,String director, String cast,  double duration,ArrayList<MovieShowing> showings){
     	
     	System.out.println("initiate movie");
         this.title = title;
@@ -37,7 +46,9 @@ public class Movie
         retrieveRatingsFromDatabase();
         showRatings();
     }
-    
+    /**
+     * 
+     */
     public void retrieveRatingsFromDatabase()
     {
     	System.out.println("Title " + title);
@@ -70,7 +81,12 @@ public class Movie
     	}
     	
     }
-    
+    /**
+     * 
+     * @param user
+     * @param score
+     * @param description
+     */
     public void addRating(User user, double score, String description)
     {
     	ratings.add(new Rating(user,score,description));
@@ -86,7 +102,9 @@ public class Movie
     	updateAverageRating();
     	showRatings();
     }
-    
+    /**
+     * 
+     */
     public void updateAverageRating()
     {
     	averageRating = 0;
@@ -103,7 +121,10 @@ public class Movie
     	System.out.println("the average Rating of " + title+ "is: " + averageRating);
     }
 
-    
+    /**
+     * 
+     * Getters for Movie class
+     */
     public String getMovieName(){
         return title;
     }
@@ -125,9 +146,12 @@ public class Movie
     public double getRating(){
         return rating;
     }
-    
     public ArrayList<Rating> getRatings() {return ratings;}
-    
+    public ArrayList<MovieShowing> getShowings() {return showings;}
+
+    /**
+     * Displaying movie ratings
+     */
     public void showRatings()
     {
     	System.out.println("Ratings allready given: ");
@@ -137,8 +161,10 @@ public class Movie
     	}
     }
 
-    public ArrayList<MovieShowing> getShowings() {return showings;}
-    
+    /**
+     * Set showing
+     * @param newShowings
+     */
     public void setShowings(ArrayList<MovieShowing> newShowings) {showings = newShowings;}
     
     

@@ -1,19 +1,14 @@
 package com.moblima.util;
 import java.io.IOException;
 import java.text.ParseException;
-/**
- * 
- */
-
 import com.moblima.booking.BookingPage;
 import com.moblima.movie.Movie;
 import com.moblima.movie.MovieListing;
 import com.moblima.user.User;	
 /**
- * @author
+ * @author	CZ2002 TEAM ;)
  *
  */
-
 //Main body of the program, contains the welcome screen and provides user with further options to navigate the program
 public class MoblimaApp {
 
@@ -121,17 +116,20 @@ public class MoblimaApp {
 
 	/**
 	 * Show a pretty welcome message
+	 * 
+	 * @throws IOException
+	 * @throws ParseException
 	 */
-	
-	public static void init()
+	public static void init() throws IOException, ParseException
 	{
 		User.initiateUsers();
 		BookingPage.initiateCinemas();
-	
 		MovieListing.createMovies();
 	}
 	
-	
+	/**
+	 * Just prints welcome ASCII art.
+	 */
 	public static void welcome() {
 		System.out.println("                    .-'''-.                                                  ");
 		System.out.println("                   \'   _    \\            .---.                               ");

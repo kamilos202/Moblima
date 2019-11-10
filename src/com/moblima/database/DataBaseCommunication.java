@@ -2,6 +2,7 @@ package com.moblima.database;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -14,7 +15,11 @@ import java.util.regex.Pattern;
  */
 public class DataBaseCommunication implements IDataBase
 {
-	
+	/**
+	 * Check whether file already exists or not.
+	 * @param file
+	 * @return boolean value true - file exist, false - file do not exist
+	 */
 	public static Boolean ifExists(String file){
 		return IDataBase.ifExists(file);
 	}
@@ -31,13 +36,22 @@ public class DataBaseCommunication implements IDataBase
 		catch (IOException e) {	e.printStackTrace();}
 	}
 	
-	//Called by other classes to append to database
+	/**
+	 * Called by other classes to append to database
+	 * @param lines
+	 * @param path
+	 * @throws IOException
+	 */
 	public static void appendToDataBase(String[] lines, String path) throws IOException
 	{
 		IDataBase.appendToDataBase(lines, path);
 	}
 	
-	//Called by other classes to read in data from database
+	/**
+	 * Called by other classes to read in data from database
+	 * @param path
+	 * @return
+	 */
 	public static List<String> readFile(String path)
 	{
 		return IDataBase.readFromDataBase(path);
@@ -45,7 +59,7 @@ public class DataBaseCommunication implements IDataBase
 	/**
 	 * 
 	 * @param username
-	 * @return
+	 * @return <String> user details
 	 * 
 	 * Called by user to get the data from 1 specific user
 	 */
@@ -59,7 +73,14 @@ public class DataBaseCommunication implements IDataBase
 		
 		return null;
 	}
-	
+	/**
+	 * Creates empty txt file for given name.
+	 * @param fileName
+	 * @throws IOException
+	 */
+	public static void createEmptyTxtFile(String fileName) throws IOException {
+		IDataBase.createEmptyTxtFile(fileName);
+	}
 
 	/**
 	 * 
@@ -86,19 +107,20 @@ public class DataBaseCommunication implements IDataBase
 		return userExists? password : null;
 	}
 	/**
-	 * 
+	 * Retrieves all the movie details from txt file
 	 */
 	public static Map<Integer,List<String>> getMovies(){
 		Map<Integer,List<String>> moviesMap = new HashMap<Integer,List<String>>();
 
 		List<String> allMovies = new ArrayList<String>();
 		allMovies = IDataBase.readFromDataBase("movies.txt");
-
-		List<String> singleMovie = new ArrayList<String>();
+		System.out.println("Movies sizeeeeeee::"+allMovies.size());
 		//allMovies = IDataBase.readFromDataBase("movies.txt");
 		
 		for(int i=0;i<allMovies.size();i++){
 			//singleMovie.add(allMovies.get(i));
+			System.out.println("All moviesssssssssss:   "+allMovies.get(i));
+			List<String> singleMovie = new ArrayList<String>();
 
 			Pattern p = Pattern.compile("TITLE:(.*?);");
 			Matcher m = p.matcher(allMovies.get(i));
@@ -183,7 +205,7 @@ public class DataBaseCommunication implements IDataBase
 				showings = "";
 			}
 			singleMovie.add(showings);
-
+System.out.println("ffffffffffffffffffffffffffff"+title);
 			moviesMap.put(i, singleMovie);
 		}
 

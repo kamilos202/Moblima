@@ -1,4 +1,6 @@
 package com.moblima.booking;
+
+import java.io.IOException;
 import java.util.*;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -12,11 +14,10 @@ import com.moblima.movie.MovieListing;
 import com.moblima.movie.MovieShowing;
 import com.moblima.util.UserInputs;
 
-public class BookingPage 
-{
+public class BookingPage {
     static ArrayList<Cineplex> cineplexes = new ArrayList<Cineplex>();
 
-    public static void initiateCinemas(){
+    public static void initiateCinemas() throws IOException {
         cineplexes.add(new Cineplex("The Cathay Cineplex",13.5,14));
 
         cineplexes.get(0).createCinema("Screen1", false);
@@ -33,22 +34,17 @@ public class BookingPage
         //MovieListing.createMovies();
 
         //set layout
-        /*
-        for(int a=0;a<cineplexes.size();a++){
-            ArrayList<CinemaRoom> screens = new ArrayList<CinemaRoom>();
-            screens = cineplexes.get(a).getScreens();
-            for(int b=0;b<screens.size();b++){
-                screens.get(b).setLayouts();
-            }
-        }*/
         
-        ArrayList<MovieShowing> occupation = cineplexes.get(0).getRoomByName("Screen1").getHallOccupation();
+        //for(int a=0;a<cineplexes.size();a++){
+        //    ArrayList<CinemaRoom> screens = new ArrayList<CinemaRoom>();
+        //    screens = cineplexes.get(a).getScreens();
+        //    for(int b=0;b<screens.size();b++){
+        //        screens.get(b).setLayouts();
+        //    }
+       // }
         
+        //ArrayList<MovieShowing> occupation = cineplexes.get(0).getRoomByName("Screen1").getHallOccupation();
         
-        
-        
-
-
     }
     
     public void showShowings()
@@ -119,7 +115,7 @@ public class BookingPage
 
 
             //cineplexes.get(choice-1).get
-            //cHECK FOR PREMIUM ROOMS
+            //CHECK FOR PREMIUM ROOMS
             String premiumRooms="| ";
             for(CinemaRoom cr : cineplexes.get(choice-1).getScreens()){
                 if(cr.getPremium()){
@@ -138,8 +134,6 @@ public class BookingPage
             long ltime=(today.getTime()+cineplexes.get(choice-1).getForwardScheduling())*24*60*60*1000;
             Date tmrr=new Date(ltime);
             
-            //System.out.print(tempArrMoviesPerCineplex.get(choiceMov-1).getShowings().get(0).getDate());
-            //System.out.println(today.toString());
             ArrayList<MovieShowing> showsForUser = new ArrayList<MovieShowing>();
             for(MovieShowing show :tempArrMoviesPerCineplex.get(choiceMov-1).getShowings()){
                 if(  (show.getDate().after(today)) &&  (show.getDate().before(tmrr)) && show.getCineplex().getCineplexName() == cineplexes.get(choice-1).getCineplexName() ){
@@ -148,10 +142,6 @@ public class BookingPage
                     f++;
                 }
             }
-
-            //for(int j=0;j<tempArrMoviesPerCineplex.size();j++){
-            //    if(tempArrMoviesPerCineplex.get(j).ge)
-            //}
 
             System.out.print("\nType here the number of Movie show you want to choose: ");
             int choiceDate = UserInputs.getValidIntegerInput();
@@ -200,11 +190,9 @@ public class BookingPage
             }
             showsForUser.get(choiceDate-1).getCinemaRoom().setLayouts();
 
-            for(int u=0;u<showsForUser.get(choiceDate-1).getCinemaRoom().getLayout().length+2;u++){
-                System.out.println(layoutInArray[u]);
+            System.out.println("\n\n\t\tGreat! You have just book your seat/s.\n\tSee ya there!");
 
-            }
-            
+            Booking = Booking()
         
             //chosen time slot tempArrMoviesPerCineplex.get(choiceMov-1).getShowings().get(choiceDate-1).
             //System.out.println(tempArrMoviesPerCineplex.get(choiceMov-1).getShowings().get(choiceDate-1).getCinemaRoom().getLayout(tempArrMoviesPerCineplex.get(choiceMov-1).getShowings().get(choiceDate-1)));

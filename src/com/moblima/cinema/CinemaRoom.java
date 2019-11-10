@@ -33,7 +33,7 @@ public class CinemaRoom
             cinemaLayout = Cineplex.standardLayout();
         }
 
-        
+        //setLayouts();
 
     }
 

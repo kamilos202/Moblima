@@ -1,14 +1,21 @@
 package com.moblima.cinema;
 
 import java.util.ArrayList;
-
+/**
+ * 
+ */
 public class Cineplex {
     private String cineplexName;
     private double basicPrice;
     private int forwardScheduling;
     ArrayList<CinemaRoom> cinemas = new ArrayList<CinemaRoom>();
     static ArrayList<Cineplex> cineplexes = new ArrayList<Cineplex>();
-
+    /**
+     * 
+     * @param cineplexName
+     * @param basicPrice
+     * @param schedule
+     */
     public Cineplex(String cineplexName, double basicPrice, int schedule)
     {
         this.cineplexName = cineplexName;
@@ -16,11 +23,18 @@ public class Cineplex {
         this.forwardScheduling = schedule;
         cineplexes.add(this);
     }
-
+    /**
+     * 
+     * @return list of cinema rooms (screens) in this cineplex
+     */
     public ArrayList<CinemaRoom> getScreens(){
         return cinemas;
     }
-    
+    /**
+     * Static method for getting Cineplex instance by its name.
+     * @param name
+     * @return Cineplex instance
+     */
     public static Cineplex getCineplexByName(String name)
     {
     	for(int i =0;i<cineplexes.size();i++)

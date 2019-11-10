@@ -82,15 +82,18 @@ public interface IDataBase
 		FileWriter writer = new FileWriter(new File("./bin/com/moblima/database/"+path),true); //The true indicates appending
 		for(int i =0;i<lines.length;i++)
 		{
-			writer.write(lines[i]);
+				writer.write(lines[i]);
 		}
 		writer.close();
 	}
 
 	public static Boolean ifExists(String fileName)
 	{
-		//File file = new File("/Users/pankaj/source.txt");
-		//final Path path = Files.createTempFile(fileName, ".txt");
 		return (new File("./bin/com/moblima/database/"+fileName).isFile());
+	}
+	
+	public static void createEmptyTxtFile(String fileName) throws IOException {
+		File file = new File("./bin/com/moblima/database/"+fileName);
+		file.createNewFile();
 	}
 }

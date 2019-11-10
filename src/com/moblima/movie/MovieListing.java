@@ -1,5 +1,7 @@
 package com.moblima.movie;
 
+import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -11,11 +13,10 @@ import com.moblima.rating.Rating;
 import com.moblima.user.User;
 import com.moblima.util.UserInputs;
 
-public class MovieListing
-{
-    static ArrayList<Movie> movies= new ArrayList<Movie>();
+public class MovieListing {
+	static ArrayList<Movie> movies = new ArrayList<Movie>();
 
-    public static void createMovies(){
+	public static void createMovies() throws IOException, ParseException {
     	System.out.println("createMovies");
         //DataBaseCommunication data = new DataBaseCommunication();
         Map<Integer,List<String>> map = new HashMap<Integer,List<String>>();
@@ -46,7 +47,7 @@ public class MovieListing
 
     
     @SuppressWarnings("deprecation")
-	public static void createWeeklyShowings()
+	public static void createWeeklyShowings() throws IOException, ParseException
     {
     	for(int i =0;i<movies.size();i++)
     	{
