@@ -15,8 +15,9 @@ public class MovieShowing
 	private CinemaRoom room;
 	private Movie movie;
 	private Date date;
-	private boolean isWeekly;
-	private double scheduleDuration;
+	private boolean isWeekly,isCopy;
+	private boolean hasCreatedWeeklyShowings = false;
+	private int scheduleDuration;
 	private int [][] layoutArray;
 	
 	@SuppressWarnings("deprecation")
@@ -28,7 +29,8 @@ public class MovieShowing
 		this.date = new Date(Integer.parseInt(details[2]),Integer.parseInt(details[3]),Integer.parseInt(details[4]),
 				Integer.parseInt(details[5]),Integer.parseInt(details[6]));
 		this.isWeekly = Boolean.parseBoolean(details[7]);
-		this.scheduleDuration = Double.parseDouble(details[8]);
+		this.scheduleDuration = Integer.parseInt(details[8]);
+		this.isCopy = false;
 		//layoutArray = room.getLayout();
 
 		//System.out.println(date.toString());
@@ -99,13 +101,14 @@ public class MovieShowing
 
 }
 	
-	public MovieShowing(Cineplex cineplex, CinemaRoom cinemaroom, Date date, boolean weekly, double schedule)
+	public MovieShowing(Cineplex cineplex, CinemaRoom cinemaroom, Date date, boolean weekly, int schedule, boolean isCopy)
 	{
 		this.cinema = cineplex;
 		this.room = cinemaroom;
 		this.date = date;
 		this.isWeekly = weekly;
 		this.scheduleDuration = schedule;
+		this.isCopy = isCopy;
 
 		layoutArray = new int[room.getLayout().length][room.getLayout()[0].length]; 
 
@@ -177,16 +180,20 @@ public class MovieShowing
 	
 	public String toString()
 	{
-		return ""+cinema.getCineplexName()+","+room.getCinemaName()+","+date.toString()+","+isWeekly+","+scheduleDuration;
+		return ""+cinema.getCineplexName()+"|"+room.getCinemaName()+"|"+date.getYear() + "|" + date.getMonth() + "|" + date.getDate()+ "|"+ date.getHours() + "|"+ date.getMinutes() + "|" +isWeekly+"|"+scheduleDuration;
 	}
 	
 	public Cineplex getCineplex() {return cinema;}
 	public CinemaRoom getCinemaRoom() {return room;}
 	public Date getDate() {return date;}
 	public boolean isWeekly() {return isWeekly;}
-	public double getScheduleDuration() {return scheduleDuration;}
+	public int getScheduleDuration() {return scheduleDuration;}
 	public void setMovie(Movie movie){this.movie = movie;}
 	public Movie getMovie(){return movie;}
+	public boolean isCopy()	{return isCopy;}
+	public boolean hasCreatedWeeklyShowings()	{return hasCreatedWeeklyShowings;}
+	
+	public void weeklyShowingsInitiated(boolean initiated) {hasCreatedWeeklyShowings = initiated;}
 
 	public void setLayout(int [][] lay){
 		layoutArray = lay;

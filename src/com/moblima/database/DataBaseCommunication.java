@@ -37,6 +37,26 @@ public class DataBaseCommunication implements IDataBase
 		IDataBase.appendToDataBase(lines, path);
 	}
 	
+	public static void replaceInDataBase(String lineToReplace,String newLine,String path)
+	{
+		List<String> currentFile = IDataBase.readFromDataBase(path);
+		String[] newLines = new String[currentFile.size()];
+		System.out.println("New Line: " + newLine);
+		
+		for(int i =0;i<currentFile.size();i++)
+		{
+			System.out.println("Line to replace:" + lineToReplace);
+			System.out.println("Line to compare:" + currentFile.get(i));
+			if(currentFile.get(i).replaceAll("\n","").equals(lineToReplace.replaceAll("\n", ""))) 
+			{
+				System.out.println("Replace content in file: " + path);
+				newLines[i] = newLine.replaceAll("\n", "")+"\n";
+			}
+			else newLines[i] = currentFile.get(i).replaceAll("\n", "")+"\n";
+		}
+		writeToDataBase(newLines, path);
+	}
+	
 	//Called by other classes to read in data from database
 	public static List<String> readFile(String path)
 	{
@@ -94,10 +114,12 @@ public class DataBaseCommunication implements IDataBase
 		List<String> allMovies = new ArrayList<String>();
 		allMovies = IDataBase.readFromDataBase("movies.txt");
 
-		List<String> singleMovie = new ArrayList<String>();
+		
 		//allMovies = IDataBase.readFromDataBase("movies.txt");
 		
 		for(int i=0;i<allMovies.size();i++){
+			
+			List<String> singleMovie = new ArrayList<String>();
 			//singleMovie.add(allMovies.get(i));
 
 			Pattern p = Pattern.compile("TITLE:(.*?);");

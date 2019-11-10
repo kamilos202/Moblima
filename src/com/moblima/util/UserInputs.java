@@ -1,5 +1,7 @@
 package com.moblima.util;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Scanner;
 
 //this class is made to regulate user inputs and make sure only one manual inputstream is active at the time
@@ -61,6 +63,20 @@ public class UserInputs
 		return sc.nextDouble();
 	}
 	
+	public static boolean isDateValid(String date)
+	{
+		SimpleDateFormat formatter = new SimpleDateFormat("dd/mm/yyyy");
+		formatter.setLenient(false);
+		try
+		{
+			formatter.parse(date);
+		}
+		catch(ParseException e)
+		{
+			return false;
+		}
+		return true;
+	}
 	
 	//Close the inputstream at the end of the program
 	public static void closeScanner()

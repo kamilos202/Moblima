@@ -30,6 +30,8 @@ public class Cineplex {
     	return null;
     }
     
+    public static ArrayList<Cineplex> getCineplexList()	{return cineplexes;}
+    
     public CinemaRoom getRoomByName(String name)
     {
     	for(int i =0;i<cinemas.size();i++)

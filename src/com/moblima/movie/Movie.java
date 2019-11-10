@@ -16,13 +16,13 @@ public class Movie
     private String status;
     private double rating;
     private String movieType;
-    private double duration;
+    private int duration;
     private ArrayList<MovieShowing> showings;
     private ArrayList<Rating> ratings = new ArrayList<Rating>();
     private double averageRating;
 
 
-    public Movie(String title, String synopString, String director, String cast, String status, double duration,ArrayList<MovieShowing> showings){
+    public Movie(String title, String synopString, String director, String cast, String status, int duration,ArrayList<MovieShowing> showings){
     	
     	System.out.println("initiate movie");
         this.title = title;
@@ -126,6 +126,41 @@ public class Movie
         return rating;
     }
     
+    public void setTitle(String newTitle)
+    {
+    	this.title = newTitle;
+    }
+    
+    public void setSynopsis(String newSynopsis)
+    {
+    	this.synopString = newSynopsis;
+    }
+    
+    public void setDirector(String newDirector)
+    {
+    	this.director = newDirector;
+    }
+    
+    public void setCast(String newCast)
+    {
+    	this.cast = newCast;
+    }
+    
+    public void setStatus(String newStatus)
+    {
+    	this.status = newStatus;
+    }
+    
+    public void setType(String newType)
+    {
+    	this.movieType = newType;
+    }
+    
+    public void setDuration(int newDuration)
+    {
+    	this.duration = newDuration;
+    }
+    
     public ArrayList<Rating> getRatings() {return ratings;}
     
     public void showRatings()
@@ -140,6 +175,25 @@ public class Movie
     public ArrayList<MovieShowing> getShowings() {return showings;}
     
     public void setShowings(ArrayList<MovieShowing> newShowings) {showings = newShowings;}
+    
+    public String toDataBaseString()
+    {
+    	//System.out.println("STATUS: " + this.status);
+    	String result = "\nTITLE:"+this.title+";SYNOPSIS:"+this.synopString+";STATUS:"+this.status+";DIRECTOR:"+this.director+";CAST:"+this.cast+";DURATION:"+
+    				this.duration+";SHOWINGS:";
+    	
+    	for(int i =0;i<showings.size();i++)
+    	{
+    		if(!showings.get(i).isCopy())
+    		{
+    			result = result + showings.get(i).toString() + "/";
+    		}
+    	}
+    	result = (String) result.subSequence(0, result.length()-1) + ";";
+    	//System.out.println("result: " + result);
+    	//System.out.println("result: " + DataBaseCommunication.readFile("movies.txt").get(0));
+    	return result;
+    }
     
     
 

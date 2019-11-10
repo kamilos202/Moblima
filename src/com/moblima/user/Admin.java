@@ -1,8 +1,11 @@
 package com.moblima.user;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.moblima.database.DataBaseCommunication;
+import com.moblima.movie.Movie;
+import com.moblima.movie.MovieListing;
 import com.moblima.util.UserInputs;
 
 public class Admin extends User 
@@ -74,17 +77,41 @@ public class Admin extends User
 	
 	private void addMovie()
 	{
-		System.out.println("add");
+		MovieListing.addMovie();
 	}
 	
 	private void removeMovie()
 	{
-		System.out.println("remove");
+		System.out.println("which movie do you want to remove: ");
+		ArrayList<Movie> movies = MovieListing.getMovies();
+		for(int i = 0;i<movies.size();i++)
+		{
+			System.out.println(i+1+ ": " + movies.get(i).getTitle());
+		}
+		int choice = UserInputs.getValidIntegerInput();
+		if(choice>0&&choice<=movies.size())
+		{
+			MovieListing.removeMovie(movies.get(choice-1));
+		}
+		else System.out.println("Error selected number is not in the list");
+		
 	}
 	
 	private void editMovie()
 	{
-		System.out.println("edit");
+		System.out.println("which movie do you want to edit: ");
+		ArrayList<Movie> movies = MovieListing.getMovies();
+		for(int i = 0;i<movies.size();i++)
+		{
+			System.out.println(i+1+ ": " + movies.get(i).getTitle());
+		}
+		int choice = UserInputs.getValidIntegerInput();
+		if(choice>0&&choice<=movies.size())
+		{
+			MovieListing.editMovie(movies.get(choice-1));
+		}
+		else System.out.println("Error selected number is not in the list");
+		
 	}
 	
 	private void changeSystemSettings()
