@@ -179,7 +179,7 @@ public class Movie
     public String toDataBaseString()
     {
     	//System.out.println("STATUS: " + this.status);
-    	String result = "\nTITLE:"+this.title+";SYNOPSIS:"+this.synopString+";STATUS:"+this.status+";DIRECTOR:"+this.director+";CAST:"+this.cast+";DURATION:"+
+    	String result = "TITLE:"+this.title+";SYNOPSIS:"+this.synopString+";STATUS:"+this.status+";DIRECTOR:"+this.director+";CAST:"+this.cast+";DURATION:"+
     				this.duration+";SHOWINGS:";
     	
     	for(int i =0;i<showings.size();i++)

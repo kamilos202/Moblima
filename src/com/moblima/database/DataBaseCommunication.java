@@ -47,12 +47,25 @@ public class DataBaseCommunication implements IDataBase
 		{
 			System.out.println("Line to replace:" + lineToReplace);
 			System.out.println("Line to compare:" + currentFile.get(i));
-			if(currentFile.get(i).replaceAll("\n","").equals(lineToReplace.replaceAll("\n", ""))) 
+			if(i!=currentFile.size()-1)
 			{
-				System.out.println("Replace content in file: " + path);
-				newLines[i] = newLine.replaceAll("\n", "")+"\n";
+				if(currentFile.get(i).replaceAll("\n","").equals(lineToReplace.replaceAll("\n", ""))) 
+				{
+					System.out.println("Replace content in file: " + path);
+					newLines[i] = newLine.replaceAll("\n", "")+"\n";
+				}
+				else newLines[i] = currentFile.get(i).replaceAll("\n", "")+"\n";
 			}
-			else newLines[i] = currentFile.get(i).replaceAll("\n", "")+"\n";
+			else
+			{
+				if(currentFile.get(i).replaceAll("\n","").equals(lineToReplace.replaceAll("\n", ""))) 
+				{
+					System.out.println("Replace content in file: " + path);
+					newLines[i] = newLine.replaceAll("\n", "");
+				}
+				else newLines[i] = currentFile.get(i).replaceAll("\n", "");
+			}
+			
 		}
 		writeToDataBase(newLines, path);
 	}

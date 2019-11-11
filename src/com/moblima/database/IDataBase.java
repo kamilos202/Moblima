@@ -29,7 +29,7 @@ public interface IDataBase
 			while(sc.hasNextLine())
 			{
 				//if(!sc.nextLine().startsWith("#")) 
-					lines.add(sc.nextLine());
+				lines.add(sc.nextLine());
 			}
 			sc.close();
 			//System.out.println(lines);
