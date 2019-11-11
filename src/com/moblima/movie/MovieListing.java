@@ -178,7 +178,7 @@ public class MovieListing
     	moviesPlaying.add(new Movie(newTitle,newSynopsis,newDirector,newCast,newStatus, newDuration,new ArrayList<MovieShowing>()));
     	fullMovieArchive.add(new Movie(newTitle,newSynopsis,newDirector,newCast,newStatus, newDuration,new ArrayList<MovieShowing>()));
     	for(int i =0;i<moviesPlaying.size();i++) System.out.println("all movies currently available: " + moviesPlaying.get(i).toDataBaseString());
-    	String[] appendInfo = {"\n"+moviesPlaying.get(moviesPlaying.size()-1).toDataBaseString()};
+    	String[] appendInfo = {moviesPlaying.get(moviesPlaying.size()-1).toDataBaseString()};
     	try {
 			DataBaseCommunication.appendToDataBase(appendInfo, "movies.txt");
 		} catch (IOException e) {
