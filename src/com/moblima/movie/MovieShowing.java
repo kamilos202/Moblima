@@ -1,15 +1,11 @@
 package com.moblima.movie;
 
-import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-
-import javax.xml.crypto.Data;
 
 import com.moblima.cinema.CinemaRoom;
 import com.moblima.cinema.Cineplex;

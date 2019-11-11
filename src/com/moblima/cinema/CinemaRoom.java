@@ -169,9 +169,6 @@ public class CinemaRoom
     	}
     	return showings;
     }
-
-
-
     public boolean getPremium(){
         return suite;
     }

@@ -4,9 +4,6 @@ import java.io.IOException;
 import java.util.*;
 import java.util.ArrayList;
 import java.util.Calendar;
-
-import javax.sql.rowset.serial.SerialArray;
-
 import com.moblima.cinema.CinemaRoom;
 import com.moblima.cinema.Cineplex;
 import com.moblima.movie.Movie;
@@ -15,6 +12,12 @@ import com.moblima.movie.MovieShowing;
 import com.moblima.util.UserInputs;
 
 public class BookingPage {
+    private String movieGoer;
+    private Date birthday;
+    public BookingPage(String movieGoer,Date birthday){
+        this.birthday = birthday;
+        this.movieGoer = movieGoer;
+    }
     static ArrayList<Cineplex> cineplexes = new ArrayList<Cineplex>();
 
     public static void initiateCinemas() throws IOException {
@@ -64,7 +67,7 @@ public class BookingPage {
         }
     }
 
-    public void bookMovie(){
+    public void bookMovie() throws IOException {
         System.out.println("\nWelcome to booking system\n\tChoose Cineplex\n");
 
         while(true){
@@ -192,7 +195,8 @@ public class BookingPage {
 
             System.out.println("\n\n\t\tGreat! You have just book your seat/s.\n\tSee ya there!");
 
-            Booking = Booking()
+            Booking booking= new Booking(showsForUser.get(choiceDate-1),movieGoer, birthday, seatsNum);
+            booking.printAndSaveReceipt();
         
             //chosen time slot tempArrMoviesPerCineplex.get(choiceMov-1).getShowings().get(choiceDate-1).
             //System.out.println(tempArrMoviesPerCineplex.get(choiceMov-1).getShowings().get(choiceDate-1).getCinemaRoom().getLayout(tempArrMoviesPerCineplex.get(choiceMov-1).getShowings().get(choiceDate-1)));

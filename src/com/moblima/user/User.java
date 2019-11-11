@@ -53,7 +53,7 @@ public class User implements ILogin
 	}
 	
 	//overwritten by both admin and moviegoer to distinguish between their performable actions
-	public void performActions(){}
+	public void performActions() throws IOException{}
 	
 	
 	

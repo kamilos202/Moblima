@@ -61,7 +61,6 @@ public class MoblimaApp {
 			mov.printMovieTitle();
 		boolean programIsRunning = true;
 		*/
-		BookingPage page = new BookingPage();
 
 		//page.initiateCinemas();
 
@@ -72,8 +71,6 @@ public class MoblimaApp {
 			System.out.println("1: login using an existing account");
 			System.out.println("2: register a new account");
 			System.out.println("3: Quit application");
-			System.out.println("4: Show movies");
-			System.out.println("5: Enter booking page");
 
 			int moduleEntering = UserInputs.getValidIntegerInput();
 			switch(moduleEntering)
@@ -93,16 +90,6 @@ public class MoblimaApp {
 					System.out.println("Goodbye!");
 					System.exit(0);
 					UserInputs.closeScanner(); //Closes the inputstream
-					break;
-				case 4:
-					MovieListing list = new MovieListing();
-					//MovieListing.createMovies();
-					list.printMovieTitle();	
-					break;
-				case 5:
-					//BookingPage page = new BookingPage();
-					page.showShowings();
-					page.bookMovie();
 					break;
 				//User gives an invalid input
 				default:

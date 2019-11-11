@@ -1,29 +1,28 @@
 package com.moblima.user;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
-import java.util.Scanner;
 
-import javax.swing.text.StyledEditorKit.BoldAction;
-
+import com.moblima.booking.Booking;
 import com.moblima.booking.BookingPage;
 import com.moblima.movie.Movie;
 import com.moblima.movie.MovieListing;
-import com.moblima.rating.Rating;
 import com.moblima.util.UserInputs;
+
 /**
  * 
  */
-public class MovieGoer extends User 
-{
-	
-	String username,password;
+public class MovieGoer extends User {
+
+	String username, password;
 	Date birthdate;
 	int id;
 	String format = "%-40s%s%n";
+	MovieGoer current;
+
 	/**
 	 * 
 	 * @param username
@@ -32,26 +31,30 @@ public class MovieGoer extends User
 	 * @param birthdate
 	 * @throws ParseException
 	 */
-	public MovieGoer(String username, String password, int id, String birthdate) throws ParseException
-	{
+	public MovieGoer(String username, String password, int id, String birthdate) throws ParseException {
 		this.username = username;
 		this.password = password;
 		this.id = id;
 		SimpleDateFormat formatter = new SimpleDateFormat("dd/mm/yyyy");
 		this.birthdate = formatter.parse(birthdate);
-		
+
 		System.out.println("I am a moviegoer");
 	}
+
 	/**
 	 * 
 	 */
 	@Override
-	public String getUsername() {return username;}
+	public String getUsername() {
+		return username;
+	}
+
 	/**
+	 * @throws IOException
 	 * 
 	 */
 	@Override
-	public void performActions()
+	public void performActions() throws IOException
 	{
 		System.out.println("these are the moviegoer actions");
 		boolean loggedIn = true;
@@ -61,6 +64,8 @@ public class MovieGoer extends User
 			System.out.println("1: Rate a movie");
 			System.out.println("2: Display available movies in all Cineplexes");
 			System.out.println("3: Book a movie");
+			System.out.println("4: Retrieve booking history");
+
 
 			System.out.println("8: logout");
 			
@@ -74,9 +79,11 @@ public class MovieGoer extends User
 					listMovies();
 					break;
 				case 3:
-					BookingPage page = new BookingPage();
+					BookingPage page = new BookingPage(username,birthdate);
 					page.bookMovie();
 					break;
+				case 4:
+					Booking.retrieveHistory(username);
 				case 8:
 					loggedIn = false;
 					break;
