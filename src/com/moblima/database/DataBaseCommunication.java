@@ -47,6 +47,37 @@ public class DataBaseCommunication implements IDataBase
 		IDataBase.appendToDataBase(lines, path);
 	}
 	
+
+	public static void replaceInDataBase(String lineToReplace,String newLine,String path)
+	{
+		List<String> currentFile = IDataBase.readFromDataBase(path);
+		String[] newLines = new String[currentFile.size()];
+		System.out.println("New Line: " + newLine);
+		
+		for(int i =0;i<currentFile.size();i++)
+		{
+			System.out.println("Line to replace:" + lineToReplace);
+			System.out.println("Line to compare:" + currentFile.get(i));
+			if(i!=currentFile.size()-1){
+				if(currentFile.get(i).replaceAll("\n","").equals(lineToReplace.replaceAll("\n", ""))) 
+				{
+					System.out.println("Replace content in file: " + path);
+					newLines[i] = newLine.replaceAll("\n", "")+"\n";
+				}
+				else newLines[i] = currentFile.get(i).replaceAll("\n", "")+"\n";
+			}
+			else{
+				if(currentFile.get(i).replaceAll("\n","").equals(lineToReplace.replaceAll("\n", ""))) 
+				{
+					System.out.println("Replace content in file: " + path);
+					newLines[i] = newLine.replaceAll("\n", "");
+				}
+				else newLines[i] = currentFile.get(i).replaceAll("\n", "");
+			}
+		}
+		writeToDataBase(newLines, path);
+	}
+	
 	/**
 	 * Called by other classes to read in data from database
 	 * @param path
@@ -114,13 +145,14 @@ public class DataBaseCommunication implements IDataBase
 
 		List<String> allMovies = new ArrayList<String>();
 		allMovies = IDataBase.readFromDataBase("movies.txt");
-		System.out.println("Movies sizeeeeeee::"+allMovies.size());
+
+		
 		//allMovies = IDataBase.readFromDataBase("movies.txt");
 		
 		for(int i=0;i<allMovies.size();i++){
-			//singleMovie.add(allMovies.get(i));
-			System.out.println("All moviesssssssssss:   "+allMovies.get(i));
+			
 			List<String> singleMovie = new ArrayList<String>();
+			//singleMovie.add(allMovies.get(i));
 
 			Pattern p = Pattern.compile("TITLE:(.*?);");
 			Matcher m = p.matcher(allMovies.get(i));
@@ -205,7 +237,6 @@ public class DataBaseCommunication implements IDataBase
 				showings = "";
 			}
 			singleMovie.add(showings);
-System.out.println("ffffffffffffffffffffffffffff"+title);
 			moviesMap.put(i, singleMovie);
 		}
 

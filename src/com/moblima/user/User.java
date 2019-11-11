@@ -53,7 +53,7 @@ public class User implements ILogin
 	}
 	
 	//overwritten by both admin and moviegoer to distinguish between their performable actions
-	public void performActions() throws IOException{}
+	public void performActions() throws IOException, ParseException{}
 	
 	
 	
@@ -87,7 +87,7 @@ public class User implements ILogin
 		//Username is not taken
 		//Password is atleast 8 characters
 		//Birthdate is a valid date
-		boolean[] valid = {isUsernameValid(currentUsers,username),isPasswordValid(password),isBirthdateValid(birthdate)};
+		boolean[] valid = {isUsernameValid(currentUsers,username),isPasswordValid(password),UserInputs.isDateValid(birthdate)};
 		if(!valid[0])
 		{
 			System.out.println("Registration failed: ");
@@ -133,20 +133,7 @@ public class User implements ILogin
 		return password.length() >= 8 ? true : false;
 	}
 	
-	private static boolean isBirthdateValid(String birthdate)
-	{
-		SimpleDateFormat formatter = new SimpleDateFormat("dd/mm/yyyy");
-		formatter.setLenient(false);
-		try
-		{
-			formatter.parse(birthdate);
-		}
-		catch(ParseException e)
-		{
-			return false;
-		}
-		return true;
-	}
+	
 	
 	public static User getUserByName(String name)
 	{

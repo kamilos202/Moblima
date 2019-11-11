@@ -1,32 +1,35 @@
 package com.moblima.user;
 
+import java.io.IOException;
+import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.moblima.database.DataBaseCommunication;
+import com.moblima.movie.Movie;
+import com.moblima.movie.MovieListing;
 import com.moblima.util.UserInputs;
 
-public class Admin extends User 
-{
-	String username,password;
+public class Admin extends User {
+	String username, password;
 	int id;
 
-	public Admin(String username, String password,int id)
-	{
+	public Admin(String username, String password, int id) {
 		this.username = username;
 		this.password = password;
 		this.id = id;
 		System.out.println("I am an admin");
 	}
-	
+
 	@Override
-	public String getUsername() {return username;}
-	
+	public String getUsername() {
+		return username;
+	}
+
 	@Override
-	public void performActions()
-	{
+	public void performActions() throws IOException, ParseException {
 		boolean loggedIn = true;
-		while(loggedIn)
-		{
+		while (loggedIn) {
 			System.out.println("What action do you want to perform: ");
 			System.out.println("1: Add a movie to the movie listing");
 			System.out.println("2: remove a movie from the movie listing");
@@ -36,55 +39,78 @@ public class Admin extends User
 			System.out.println("6: Show top 5 movies by ticketsale");
 			System.out.println("7: Give a user administrator permissions");
 			System.out.println("8: logout");
-			
+
 			int actionChoice = UserInputs.getValidIntegerInput();
-			switch(actionChoice)
-			{
-				case 1:
-					addMovie();
-					break;
-				case 2:
-					removeMovie();
-					break;
-				case 3:
-					editMovie();
-					break;
-				case 4:
-					changeSystemSettings();
-					break;
-				case 5:
-					showBestByRating();
-					break;
-				case 6:
-					showBestByTicketSale();
-					break;
-				case 7:
-					giveAdminPermissions();
-					break;
-				case 8:
-					loggedIn = false;
-					break;
-				default:
-					System.out.println("Please enter one of the valid options");
-					break;
+			switch (actionChoice) {
+			case 1:
+				addMovie();
+				break;
+			case 2:
+				removeMovie();
+				break;
+			case 3:
+				editMovie();
+				break;
+			case 4:
+				changeSystemSettings();
+				break;
+			case 5:
+				showBestByRating();
+				break;
+			case 6:
+				showBestByTicketSale();
+				break;
+			case 7:
+				giveAdminPermissions();
+				break;
+			case 8:
+				loggedIn = false;
+				break;
+			default:
+				System.out.println("Please enter one of the valid options");
+				break;
 			}
 		}
-		
+
 	}
-	
-	private void addMovie()
+
+	private void addMovie() throws IOException, ParseException
 	{
-		System.out.println("add");
+		MovieListing.addMovie();
 	}
 	
 	private void removeMovie()
 	{
-		System.out.println("remove");
+		System.out.println("which movie do you want to remove: ");
+		ArrayList<Movie> movies = MovieListing.getMovies();
+		for(int i = 0;i<movies.size();i++)
+		{
+			System.out.println(i+1+ ": " + movies.get(i).getTitle());
+		}
+		int choice = UserInputs.getValidIntegerInput();
+		if(choice>0&&choice<=movies.size())
+		{
+			MovieListing.removeMovie(movies.get(choice-1));
+		}
+		else System.out.println("Error selected number is not in the list");
+		
 	}
 	
-	private void editMovie()
+	private void editMovie() throws IOException, ParseException
 	{
-		System.out.println("edit");
+		System.out.println("which movie do you want to edit: ");
+		ArrayList<Movie> movies = MovieListing.getMovies();
+		for(int i = 0;i<movies.size();i++)
+		{
+			System.out.println(i+1+ ": " + movies.get(i).getTitle());
+		}
+		int choice = UserInputs.getValidIntegerInput();
+		if(choice>0&&choice<=movies.size())
+		{
+			MovieListing.editMovie(movies.get(choice-1));
+		}
+		else System.out.println("Error selected number is not in the list");
+		
 	}
 	
 	private void changeSystemSettings()

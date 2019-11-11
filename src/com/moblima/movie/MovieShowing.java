@@ -17,9 +17,10 @@ public class MovieShowing {
 	private CinemaRoom room;
 	private Movie movie;
 	private Date date;
-	private boolean isWeekly;
-	private double scheduleDuration;
-	private int[][] layoutArray;
+	private boolean isWeekly,isCopy;
+	private boolean hasCreatedWeeklyShowings = false;
+	private int scheduleDuration;
+	private int [][] layoutArray;
 //	private Date lastDayOfShowing;
 
 	Date today = (Date) Calendar.getInstance().getTime();
@@ -40,7 +41,13 @@ public class MovieShowing {
 		this.date = new Date(Integer.parseInt(details[2]),Integer.parseInt(details[3]),Integer.parseInt(details[4]),
 				Integer.parseInt(details[5]),Integer.parseInt(details[6]));
 		this.isWeekly = Boolean.parseBoolean(details[7]);
-		this.scheduleDuration = Double.parseDouble(details[8]);
+		this.scheduleDuration = Integer.parseInt(details[8]);
+		this.isCopy = false;
+		//layoutArray = room.getLayout();
+
+		//System.out.println(date.toString());
+
+		layoutArray = new int[room.getLayout().length][room.getLayout()[0].length]; 
 
 		forwardScheduling = (today.getTime()+cinema.getForwardScheduling())*24*60*60*1000;
 		lastDate = new Date(forwardScheduling);
@@ -49,6 +56,9 @@ public class MovieShowing {
 			setShowingLayout();
 		}
 	}
+
+
+
 	/**
 	 * 
 	 * @param cineplex
@@ -59,14 +69,15 @@ public class MovieShowing {
 	 * @throws IOException
 	 * @throws ParseException
 	 */
-	public MovieShowing(Cineplex cineplex, CinemaRoom cinemaroom, Date date, boolean weekly, double schedule)
-			throws IOException, ParseException
+
+	public MovieShowing(Cineplex cineplex, CinemaRoom cinemaroom, Date date, boolean weekly, int schedule, boolean isCopy) throws IOException
 	{
 		this.cinema = cineplex;
 		this.room = cinemaroom;
 		this.date = date;
 		this.isWeekly = weekly;
 		this.scheduleDuration = schedule;
+		this.isCopy = isCopy;
 
 		forwardScheduling = (today.getTime()+cinema.getForwardScheduling())*24*60*60*1000;
 		lastDate = new Date(forwardScheduling);
@@ -86,14 +97,7 @@ public class MovieShowing {
 
 		layoutArray[row][column] = 1;
 	}
-	
-	/**
-	 * @return MovieShowing details as a String
-	 */
-	public String toString()
-	{
-		return ""+cinema.getCineplexName()+","+room.getCinemaName()+","+date.toString()+","+isWeekly+","+scheduleDuration;
-	}
+
 	/**
 	 * Getters and setters for MovieShowing class
 	 */
@@ -101,9 +105,15 @@ public class MovieShowing {
 	public CinemaRoom getCinemaRoom() {return room;}
 	public Date getDate() {return date;}
 	public boolean isWeekly() {return isWeekly;}
-	public double getScheduleDuration() {return scheduleDuration;}
+	public int getScheduleDuration() {return scheduleDuration;}
 	public void setMovie(Movie movie){this.movie = movie;}
 	public Movie getMovie(){return movie;}
+
+	public boolean isCopy()	{return isCopy;}
+	public boolean hasCreatedWeeklyShowings()	{return hasCreatedWeeklyShowings;}
+	
+	public void weeklyShowingsInitiated(boolean initiated) {hasCreatedWeeklyShowings = initiated;}
+
 
 	public void setLayout(int [][] lay){
 		layoutArray = lay;
@@ -145,8 +155,6 @@ public class MovieShowing {
 					bound++;
 				}else if(bound>11)
 					break;
-				
-	
 			}
 		}
 			if(layout[0] == ""){// if layout not found
@@ -159,10 +167,8 @@ public class MovieShowing {
 				for(int o=2;o<room.getLayout().length+2;o++){
 
 					String [] row = new String[12];
-					System.out.println(layout[o]);
 
 					row = layout[o].split(" ");
-					System.out.println("row od 0: "+row[0]+"row od 1: "+row[1]);
 
 					for(int p=0;p<room.getLayout()[0].length;p++){
 						int seatIndex = 1+p;
@@ -193,8 +199,18 @@ public class MovieShowing {
 			layoutTxt[0]+=(row+"\n");
 			row++;
 		}
-
 		DataBaseCommunication.appendToDataBase(layoutTxt, (cinema.getCineplexName()+"_"+room.getCinemaName()+".txt"));
+
+	}
+	/**
+	 * 
+	 */
+	public String toString()
+	{
+		return ""+cinema.getCineplexName()+"|"+room.getCinemaName()+"|"+date.getYear() + "|" + date.getMonth() + "|" + date.getDate()+ "|"+ date.getHours() + "|"+ date.getMinutes() + "|" +isWeekly+"|"+scheduleDuration;
 	}
 	
+
 }
+	
+
