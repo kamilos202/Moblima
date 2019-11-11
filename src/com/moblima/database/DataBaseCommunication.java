@@ -226,6 +226,18 @@ public class DataBaseCommunication implements IDataBase
 			}
 			singleMovie.add(duration);
 			
+			p = Pattern.compile("TICKETS:(.*?);");
+			m = p.matcher(allMovies.get(i));
+		
+			String tickets="";
+			while (m.find()) {
+				tickets = m.group(1);
+			}
+			if(tickets == ""){
+				tickets = "";
+			}
+			singleMovie.add(tickets);
+			
 			p = Pattern.compile("SHOWINGS:(.*?);");
 			m = p.matcher(allMovies.get(i));
 		
