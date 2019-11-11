@@ -20,6 +20,7 @@ public class Movie
     private ArrayList<MovieShowing> showings;
     private ArrayList<Rating> ratings = new ArrayList<Rating>();
     private double averageRating;
+    private int ticketsSold;
 
     /**
      * 
@@ -31,7 +32,7 @@ public class Movie
      * @param duration
      * @param showings
      */
-    public Movie(String title, String synopString, String status,String director, String cast, int duration,ArrayList<MovieShowing> showings){
+    public Movie(String title, String synopString, String director,String cast, String status, int duration,ArrayList<MovieShowing> showings,int sold){
     	
     	System.out.println("initiate movie");
         this.title = title;
@@ -42,6 +43,7 @@ public class Movie
         this.rating = 0.0;  //to be retrieved from rating.txt
         this.duration = duration;
         this.showings = showings;
+        this.ticketsSold = sold;
         System.out.println("------------------------------------");
         retrieveRatingsFromDatabase();
         showRatings();
@@ -144,7 +146,10 @@ public class Movie
         return status;
     }
     public double getRating(){
-        return rating;
+        return averageRating;
+    }
+    public int getTicketsSold() {
+    	return this.ticketsSold;
     }
     
     public void setTitle(String newTitle)
@@ -182,6 +187,11 @@ public class Movie
     	this.duration = newDuration;
     }
     
+    public void setSale(int newSold)
+    {
+    	this.ticketsSold = newSold;
+    }
+    
     public ArrayList<Rating> getRatings() {return ratings;}
     public ArrayList<MovieShowing> getShowings() {return showings;}
 
@@ -207,7 +217,7 @@ public class Movie
     {
     	//System.out.println("STATUS: " + this.status);
     	String result = "TITLE:"+this.title+";SYNOPSIS:"+this.synopString+";STATUS:"+this.status+";DIRECTOR:"+this.director+";CAST:"+this.cast+";DURATION:"+
-    				this.duration+";SHOWINGS:";
+    				this.duration+";TICKETS:"+this.ticketsSold + ";SHOWINGS:";
     	
     	for(int i =0;i<showings.size();i++)
     	{
