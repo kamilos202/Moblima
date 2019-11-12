@@ -10,6 +10,7 @@ import com.moblima.booking.Booking;
 import com.moblima.booking.BookingPage;
 import com.moblima.movie.Movie;
 import com.moblima.movie.MovieListing;
+import com.moblima.rating.Rating;
 import com.moblima.util.UserInputs;
 
 /**
@@ -60,14 +61,15 @@ public class MovieGoer extends User {
 		boolean loggedIn = true;
 		while(loggedIn)
 		{
+			System.out.println("=========== MovieGoer module MENU ===========\n");
 			System.out.println("What action do you want to perform: ");
 			System.out.println("1: Rate a movie");
 			System.out.println("2: Display available movies in all Cineplexes");
 			System.out.println("3: Book a movie");
 			System.out.println("4: Retrieve booking history");
-
-
 			System.out.println("8: logout");
+			System.out.println("\n=============================================");
+
 			
 			int actionChoice = UserInputs.getValidIntegerInput();
 			switch(actionChoice)
@@ -84,6 +86,7 @@ public class MovieGoer extends User {
 					break;
 				case 4:
 					Booking.retrieveHistory(username);
+					break;
 				case 8:
 					loggedIn = false;
 					break;
@@ -130,6 +133,24 @@ public class MovieGoer extends User {
 					System.out.printf(format,"Rating: ",movies.get(movieChoice-1).getRating());
 					System.out.printf(format,"Status: ",movies.get(movieChoice-1).getStatus());
 					System.out.println("\n");
+
+					while(true){
+						System.out.println("Do you want to see previous ratings? y/n");
+						char ansR = UserInputs.gatValidCharInputForAnswer();
+
+						if(ansR == 'y'){
+							ArrayList<Rating> ratings = new ArrayList<Rating>();
+							ratings = movies.get(movieChoice-1).getRatings();
+
+							for(int i = 0;i<ratings.size();i++){
+								System.out.println("\n\n"+ratings.get(i).getUser().getUsername()+"\n"+ratings.get(i).getDescription()+"\n\n");
+							}
+							break;
+						}else{
+							break;
+						}
+					}
+
 
 
 

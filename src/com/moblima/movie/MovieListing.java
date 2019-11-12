@@ -33,7 +33,7 @@ public class MovieListing
         for(int i=0;i<map.size();i++)
         {
         	System.out.println("Current iteration: " + i + " and movie title is equal to: " + map.get(i).get(0));
-        	String[] showingInfo = map.get(i).get(6).split("/");
+        	String[] showingInfo = map.get(i).get(7).split("/");
         	boolean hasShowings = !showingInfo[0].equals("");
         	System.out.println("SHOWINGINFO: "+showingInfo[0]);
         	ArrayList<MovieShowing> showings = new ArrayList<MovieShowing>();
@@ -42,11 +42,18 @@ public class MovieListing
         		if(hasShowings) showings.add(new MovieShowing(showingInfo[j].split("\\|")));
         	}
         	fullMovieArchive.add(new Movie(map.get(i).get(0), map.get(i).get(1), map.get(i).get(3),
-        			map.get(i).get(4), map.get(i).get(2),Integer.parseInt(map.get(i).get(5)),showings));
+        			map.get(i).get(4), map.get(i).get(2),Integer.parseInt(map.get(i).get(5)),showings,Integer.parseInt(map.get(i).get(6))));
 			if(!map.get(i).get(2).equals(ended)) moviesPlaying.add(fullMovieArchive.get(fullMovieArchive.size()-1));
 			
 			System.out.println("this is what we are looking for: " + fullMovieArchive.get(fullMovieArchive.size()-1).toDataBaseString());
-        	
+        	for(int j = 0;j<moviesPlaying.size();j++)
+        	{
+        		System.out.println("Movies added in playing: " + moviesPlaying.get(i).toDataBaseString());
+        	}
+        	for(int j = 0;j<fullMovieArchive.size();j++)
+        	{
+        		System.out.println("Movies added in archive: " + fullMovieArchive.get(i).toDataBaseString());
+        	}
             if(hasShowings)
             {
             	for(int a=0;a<showingInfo.length;a++){
@@ -175,8 +182,8 @@ public class MovieListing
     	String newStatus = UserInputs.getValidLineInput();
     	System.out.println("Please enter the duration of the movie: ");
     	int newDuration = UserInputs.getValidIntegerInput();
-    	moviesPlaying.add(new Movie(newTitle,newSynopsis,newDirector,newCast,newStatus, newDuration,new ArrayList<MovieShowing>()));
-    	fullMovieArchive.add(new Movie(newTitle,newSynopsis,newDirector,newCast,newStatus, newDuration,new ArrayList<MovieShowing>()));
+    	moviesPlaying.add(new Movie(newTitle,newSynopsis,newDirector,newCast,newStatus, newDuration,new ArrayList<MovieShowing>(),0));
+    	fullMovieArchive.add(new Movie(newTitle,newSynopsis,newDirector,newCast,newStatus, newDuration,new ArrayList<MovieShowing>(),0));
     	for(int i =0;i<moviesPlaying.size();i++) System.out.println("all movies currently available: " + moviesPlaying.get(i).toDataBaseString());
     	String[] appendInfo = {moviesPlaying.get(moviesPlaying.size()-1).toDataBaseString()};
     	try {

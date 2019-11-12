@@ -43,9 +43,6 @@ public class MovieShowing {
 		this.isWeekly = Boolean.parseBoolean(details[7]);
 		this.scheduleDuration = Integer.parseInt(details[8]);
 		this.isCopy = false;
-		//layoutArray = room.getLayout();
-
-		//System.out.println(date.toString());
 
 		layoutArray = new int[room.getLayout().length][room.getLayout()[0].length]; 
 

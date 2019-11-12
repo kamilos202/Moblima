@@ -72,7 +72,7 @@ public class UserInputs
 			chr = sc.next().charAt(0);
 			if(chr=='y' || chr=='n')
 				break;
-			System.out.println("Please enter a valid row");
+			System.out.println("Please enter a valid answer");
 		}
 		return chr;
 	}

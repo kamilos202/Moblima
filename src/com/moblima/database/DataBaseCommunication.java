@@ -56,12 +56,12 @@ public class DataBaseCommunication implements IDataBase
 		
 		for(int i =0;i<currentFile.size();i++)
 		{
-			System.out.println("Line to replace:" + lineToReplace);
-			System.out.println("Line to compare:" + currentFile.get(i));
+			//System.out.println("Line to replace:" + lineToReplace);
+			//System.out.println("Line to compare:" + currentFile.get(i));
 			if(i!=currentFile.size()-1){
-				if(currentFile.get(i).replaceAll("\n","").equals(lineToReplace.replaceAll("\n", ""))) 
+				if(currentFile.get(i).replaceAll("\n","").equals(lineToReplace.replaceAll("\n", "")))
 				{
-					System.out.println("Replace content in file: " + path);
+			//		System.out.println("Replace content in file: " + path);
 					newLines[i] = newLine.replaceAll("\n", "")+"\n";
 				}
 				else newLines[i] = currentFile.get(i).replaceAll("\n", "")+"\n";
@@ -69,7 +69,7 @@ public class DataBaseCommunication implements IDataBase
 			else{
 				if(currentFile.get(i).replaceAll("\n","").equals(lineToReplace.replaceAll("\n", ""))) 
 				{
-					System.out.println("Replace content in file: " + path);
+			//		System.out.println("Replace content in file: " + path);
 					newLines[i] = newLine.replaceAll("\n", "");
 				}
 				else newLines[i] = currentFile.get(i).replaceAll("\n", "");
@@ -225,6 +225,18 @@ public class DataBaseCommunication implements IDataBase
 				duration = "0";
 			}
 			singleMovie.add(duration);
+			
+			p = Pattern.compile("TICKETS:(.*?);");
+			m = p.matcher(allMovies.get(i));
+		
+			String tickets="";
+			while (m.find()) {
+				tickets = m.group(1);
+			}
+			if(tickets == ""){
+				tickets = "";
+			}
+			singleMovie.add(tickets);
 			
 			p = Pattern.compile("SHOWINGS:(.*?);");
 			m = p.matcher(allMovies.get(i));
