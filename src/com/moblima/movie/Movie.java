@@ -73,10 +73,12 @@ public class Movie
     		for(int j=0;j<ratingString.length;j++)
         	{
         		String[] ratingInfo = ratingString[j].split("\\|");
-        		System.out.println("ratingString " + ratingString[j]);
-                System.out.println("ratingInfo: " + ratingInfo[0]);
-                System.out.println(" The user who gives a rating: " + User.getUserByName(ratingInfo[0]).getUsername());
-        		ratings.add(new Rating(User.getUserByName(ratingInfo[0]),Double.parseDouble(ratingInfo[1]),ratingInfo[2]));
+        		System.out.println("ratingInfo : "+ (ratingInfo[0].equals("")));
+        		if(!ratingInfo[0].equals(""))
+        		{
+        			ratings.add(new Rating(User.getUserByName(ratingInfo[0]),Double.parseDouble(ratingInfo[1]),ratingInfo[2]));
+        		}
+        		
         	}
         	
         	updateAverageRating();
@@ -91,16 +93,23 @@ public class Movie
      */
     public void addRating(User user, double score, String description)
     {
-    	ratings.add(new Rating(user,score,description));
-    	List<String> currentRatings = DataBaseCommunication.readFile("ratings.txt");
-    	String[] linesToWrite = new String[currentRatings.size()];
-    	for(int i = 0;i<currentRatings.size();i++)
+    	
+    	String oldRatingInfo = ""+this.title+";";
+    	for(int i = 0;i<ratings.size();i++)
     	{
-    		if(currentRatings.get(i).split(";")[0].equals(this.title)) 
-    			currentRatings.set(i, currentRatings.get(i)+";"+user.getUsername()+"|"+score+"|"+description);
-    		linesToWrite[i] = currentRatings.get(i)+"\n";
+    		oldRatingInfo += ratings.get(i).toString();
+    		if(i!=ratings.size()-1)
+    		{
+    			oldRatingInfo += ";";
+    		}
     	}
-    	DataBaseCommunication.writeToDataBase(linesToWrite, "ratings.txt");
+    	System.out.println(oldRatingInfo);
+    	Rating rating = new Rating(user,score,description);
+    	ratings.add(rating);
+    	
+    	String newRatingInfo = oldRatingInfo+";"+rating.toString();
+    	DataBaseCommunication.replaceInDataBase(oldRatingInfo, newRatingInfo.replaceAll(";;", ";"), "ratings.txt");
+    	
     	updateAverageRating();
     	showRatings();
     }

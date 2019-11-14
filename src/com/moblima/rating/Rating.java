@@ -23,5 +23,5 @@ public class Rating
 	
 	public User getUser() {return user;}
 	
-	public String toString() {return getUser().getUsername()+" "+ getScore()+ " "+getDescription();}
+	public String toString() {return getUser().getUsername()+"|"+ getScore()+ "|"+getDescription();}
 }

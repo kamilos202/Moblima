@@ -69,7 +69,7 @@ public class MovieGoer extends User {
 			System.out.println("3: Book a movie");
 			System.out.println("4: Retrieve booking history");
 			System.out.println("5: List movies ordered by sold tickets");
-			System.out.println("6: List movies ordered by sold ratings");
+			System.out.println("6: List movies by ratings");
 			System.out.println("8: logout");
 			System.out.println("\n=============================================");
 
@@ -201,7 +201,7 @@ public class MovieGoer extends User {
 			moviesArr[i] = movies.get(i);
 		}
 
-		moviesArr = Sorting.insertionSort(moviesArr);
+		moviesArr = Sorting.selectionSort(moviesArr);
 
 		for(int i=0;i<moviesArr.length;i++){
 			System.out.println(i+1+". "+moviesArr[i].getTitle());

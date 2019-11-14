@@ -31,6 +31,25 @@ public class Sorting
         }
         
         return list;
+    }
+    
+    public static Movie [] selectionSortByRatings (Movie[] list)
+	{
+		int min;
+		Movie temp;
+		for (int index = 0; index < list.length-1; index++)
+		{
+			min = index;
+			for (int scan = index+1; scan < list.length; scan++)
+				if (list[scan].compareToByRatings(list[min]) == false)
+					min = scan;
+			// Swap the values
+			temp = list[min];
+			list[min] = list[index];
+			list[index] = temp;
+        }
+        
+        return list;
 	}
 	//-----------------------------------------------------------------
 	// Sorts the specified array of objects using the insertion
