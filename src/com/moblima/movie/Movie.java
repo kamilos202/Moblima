@@ -207,6 +207,18 @@ public class Movie
     	}
     }
 
+    public Boolean compareToByTicketsSold(Movie o){
+        if(o.ticketsSold<=ticketsSold)
+            return false;
+        return true;
+    }
+
+    public Boolean compareToByRatings(Movie o){
+        if(o.rating<=rating)
+            return false;
+        return true;
+    }
+
     /**
      * Set showing
      * @param newShowings

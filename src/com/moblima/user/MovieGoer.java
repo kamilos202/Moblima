@@ -11,6 +11,7 @@ import com.moblima.booking.BookingPage;
 import com.moblima.movie.Movie;
 import com.moblima.movie.MovieListing;
 import com.moblima.rating.Rating;
+import com.moblima.util.Sorting;
 import com.moblima.util.UserInputs;
 
 /**
@@ -67,6 +68,8 @@ public class MovieGoer extends User {
 			System.out.println("2: Display available movies in all Cineplexes");
 			System.out.println("3: Book a movie");
 			System.out.println("4: Retrieve booking history");
+			System.out.println("5: List movies ordered by sold tickets");
+			System.out.println("6: List movies ordered by sold ratings");
 			System.out.println("8: logout");
 			System.out.println("\n=============================================");
 
@@ -86,6 +89,12 @@ public class MovieGoer extends User {
 					break;
 				case 4:
 					Booking.retrieveHistory(username);
+					break;
+				case 5:
+					listTicketOrderMovies();
+					break;
+				case 6:
+					listRatingOrderMovies();
 					break;
 				case 8:
 					loggedIn = false;
@@ -164,6 +173,39 @@ public class MovieGoer extends User {
 			}
 		}
 
+	}
+
+	public void listTicketOrderMovies(){
+
+		ArrayList<Movie> movies = new ArrayList<>();
+		movies = MovieListing.getMovies();
+		Movie [] moviesArr = new Movie[movies.size()];
+
+		for(int i=0;i<movies.size();i++){
+			moviesArr[i] = movies.get(i);
+		}
+
+		moviesArr = Sorting.selectionSort(moviesArr);
+
+		for(int i=0;i<moviesArr.length;i++){
+			System.out.println(i+1+". "+moviesArr[i].getTitle());
+		}
+	}
+
+	public void listRatingOrderMovies(){
+		ArrayList<Movie> movies = new ArrayList<>();
+		movies = MovieListing.getMovies();
+		Movie [] moviesArr = new Movie[movies.size()];
+
+		for(int i=0;i<movies.size();i++){
+			moviesArr[i] = movies.get(i);
+		}
+
+		moviesArr = Sorting.insertionSort(moviesArr);
+
+		for(int i=0;i<moviesArr.length;i++){
+			System.out.println(i+1+". "+moviesArr[i].getTitle());
+		}
 	}
 
 }
