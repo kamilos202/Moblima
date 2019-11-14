@@ -57,7 +57,7 @@ public class MovieListing
             if(hasShowings)
             {
             	for(int a=0;a<showingInfo.length;a++){
-					showings.get(a).setMovie(moviesPlaying.get(i));
+					showings.get(a).setMovie(fullMovieArchive.get(i));
 				}
             }
 				
@@ -183,12 +183,12 @@ public class MovieListing
     	System.out.println("Please enter the duration of the movie: ");
     	int newDuration = UserInputs.getValidIntegerInput();
     	moviesPlaying.add(new Movie(newTitle,newSynopsis,newDirector,newCast,newStatus, newDuration,new ArrayList<MovieShowing>(),0));
-    	fullMovieArchive.add(new Movie(newTitle,newSynopsis,newDirector,newCast,newStatus, newDuration,new ArrayList<MovieShowing>(),0));
+    	fullMovieArchive.add(moviesPlaying.get(moviesPlaying.size()-1));
     	for(int i =0;i<moviesPlaying.size();i++) System.out.println("all movies currently available: " + moviesPlaying.get(i).toDataBaseString());
     	String[] appendInfo = {"\n"+moviesPlaying.get(moviesPlaying.size()-1).toDataBaseString()};
     	try {
 			DataBaseCommunication.appendToDataBase(appendInfo, "movies.txt");
-			String[] ratingInfo = {newTitle+";"};
+			String[] ratingInfo = {"\n"+newTitle+";"};
 			DataBaseCommunication.appendToDataBase(ratingInfo,"ratings.txt");
 		} catch (IOException e) {
 			e.printStackTrace();
