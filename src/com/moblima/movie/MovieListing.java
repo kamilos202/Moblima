@@ -48,11 +48,11 @@ public class MovieListing
 			System.out.println("this is what we are looking for: " + fullMovieArchive.get(fullMovieArchive.size()-1).toDataBaseString());
         	for(int j = 0;j<moviesPlaying.size();j++)
         	{
-        		System.out.println("Movies added in playing: " + moviesPlaying.get(i).toDataBaseString());
+        		System.out.println("Movies added in playing: " + moviesPlaying.get(j).toDataBaseString());
         	}
         	for(int j = 0;j<fullMovieArchive.size();j++)
         	{
-        		System.out.println("Movies added in archive: " + fullMovieArchive.get(i).toDataBaseString());
+        		System.out.println("Movies added in archive: " + fullMovieArchive.get(j).toDataBaseString());
         	}
             if(hasShowings)
             {
@@ -188,6 +188,8 @@ public class MovieListing
     	String[] appendInfo = {"\n"+moviesPlaying.get(moviesPlaying.size()-1).toDataBaseString()};
     	try {
 			DataBaseCommunication.appendToDataBase(appendInfo, "movies.txt");
+			String[] ratingInfo = {newTitle+";"};
+			DataBaseCommunication.appendToDataBase(ratingInfo,"ratings.txt");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
