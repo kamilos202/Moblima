@@ -20,8 +20,6 @@ public class Admin extends User {
 		boundary = new AdminBoundary(this);
 		System.out.println("I am an admin");
 	}
-
-
 	
 	@Override
 	public UserBoundary getBoundary()

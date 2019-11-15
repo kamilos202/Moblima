@@ -79,6 +79,13 @@ public class MovieControl
     	
 	}
 	
+	public static void removeShowing(Movie movie, MovieShowing showing)
+	{
+		movie.getShowings().remove(showing);
+	}
+	
+	
+	
 	public static Movie getMovieFromString(List<String> movieInfo)
 	{
 		System.out.println("createMovies");
@@ -112,9 +119,19 @@ public class MovieControl
 						}
             		showings.get(j).setMovie(movie);
             	}
-            	
+            	System.out.println("Showings of the movie before creating weekly showings:");
+            	for(int k = 0;k<movie.getShowings().size();k++)
+            	{
+            		System.out.println(movie.getShowings().get(k).toString());
+            	}
             	showings = createWeeklyShowings(movie);
             	movie.setShowings(showings);
+            	
+            	System.out.println("Showing of the movie after creating weekly showings: ");
+            	for(int l = 0; l<movie.getShowings().size();l++)
+            	{
+            		System.out.println(movie.getShowings().get(l).toString());
+            	}
             }
             
             

@@ -12,6 +12,7 @@ import com.moblima.database.DataBase;
 import com.moblima.movie.Movie;
 import com.moblima.movie.MovieControl;
 import com.moblima.movie.MovieListing;
+import com.moblima.movie.MovieShowing;
 import com.moblima.util.UserInputs;
 
 public class AdminBoundary extends UserBoundary
@@ -58,6 +59,23 @@ public class AdminBoundary extends UserBoundary
 		}
 
 	}
+	
+	private String createStatus()
+	{
+		
+		String[] possibleStatus = MovieControl.getValidMovieStatus();
+		String status = "";
+		for(int i=0;i<possibleStatus.length;i++) System.out.println(i+1+": " + possibleStatus[i]);
+		int choice = UserInputs.getValidIntegerInput(0,possibleStatus.length+1);
+		if(choice == possibleStatus.length) 
+		{
+			System.out.println("Please enter the custom movie status: ");
+			status = UserInputs.getValidLineInput(); 
+		}
+		else status = possibleStatus[choice-1];
+		
+		return status;
+	}
 
 	private void addMovie() throws IOException, ParseException
 	{
@@ -74,26 +92,9 @@ public class AdminBoundary extends UserBoundary
 			System.out.println("Please enter the cast of the movie: ");
 			String cast = (UserInputs.getValidLineInput());
 			System.out.println("Please choose the status of the movie: ");
-			String[] possibleStatus = MovieControl.getValidMovieStatus();
-			String status = "";
-			for(int i=0;i<possibleStatus.length;i++) System.out.println(i+1+": " + possibleStatus[i]);
-			boolean isValidSelection = false;
-			while(!isValidSelection)
-			{
-				int choice = UserInputs.getValidIntegerInput();
-				if(choice>0&&choice<=possibleStatus.length)
-				{
-					if(choice == possibleStatus.length) 
-					{
-						System.out.println("Please enter the custom movie status: ");
-						status = UserInputs.getValidLineInput(); 
-					}
-					else status = possibleStatus[choice-1];
-					
-					isValidSelection = true;
-				}
-				else System.out.println("Please select one of the aformentioned options");
-			}
+			String status = createStatus();
+			
+			
 			movieInfo.add(status);
 			movieInfo.add(director);
 			movieInfo.add(cast);
@@ -118,14 +119,14 @@ public class AdminBoundary extends UserBoundary
 		{
 			if(movie == null)
 			{
-				movie = super.chooseMovieFromList();
+				movie = chooseMovieFromList();
 			}
 			
 			System.out.println("At what cineplex will the movie take place: ");
-			Cineplex cinema = super.chooseCinpexFromList();
+			Cineplex cinema = chooseCinpexFromList();
 			
 			System.out.println("At which screen will the movie be shown: ");
-			CinemaRoom room = super.chooseRoomFromList(cinema);
+			CinemaRoom room = chooseRoomFromList(cinema);
 			
 			Date date = UserInputs.getValidDate(true);
 			
@@ -145,7 +146,7 @@ public class AdminBoundary extends UserBoundary
 	private void removeMovie()
 	{
 		System.out.println("which movie do you want to remove: ");
-		Movie movie = super.chooseMovieFromList();
+		Movie movie = chooseMovieFromList();
 		
 			MovieControl.removeMovie(movie);
 		
@@ -153,78 +154,120 @@ public class AdminBoundary extends UserBoundary
 	
 	private void editMovie() throws IOException, ParseException
 	{
-		System.out.println("which movie do you want to edit: ");
-		ArrayList<Movie> movies = MovieListing.getMovies();
-		for(int i = 0;i<movies.size();i++)
-		{
-			System.out.println(i+1+ ": " + movies.get(i).getTitle());
-		}
-		int choice = UserInputs.getValidIntegerInput();
-		if(choice>0&&choice<=movies.size())
-		{
-			MovieListing.editMovie(movies.get(choice-1));
-		}
-		else System.out.println("Error selected number is not in the list");
+		boolean editing = true;
+		Movie movie = chooseMovieFromList();
 		
+		while(editing)
+    	{
+			String oldInfo = movie.toDataBaseString();
+    		System.out.println("What movie information do you want to edit?");
+    		System.out.println("1: Movie title");
+    		System.out.println("2: synopsis");
+    		System.out.println("3: director");
+    		System.out.println("4: cast");
+    		System.out.println("5: status");
+    		System.out.println("6: movie type");
+    		System.out.println("7: duration");
+    		System.out.println("8: Add a movieShowing");
+    		System.out.println("9: Remove a movieShowing");
+    		System.out.println("0: Save changes");
+    		int choice = UserInputs.getValidIntegerInput();
+    		switch(choice)
+    		{
+    			case 1:
+    				System.out.println("Please enter the new movie title: ");
+    				movie.setTitle(UserInputs.getValidLineInput());
+    				break;
+    			case 2:
+    				System.out.println("Please enter the new movie synopsis: ");
+    				movie.setSynopsis(UserInputs.getValidLineInput());
+    				break;
+    			case 3:
+    				System.out.println("Please enter the new director: ");
+    				movie.setDirector(UserInputs.getValidLineInput());
+    				break;
+    			case 4:
+    				System.out.println("Please enter the new cast: ");
+    				movie.setCast(UserInputs.getValidLineInput());
+    				break;
+    			case 5:
+    				System.out.println("Please select the new status");
+    				movie.setStatus(createStatus());
+    				break;
+    			case 6:
+    				System.out.println("Please enter the new movie type: ");
+    				movie.setType(UserInputs.getValidLineInput());
+    				break;
+    			case 7:
+    				System.out.println("Please enter the new movie duration");
+    				movie.setDuration(UserInputs.getValidIntegerInput());
+    				break;
+    			case 8:
+    				addShowing(movie);
+    				break;
+    			case 9:
+    				removeShowing(movie);
+    				break;
+    			case 0:
+    				editing = false;
+    				System.out.println("Changes saved!");
+    				break;
+    			default:
+    				System.out.println("Please enter one of the options provided");
+    				break;
+    		}
+    		System.out.println("Writing to database: ");
+    		DataBase.replaceInDataBase(oldInfo, movie.toDataBaseString(), "movies.txt");
+    	}
+	}
+	
+	private MovieShowing getShowingNoCopy(Movie movie)
+	{
+		ArrayList<MovieShowing> originalShowings = new ArrayList<MovieShowing>();
+		for(int i = 0;i<movie.getShowings().size();i++)
+		{
+			if(!movie.getShowings().get(i).isCopy()) originalShowings.add(movie.getShowings().get(i));
+		}
+		
+		System.out.println("Please select a showing: ");
+		for(int j = 0;j<originalShowings.size();j++)
+		{
+			System.out.println(j+1+": " + originalShowings.get(j).toString());
+		}
+		
+		return originalShowings.get(UserInputs.getValidIntegerInput(0,originalShowings.size()+1)-1);
+	}
+	
+	
+	private void removeShowing(Movie movie)
+	{
+		System.out.println("Which showing do you want to remove: ");
+    	MovieShowing showing = getShowingNoCopy(movie);
+    	MovieControl.removeShowing(movie, showing);
 	}
 
-	
 	private void giveAdminPermissions()
 	{
-		System.out.println("Enter user to give admin permissions");
-		userLogedIn.username = UserInputs.getValidStringInput();
-		List<String> currentUsers = DataBase.readFile("users.txt");
-		String[] updatedUsers = new String[currentUsers.size()];
-		boolean userFound = false;
-		boolean alreadyAdmin = false;
-		for(int i = 0;i<currentUsers.size();i++)
+		System.out.println("Enter username to give admin permission: ");
+		String promotionName = UserInputs.getValidLineInput();
+		if(UserControl.doesUserExist(promotionName))
 		{
-			if(currentUsers.get(i).split(";")[0].equals(userLogedIn.username))
+			User user = UserControl.getUserByName(promotionName);
+			if(user instanceof MovieGoer)
 			{
-				if(Boolean.parseBoolean(currentUsers.get(i).split(";")[2]))
+				System.out.println("Are you sure you want to promote " + promotionName + " to admin: ");
+				if(UserInputs.getValidBooleanInput())
 				{
-					alreadyAdmin = true;
+					UserControl.makeUserAdmin(user.getUsername());
+					System.out.println(promotionName + " succesfully promoted to admin");
 				}
-				else currentUsers.set(i, currentUsers.get(i).replace(";false;", ";true;"));
-				userFound = true;
+				else System.out.println("Action cancelled");
 			}
-			updatedUsers[i] = currentUsers.get(i)+"\n";
+			else System.out.println("Error: User is already an admin, action cancelled");
 		}
-		if(!userFound)
-		{
-			System.out.println("Action failed: Could not find user with name: " + userLogedIn.username);
-		}
-		else
-		{
-			if(alreadyAdmin) System.out.println("User " + userLogedIn.username + " is already an admin");
-			else 
-			{
-				System.out.println("Are you sure you want to give the user " + userLogedIn.username + " administrator permissions?");
-				System.out.println("1: yes");
-				System.out.println("2: no");
-				boolean notConfirmed = true;
-				while(notConfirmed)
-				{
-					switch(UserInputs.getValidIntegerInput())
-					{
-						case 1:
-							notConfirmed = false;
-							DataBase.writeToDataBase(updatedUsers, "users.txt");
-							DataBase.users.remove(User.getUserByName(userLogedIn.username));
-							String[] userInfo = DataBase.getUserDetails(userLogedIn.username).split(";");
-							DataBase.users.add(new Admin(userLogedIn.username,userInfo[1],Integer.parseInt(userInfo[3])));
-							System.out.println(userLogedIn.getUsername() + " succesfully promoted to administrator");
-							break;
-						case 2:
-							notConfirmed = false;
-							System.out.println("Operation cancelled");
-							break;
-						default:
-							System.out.println("Please enter either 1 or 2");
-							break;
-					}
-				}
-			}
-		}
+		else System.out.println("Error: User doesn't exist in system, action cancelled");
 	}
+	
+	
+	
 }
