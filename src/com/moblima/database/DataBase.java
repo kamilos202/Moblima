@@ -4,22 +4,88 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.io.File;
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.moblima.cinema.Cineplex;
+import com.moblima.movie.Movie;
+import com.moblima.movie.MovieControl;
+import com.moblima.movie.MovieListing;
+import com.moblima.user.Admin;
+import com.moblima.user.MovieGoer;
+import com.moblima.user.User;
+import com.moblima.user.UserControl;
+
 
 /**
  * This class contains all the communication between other classes and the database
  */
-public class DataBaseCommunication implements IDataBase
+public class DataBase implements IDataBase
 {
 	/**
 	 * Check whether file already exists or not.
 	 * @param file
 	 * @return boolean value true - file exist, false - file do not exist
 	 */
+	
+	public static ArrayList<User> users = new ArrayList<User>();
+	public static ArrayList<Cineplex> cineplexes = new ArrayList<Cineplex>();
+	public static ArrayList<Movie> moviesPlaying = new ArrayList<Movie>();
+	public static ArrayList<Movie> fullMovieArchive = new ArrayList<Movie>();
+	
+	public static void init()
+	{
+		initiateUsers();
+		initiateCineplexes();
+		initiateMovies();
+	}
+	
+	private static void initiateUsers()
+	{
+		List<String> usersInDataBase = readFile("users.txt");
+		for(int i =1;i<usersInDataBase.size();i++)
+		{
+			users.add(UserControl.getUserFromString(usersInDataBase.get(i)));
+		}
+		
+	}
+	
+	private static void initiateCineplexes()
+	{
+		cineplexes.add(new Cineplex("The Cathay Cineplex",13.5,14));
+
+        cineplexes.get(0).createCinema("Screen1", false);
+        cineplexes.get(0).createCinema("Screen2", false);
+        cineplexes.get(0).createCinema("Screen3", true);
+
+        cineplexes.add(new Cineplex("Cathay Cineplex Causeway Point",13,14));
+
+        cineplexes.get(1).createCinema("Screen1", false);
+        cineplexes.get(1).createCinema("Screen2", false);
+        cineplexes.get(1).createCinema("Screen3", false);
+        cineplexes.get(1).createCinema("Screen4", false);
+	}
+	
+	private static void initiateMovies()
+	{
+		Map<Integer,List<String>> map = new HashMap<Integer,List<String>>();
+        map = DataBase.getMovies();
+
+        for(int i=0;i<map.size();i++)
+        {
+        	System.out.println("the map is equal to: " + map.get(i));
+        	Movie movie = MovieControl.getMovieFromString(map.get(i));
+        	fullMovieArchive.add(movie);
+        	if(!movie.isEnded()) moviesPlaying.add(movie);
+        	System.out.println("THE MOVIE RESULT: \n" + movie.toDataBaseString());
+        }
+        
+        
+	}
+	
 	public static Boolean ifExists(String file){
 		return IDataBase.ifExists(file);
 	}
@@ -56,12 +122,12 @@ public class DataBaseCommunication implements IDataBase
 		
 		for(int i =0;i<currentFile.size();i++)
 		{
-			//System.out.println("Line to replace:" + lineToReplace);
-			//System.out.println("Line to compare:" + currentFile.get(i));
+			System.out.println("Line to replace:" + lineToReplace);
+			System.out.println("Line to compare:" + currentFile.get(i));
 			if(i!=currentFile.size()-1){
-				if(currentFile.get(i).replaceAll("\n","").equals(lineToReplace.replaceAll("\n", "")))
+				if(currentFile.get(i).replaceAll("\n","").equals(lineToReplace.replaceAll("\n", ""))) 
 				{
-			//		System.out.println("Replace content in file: " + path);
+					System.out.println("Replace content in file: " + path);
 					newLines[i] = newLine.replaceAll("\n", "")+"\n";
 				}
 				else newLines[i] = currentFile.get(i).replaceAll("\n", "")+"\n";
@@ -69,11 +135,12 @@ public class DataBaseCommunication implements IDataBase
 			else{
 				if(currentFile.get(i).replaceAll("\n","").equals(lineToReplace.replaceAll("\n", ""))) 
 				{
-			//		System.out.println("Replace content in file: " + path);
+					System.out.println("Replace content in file: " + path);
 					newLines[i] = newLine.replaceAll("\n", "");
 				}
 				else newLines[i] = currentFile.get(i).replaceAll("\n", "");
 			}
+			System.out.println("Line i will write to document: " + newLines[i]+ "; and the line i should write: " + newLine);
 		}
 		writeToDataBase(newLines, path);
 	}

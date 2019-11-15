@@ -9,7 +9,7 @@ import java.util.List;
 
 import com.moblima.cinema.CinemaRoom;
 import com.moblima.cinema.Cineplex;
-import com.moblima.database.DataBaseCommunication;
+import com.moblima.database.DataBase;
 import com.moblima.database.IDataBase;
 
 public class MovieShowing {
@@ -133,8 +133,8 @@ public class MovieShowing {
 
 		List<String> allLayouts = new ArrayList<String>();
 		// if file not exist
-        if(!DataBaseCommunication.ifExists(cinema.getCineplexName()+"_"+room.getCinemaName()+".txt")){
-			DataBaseCommunication.createEmptyTxtFile(cinema.getCineplexName()+"_"+room.getCinemaName()+".txt");
+        if(!DataBase.ifExists(cinema.getCineplexName()+"_"+room.getCinemaName()+".txt")){
+			DataBase.createEmptyTxtFile(cinema.getCineplexName()+"_"+room.getCinemaName()+".txt");
 		}else{//check if showing already exists
         
 			allLayouts = IDataBase.readFromDataBase(cinema.getCineplexName()+"_"+room.getCinemaName()+".txt");
@@ -196,7 +196,7 @@ public class MovieShowing {
 			layoutTxt[0]+=(row+"\n");
 			row++;
 		}
-		DataBaseCommunication.appendToDataBase(layoutTxt, (cinema.getCineplexName()+"_"+room.getCinemaName()+".txt"));
+		DataBase.appendToDataBase(layoutTxt, (cinema.getCineplexName()+"_"+room.getCinemaName()+".txt"));
 
 	}
 	/**

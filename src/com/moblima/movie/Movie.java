@@ -3,7 +3,7 @@ package com.moblima.movie;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.moblima.database.DataBaseCommunication;
+import com.moblima.database.DataBase;
 import com.moblima.rating.Rating;
 import com.moblima.user.User;
 
@@ -14,13 +14,13 @@ public class Movie
     private String director;
     private String cast;
     private String status;
-    private double rating;
     private String movieType;
     private int duration;
     private ArrayList<MovieShowing> showings;
     private ArrayList<Rating> ratings = new ArrayList<Rating>();
     private double averageRating;
     private int ticketsSold;
+    private static String ended = "End of Showing";
 
     /**
      * 
@@ -40,7 +40,7 @@ public class Movie
         this.director = director;
         this.cast = cast;
         this.status = status;
-        this.rating = 0.0;  //to be retrieved from rating.txt
+        this.averageRating = 0.0;  //to be retrieved from rating.txt
         this.duration = duration;
         this.showings = showings;
         this.ticketsSold = sold;
@@ -54,7 +54,7 @@ public class Movie
     public void retrieveRatingsFromDatabase()
     {
     	System.out.println("Title " + title);
-    	List<String> moviesWithRating = DataBaseCommunication.readFile("ratings.txt");
+    	List<String> moviesWithRating = DataBase.readFile("ratings.txt");
     	String[] ratingString = null;
     	System.out.println("Ratings:" + moviesWithRating.get(0));
     	for(int i =0;i<moviesWithRating.size();i++)
@@ -75,8 +75,12 @@ public class Movie
         		String[] ratingInfo = ratingString[j].split("\\|");
         		System.out.println("ratingString " + ratingString[j]);
                 System.out.println("ratingInfo: " + ratingInfo[0]);
-                System.out.println(" The user who gives a rating: " + User.getUserByName(ratingInfo[0]).getUsername());
-        		ratings.add(new Rating(User.getUserByName(ratingInfo[0]),Double.parseDouble(ratingInfo[1]),ratingInfo[2]));
+
+                
+                if(!ratingInfo[0].equals(""))
+        		{
+        			ratings.add(new Rating(User.getUserByName(ratingInfo[0]),Double.parseDouble(ratingInfo[1]),ratingInfo[2]));
+        		}
         	}
         	
         	updateAverageRating();
@@ -91,16 +95,23 @@ public class Movie
      */
     public void addRating(User user, double score, String description)
     {
-    	ratings.add(new Rating(user,score,description));
-    	List<String> currentRatings = DataBaseCommunication.readFile("ratings.txt");
-    	String[] linesToWrite = new String[currentRatings.size()];
-    	for(int i = 0;i<currentRatings.size();i++)
+
+    	String oldRatingInfo = ""+this.title+";";
+    	for(int i = 0;i<ratings.size();i++)
     	{
-    		if(currentRatings.get(i).split(";")[0].equals(this.title)) 
-    			currentRatings.set(i, currentRatings.get(i)+";"+user.getUsername()+"|"+score+"|"+description);
-    		linesToWrite[i] = currentRatings.get(i)+"\n";
+    		oldRatingInfo += ratings.get(i).toString();
+    		if(i!=ratings.size()-1)
+    		{
+    			oldRatingInfo += ";";
+    		}
     	}
-    	DataBaseCommunication.writeToDataBase(linesToWrite, "ratings.txt");
+    	System.out.println(oldRatingInfo);
+    	Rating rating = new Rating(user,score,description);
+    	ratings.add(rating);
+    	
+    	String newRatingInfo = oldRatingInfo+";"+rating.toString();
+    	DataBase.replaceInDataBase(oldRatingInfo, newRatingInfo.replaceAll(";;", ";"), "ratings.txt");
+    	
     	updateAverageRating();
     	showRatings();
     }
@@ -191,6 +202,8 @@ public class Movie
     {
     	this.ticketsSold = newSold;
     }
+    
+    public boolean isEnded() {return this.status.equals(ended);}
     
     public ArrayList<Rating> getRatings() {return ratings;}
     public ArrayList<MovieShowing> getShowings() {return showings;}

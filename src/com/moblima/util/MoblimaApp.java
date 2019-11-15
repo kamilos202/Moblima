@@ -2,8 +2,7 @@ package com.moblima.util;
 import java.io.IOException;
 import java.text.ParseException;
 import com.moblima.booking.BookingPage;
-import com.moblima.movie.Movie;
-import com.moblima.movie.MovieListing;
+import com.moblima.database.DataBase;
 import com.moblima.user.User;	
 /**
  * @author	CZ2002 TEAM ;)
@@ -23,7 +22,6 @@ public class MoblimaApp {
 	public static void main(String[] args) throws NumberFormatException, ParseException, IOException {
 		welcome();
 		init();
-		//MovieListing.createMovies();
 		Boolean programIsRunning = true;
 
 		/*
@@ -78,7 +76,7 @@ public class MoblimaApp {
 				//user wants to login
 				case 1:
 					User user = User.getUser(); //return either an admin or a moviegoer instance
-					if(!(user==null)) user.performActions(); //automatically gives correct user capabilities based on the returned instance
+					if(!(user==null)) user.getBoundary().performActions(); //automatically gives correct user capabilities based on the returned instance
 					else System.out.println("Error during login, please try again"); //login failed
 					break;
 				//register a new user to the system
@@ -109,9 +107,12 @@ public class MoblimaApp {
 	 */
 	public static void init() throws IOException, ParseException
 	{
-		User.initiateUsers();
+		
 		BookingPage.initiateCinemas();
-		MovieListing.createMovies();
+		DataBase.init();
+		
+		
+		
 	}
 	
 	/**

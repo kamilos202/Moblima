@@ -18,11 +18,11 @@ import com.moblima.util.UserInputs;
  */
 public class MovieGoer extends User {
 
-	String username, password;
 	Date birthdate;
-	int id;
 	String format = "%-40s%s%n";
 	MovieGoer current;
+	
+	UserBoundary boundary;
 
 	/**
 	 * 
@@ -33,21 +33,24 @@ public class MovieGoer extends User {
 	 * @throws ParseException
 	 */
 	public MovieGoer(String username, String password, int id, String birthdate) throws ParseException {
-		this.username = username;
-		this.password = password;
-		this.id = id;
+		super(username,password,id);
 		SimpleDateFormat formatter = new SimpleDateFormat("dd/mm/yyyy");
 		this.birthdate = formatter.parse(birthdate);
-
+		boundary = new MovieGoerBoundary(this);
 		System.out.println("I am a moviegoer");
 	}
 
+	@Override
+	public UserBoundary getBoundary()
+	{
+		return boundary;
+	}
 	/**
 	 * 
 	 */
 	@Override
 	public String getUsername() {
-		return username;
+		return this.username;
 	}
 
 	/**

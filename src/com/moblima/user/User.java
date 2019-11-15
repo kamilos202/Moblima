@@ -2,12 +2,10 @@ package com.moblima.user;
 
 import java.io.IOException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import com.moblima.database.DataBaseCommunication;
+import com.moblima.database.DataBase;
 import com.moblima.util.ILogin;
 import com.moblima.util.UserInputs;
 
@@ -16,41 +14,24 @@ import com.moblima.util.UserInputs;
  */
 public class User implements ILogin
 {
-	private String username;
+	protected String username, password;
+	protected int id;
 	static Scanner sc = new Scanner(System.in);
-	public static ArrayList<User> users = new ArrayList<User>();
 	
-	public User()
+	public User(String username, String password, int id)
 	{
+		this.username = username;
+		this.password = password;
+		this.id = id;
 	}
 	
 	public String getUsername() {return null;}
 	
-	public static void initiateUsers() 
+	public UserBoundary getBoundary()
 	{
-		List<String> usersInDataBase = DataBaseCommunication.readFile("users.txt");
-		for(int i =1;i<usersInDataBase.size();i++)
-		{
-			String[] userInfo = usersInDataBase.get(i).split(";");
-			System.out.println(userInfo[0]);
-			if(Boolean.parseBoolean(userInfo[2]))
-			{
-				users.add(new Admin(userInfo[0],userInfo[1],Integer.parseInt(userInfo[3])));
-			}
-			else
-			{
-				try { //initiated by database,will never fail
-					users.add(new MovieGoer(userInfo[0],userInfo[1],Integer.parseInt(userInfo[3]),userInfo[4]));
-				} catch (NumberFormatException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (ParseException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-		}
+		return new UserBoundary();
 	}
+	
 	
 	//overwritten by both admin and moviegoer to distinguish between their performable actions
 	public void performActions() throws IOException, ParseException{}
@@ -76,7 +57,7 @@ public class User implements ILogin
 		int year = UserInputs.getValidIntegerInput();
 		
 		//Calculate user id of new user based on already existing users
-		List<String> currentUsers = DataBaseCommunication.readFile("users.txt");
+		List<String> currentUsers = DataBase.readFile("users.txt");
 		int id = currentUsers.size();
 		
 		//format birthday and all other details together
@@ -106,9 +87,9 @@ public class User implements ILogin
 		//if all inputs are valid the information is saved to database
 		else
 		{
-			DataBaseCommunication.appendToDataBase(details, "users.txt");
+			DataBase.appendToDataBase(details, "users.txt");
 			try {
-				users.add(new MovieGoer(username,password,id,birthdate));
+				DataBase.users.add(new MovieGoer(username,password,id,birthdate));
 			} catch (ParseException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -137,10 +118,10 @@ public class User implements ILogin
 	
 	public static User getUserByName(String name)
 	{
-		for(int i =0;i<users.size();i++)
+		for(int i =0;i<DataBase.users.size();i++)
 		{
-			System.out.println(users.get(i).getUsername());
-			if(users.get(i).getUsername().equals(name)) return users.get(i);
+			System.out.println(DataBase.users.get(i).getUsername());
+			if(DataBase.users.get(i).getUsername().equals(name)) return DataBase.users.get(i);
 		}
 		System.out.println("failed to retrieve user: " + name);
 		return null;
@@ -178,7 +159,7 @@ public class User implements ILogin
 		
 		if(verifyLogin(username,password))
 		{
-			return DataBaseCommunication.getUserDetails(username);
+			return DataBase.getUserDetails(username);
 		}
 		else 
 		{
@@ -189,7 +170,7 @@ public class User implements ILogin
 	
 	private static boolean verifyLogin(String username,String password) 
 	{
-		String correctPassword = DataBaseCommunication.retrievePasswordFromDatabase(username); //Search for the users password
+		String correctPassword = DataBase.retrievePasswordFromDatabase(username); //Search for the users password
 		if(correctPassword == null)
 		{
 			System.out.println("User does not exist in system");
@@ -202,5 +183,10 @@ public class User implements ILogin
 			System.out.println("Incorrect password");
 			return false;
 		}
+	}
+	
+	public String toString()
+	{
+		return this.username+","+this.password+","+this.id;
 	}
 }

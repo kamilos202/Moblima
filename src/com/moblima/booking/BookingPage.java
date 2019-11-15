@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import com.moblima.cinema.CinemaRoom;
 import com.moblima.cinema.Cineplex;
-import com.moblima.database.DataBaseCommunication;
+import com.moblima.database.DataBase;
 import com.moblima.movie.Movie;
 import com.moblima.movie.MovieListing;
 import com.moblima.movie.MovieShowing;
@@ -209,7 +209,7 @@ public class BookingPage {
      
             tempArrMoviesPerCineplex.get(choiceMov-1).setSale(tempArrMoviesPerCineplex.get(choiceMov-1).getTicketsSold()+seatsNum);
 
-            DataBaseCommunication.replaceInDataBase(oldMovieInfo, tempArrMoviesPerCineplex.get(choiceMov-1).toDataBaseString(), "movies.txt");
+            DataBase.replaceInDataBase(oldMovieInfo, tempArrMoviesPerCineplex.get(choiceMov-1).toDataBaseString(), "movies.txt");
             //chosen time slot tempArrMoviesPerCineplex.get(choiceMov-1).getShowings().get(choiceDate-1).
             //System.out.println(tempArrMoviesPerCineplex.get(choiceMov-1).getShowings().get(choiceDate-1).getCinemaRoom().getLayout(tempArrMoviesPerCineplex.get(choiceMov-1).getShowings().get(choiceDate-1)));
             

@@ -2,6 +2,7 @@ package com.moblima.util;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Scanner;
 
 /**
@@ -44,6 +45,40 @@ public class UserInputs
 		}
 		return sc.nextInt();
 	}
+	
+	public static boolean getValidBooleanInput()
+	{
+		System.out.println("1: yes");
+		System.out.println("2: no");
+		int choice = getValidIntegerInput(0,3);
+		
+		return choice == 1 ? true : false;
+	}
+	
+	public static int getValidIntegerInput(int min, int max)
+	{
+		boolean inLimits = false;
+		int output = 0;
+		while(!inLimits)
+		{
+			while(!sc.hasNextInt())
+			{
+				sc.next();
+				System.out.println("Please enter a valid number");
+			}
+			output = sc.nextInt();
+			if(output>min&&output<max)
+			{
+				inLimits = true;
+			}
+			else System.out.println("Your input is not within the given limits");
+			
+		}
+		
+		return output;
+	
+	}
+	
 	/**
 	 * Checks for valid char imput while choosing seat row
 	 * @return
@@ -109,6 +144,37 @@ public class UserInputs
 			return false;
 		}
 		return true;
+	}
+	
+	public static Date getValidDate(boolean getHours)
+	{
+		boolean isValid = false;
+		Date date = null;
+		while(!isValid)
+		{
+			System.out.println("Please enter the date at which the movie will be played (dd): ");
+			int day = UserInputs.getValidIntegerInput();
+			System.out.println("Please enter the date at which the movie will be played (mm): ");
+			int month = UserInputs.getValidIntegerInput();
+			System.out.println("Please enter the date at which the movie will be played (yyyy): ");
+			int year = UserInputs.getValidIntegerInput();
+			if(isDateValid(day+"/"+month+"/"+year))
+			{
+				isValid = true;
+				if(getHours)
+				{
+					System.out.println("Please enter the hour (0-23): ");
+					int hours = getValidIntegerInput(-1,24);
+					System.out.println("Please enter the minutes (0-59");
+					int minutes = getValidIntegerInput(-1,60);
+					date = new Date(year-1900,month-1,day,hours,minutes);
+				}
+				else date = new Date(year-1900,month-1,day);
+			}
+			else System.out.println("The entered date does not exist, please enter a valid date");
+		}
+		
+		return date;
 	}
 	
 	/**

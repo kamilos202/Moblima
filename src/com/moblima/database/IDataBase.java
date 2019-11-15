@@ -79,6 +79,8 @@ public interface IDataBase
 	 */
 	public static void appendToDataBase(String[] lines,String path) throws IOException
 	{
+		
+		System.out.println("Appending to database: " + lines[0]);
 		FileWriter writer = new FileWriter(new File("./bin/com/moblima/database/"+path),true); //The true indicates appending
 		for(int i =0;i<lines.length;i++)
 		{

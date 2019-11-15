@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import com.moblima.database.DataBaseCommunication;
+import com.moblima.database.DataBase;
 import com.moblima.database.IDataBase;
 import com.moblima.movie.Movie;
 import com.moblima.movie.MovieListing;
@@ -105,7 +105,7 @@ public class CinemaRoom
             }
 
 
-            DataBaseCommunication.writeToDataBase(layout, (cineplexName+"_"+cinemaName+".txt"));
+            DataBase.writeToDataBase(layout, (cineplexName+"_"+cinemaName+".txt"));
             System.out.println("File created");
 
 
@@ -116,7 +116,7 @@ public class CinemaRoom
     public String [] getLayout(MovieShowing sh){
 
         List<String> allLayouts = new ArrayList<String>();
-        if(DataBaseCommunication.ifExists(cineplexName+"_"+cinemaName+".txt"))
+        if(DataBase.ifExists(cineplexName+"_"+cinemaName+".txt"))
         {
             allLayouts = IDataBase.readFromDataBase(cineplexName+"_"+cinemaName+".txt");
         }else{
