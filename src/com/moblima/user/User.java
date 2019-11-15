@@ -25,7 +25,7 @@ public class User implements ILogin
 		this.id = id;
 	}
 	
-	public String getUsername() {return null;}
+	public String getUsername() {return username;}
 	
 	public UserBoundary getBoundary()
 	{

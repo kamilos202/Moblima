@@ -1,9 +1,12 @@
 package com.moblima.util;
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.Date;
+
 import com.moblima.booking.BookingPage;
 import com.moblima.database.DataBase;
-import com.moblima.user.User;	
+import com.moblima.user.User;
+import com.moblima.user.UserControl;	
 /**
  * @author	CZ2002 TEAM ;)
  *
@@ -75,19 +78,20 @@ public class MoblimaApp {
 			{
 				//user wants to login
 				case 1:
-					User user = User.getUser(); //return either an admin or a moviegoer instance
+					User user = login();
 					if(!(user==null)) user.getBoundary().performActions(); //automatically gives correct user capabilities based on the returned instance
 					else System.out.println("Error during login, please try again"); //login failed
 					break;
 				//register a new user to the system
 				case 2:
-					User.registerUser(); 
+					registerUser(); 
 					break;
 				//Exit the program
 				case 3:
 					System.out.println("Goodbye!");
-					System.exit(0);
 					UserInputs.closeScanner(); //Closes the inputstream
+					System.exit(0);
+					
 					break;
 				//User gives an invalid input
 				default:
@@ -135,5 +139,43 @@ public class MoblimaApp {
 		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 		System.out.println("==============MOvie Booking and LIsting Management Application================");
 	
+	}
+	
+	public static User login()
+	{
+		System.out.println("Enter username");
+		String username = UserInputs.getValidLineInput();
+		if(UserControl.doesUserExist(username))
+		{
+			System.out.println("Please enter your password: ");
+			String password = UserInputs.getValidLineInput();
+			return UserControl.login(username,password);
+		}
+		else System.out.println("Error: Username does not exist in the system");
+		return null;
+	}
+	
+	public static void registerUser()
+	{
+		System.out.println("Please enter a username: ");
+		String username = UserInputs.getValidLineInput();
+		if(!UserControl.doesUserExist(username))
+		{
+			System.out.println("Please choose a password with atleast 8 characters: ");
+			String password = "";
+			boolean valid = false;
+			while(!valid)
+			{
+				password = UserInputs.getValidLineInput();
+				if(password.length()>=8) valid = true;
+				else System.out.println("Please enter a password with atleast 8 characters: ");
+			}
+			
+			Date birthdate = UserInputs.getValidDate(false);
+			
+			UserControl.registerUser(username,password,birthdate);
+			System.out.println("Registration Succesful!");
+		}
+		else System.out.println("Sorry, that username is already taken");
 	}
 }

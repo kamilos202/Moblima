@@ -7,6 +7,7 @@ import com.moblima.cinema.CinemaRoom;
 import com.moblima.cinema.Cineplex;
 import com.moblima.database.DataBase;
 import com.moblima.movie.Movie;
+import com.moblima.movie.MovieShowing;
 import com.moblima.util.UserInputs;
 
 public class UserBoundary 
@@ -26,20 +27,7 @@ public class UserBoundary
 			System.out.println(i+1+":" + DataBase.moviesPlaying.get(i).getTitle());
 		}
 		
-		boolean isValid = false;
-		Movie movie = null;
-		while(!isValid)
-		{
-			int choice = UserInputs.getValidIntegerInput();
-			if(choice>0&&choice<=DataBase.moviesPlaying.size())
-			{
-				movie = DataBase.moviesPlaying.get(choice-1);
-				isValid = true;
-			}
-			else System.out.println("Please enter one of the mentioned options");
-		}
-		
-		return movie;
+		return DataBase.moviesPlaying.get(UserInputs.getValidIntegerInput(0,DataBase.moviesPlaying.size()+1)-1);
 	}
 	
 	protected Cineplex chooseCinpexFromList()
@@ -50,20 +38,7 @@ public class UserBoundary
 			System.out.println(i+1+":" + DataBase.cineplexes.get(i).getCineplexName());
 		}
 		
-		boolean isValid = false;
-		Cineplex cinema = null;
-		while(!isValid)
-		{
-			int choice = UserInputs.getValidIntegerInput();
-			if(choice>0&&choice<=DataBase.moviesPlaying.size())
-			{
-				cinema = DataBase.cineplexes.get(choice-1);
-				isValid = true;
-			}
-			else System.out.println("Please enter one of the mentioned options");
-		}
-		
-		return cinema;
+		return DataBase.cineplexes.get(UserInputs.getValidIntegerInput(0,DataBase.cineplexes.size()+1)-1);
 	}
 	
 	protected CinemaRoom chooseRoomFromList(Cineplex cineplex)
@@ -74,19 +49,17 @@ public class UserBoundary
 			System.out.println(i+1+":" + cineplex.getScreens().get(i).getCinemaName());
 		}
 		
-		boolean isValid = false;
-		CinemaRoom room = null;
-		while(!isValid)
+		return cineplex.getScreens().get(UserInputs.getValidIntegerInput(0,cineplex.getScreens().size()+1)-1);
+	}
+	
+	protected MovieShowing chooseShowingFromList(Movie movie)
+	{
+		System.out.println("Please select a showing: ");
+		for(int i = 0;i<movie.getShowings().size();i++)
 		{
-			int choice = UserInputs.getValidIntegerInput();
-			if(choice>0&&choice<=DataBase.moviesPlaying.size())
-			{
-				room = cineplex.getScreens().get(choice-1);
-				isValid = true;
-			}
-			else System.out.println("Please enter one of the mentioned options");
+			System.out.println(i+1+": "+ movie.getShowings().get(i).toString());
 		}
 		
-		return room;
+		return movie.getShowings().get(UserInputs.getValidIntegerInput(0,movie.getShowings().size()+1)-1);
 	}
 }
