@@ -10,7 +10,7 @@ import java.util.Calendar;
 
 import com.moblima.cinema.CinemaRoom;
 import com.moblima.cinema.Cineplex;
-import com.moblima.database.DataBaseCommunication;
+import com.moblima.database.DataBase;
 import com.moblima.movie.Movie;
 import com.moblima.movie.MovieShowing;
 
@@ -42,8 +42,8 @@ public class Booking {
     }
 
 	public void printAndSaveReceipt() throws IOException {
-        if(!DataBaseCommunication.ifExists(username + "_bookingHistory.txt")){
-			DataBaseCommunication.createEmptyTxtFile(username + "_bookingHistory.txt");
+        if(!DataBase.ifExists(username + "_bookingHistory.txt")){
+			DataBase.createEmptyTxtFile(username + "_bookingHistory.txt");
 		}
 
         String [] toSave = new String[1];
@@ -97,16 +97,16 @@ public class Booking {
         toSave[0] += "\n\t\tTotal price of purchase: "+totalPrice;
 
         toSave[0] += "\n";
-        DataBaseCommunication.appendToDataBase(toSave, (username + "_bookingHistory.txt"));
+        DataBase.appendToDataBase(toSave, (username + "_bookingHistory.txt"));
     }
 
     public static void retrieveHistory(String user){
         System.out.println("===============Booking history for "+user+"===============\n\n");
-        if(!DataBaseCommunication.ifExists(user + "_bookingHistory.txt")){
+        if(!DataBase.ifExists(user + "_bookingHistory.txt")){
 			System.out.println("There is no booking history for this user.");
 		}else{
             List<String> history = new ArrayList<String>();
-            history = DataBaseCommunication.readFile(user + "_bookingHistory.txt");
+            history = DataBase.readFile(user + "_bookingHistory.txt");
 
             for(int i=0;i<history.size();i++){
                 if(history.get(i)==null){

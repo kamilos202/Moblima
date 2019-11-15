@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import com.moblima.cinema.CinemaRoom;
 import com.moblima.cinema.Cineplex;
-import com.moblima.database.DataBaseCommunication;
+import com.moblima.database.DataBase;
 import com.moblima.movie.Movie;
 import com.moblima.movie.MovieListing;
 import com.moblima.movie.MovieShowing;
@@ -111,9 +111,8 @@ public class BookingPage {
             System.out.print("\nI want to watch:   ");
             int choiceMov = UserInputs.getValidIntegerInput();
             if(choice<=cineplexes.size() && choice>=1){
-                if(tempArrMoviesPerCineplex.get(choiceMov-1).getStatus().contains("Coming soon") || tempArrMoviesPerCineplex.get(choiceMov-1).getStatus().contains("End Of Showing")){
-                    System.out.println("\nMovie does not have any showing. Sorry\nChoose different movie or Cineplex!\n");
-                    continue;
+                if(tempArrMoviesPerCineplex.get(choiceMov-1).getStatus() == "Coming soon" || tempArrMoviesPerCineplex.get(choiceMov-1).getStatus() == "End Of Showing"){
+                    System.out.println("Movie does not have any showing. Sorry");
                 }else{
                     System.out.println("\nYour chosen movie is "+tempArrMoviesPerCineplex.get(choiceMov-1).getTitle()+"\n");
                 }
@@ -123,6 +122,7 @@ public class BookingPage {
             }
 
 
+            //cineplexes.get(choice-1).get
             //CHECK FOR PREMIUM ROOMS
             String premiumRooms="| ";
             for(CinemaRoom cr : cineplexes.get(choice-1).getScreens()){
@@ -209,7 +209,7 @@ public class BookingPage {
      
             tempArrMoviesPerCineplex.get(choiceMov-1).setSale(tempArrMoviesPerCineplex.get(choiceMov-1).getTicketsSold()+seatsNum);
 
-            DataBaseCommunication.replaceInDataBase(oldMovieInfo, tempArrMoviesPerCineplex.get(choiceMov-1).toDataBaseString(), "movies.txt");
+            DataBase.replaceInDataBase(oldMovieInfo, tempArrMoviesPerCineplex.get(choiceMov-1).toDataBaseString(), "movies.txt");
             //chosen time slot tempArrMoviesPerCineplex.get(choiceMov-1).getShowings().get(choiceDate-1).
             //System.out.println(tempArrMoviesPerCineplex.get(choiceMov-1).getShowings().get(choiceDate-1).getCinemaRoom().getLayout(tempArrMoviesPerCineplex.get(choiceMov-1).getShowings().get(choiceDate-1)));
             

@@ -3,7 +3,7 @@ package com.moblima.movie;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.moblima.database.DataBaseCommunication;
+import com.moblima.database.DataBase;
 import com.moblima.rating.Rating;
 import com.moblima.user.User;
 
@@ -14,13 +14,13 @@ public class Movie
     private String director;
     private String cast;
     private String status;
-    private double rating;
     private String movieType;
     private int duration;
     private ArrayList<MovieShowing> showings;
     private ArrayList<Rating> ratings = new ArrayList<Rating>();
     private double averageRating;
     private int ticketsSold;
+    private static String ended = "End of Showing";
 
     /**
      * 
@@ -40,7 +40,7 @@ public class Movie
         this.director = director;
         this.cast = cast;
         this.status = status;
-        this.rating = 0.0;  //to be retrieved from rating.txt
+        this.averageRating = 0.0;  //to be retrieved from rating.txt
         this.duration = duration;
         this.showings = showings;
         this.ticketsSold = sold;
@@ -54,7 +54,7 @@ public class Movie
     public void retrieveRatingsFromDatabase()
     {
     	System.out.println("Title " + title);
-    	List<String> moviesWithRating = DataBaseCommunication.readFile("ratings.txt");
+    	List<String> moviesWithRating = DataBase.readFile("ratings.txt");
     	String[] ratingString = null;
     	System.out.println("Ratings:" + moviesWithRating.get(0));
     	for(int i =0;i<moviesWithRating.size();i++)
@@ -73,12 +73,14 @@ public class Movie
     		for(int j=0;j<ratingString.length;j++)
         	{
         		String[] ratingInfo = ratingString[j].split("\\|");
-        		System.out.println("ratingInfo : "+ (ratingInfo[0].equals("")));
-        		if(!ratingInfo[0].equals(""))
+        		System.out.println("ratingString " + ratingString[j]);
+                System.out.println("ratingInfo: " + ratingInfo[0]);
+
+                
+                if(!ratingInfo[0].equals(""))
         		{
         			ratings.add(new Rating(User.getUserByName(ratingInfo[0]),Double.parseDouble(ratingInfo[1]),ratingInfo[2]));
         		}
-        		
         	}
         	
         	updateAverageRating();
@@ -93,7 +95,7 @@ public class Movie
      */
     public void addRating(User user, double score, String description)
     {
-    	
+
     	String oldRatingInfo = ""+this.title+";";
     	for(int i = 0;i<ratings.size();i++)
     	{
@@ -108,7 +110,7 @@ public class Movie
     	ratings.add(rating);
     	
     	String newRatingInfo = oldRatingInfo+";"+rating.toString();
-    	DataBaseCommunication.replaceInDataBase(oldRatingInfo, newRatingInfo.replaceAll(";;", ";"), "ratings.txt");
+    	DataBase.replaceInDataBase(oldRatingInfo, newRatingInfo.replaceAll(";;", ";"), "ratings.txt");
     	
     	updateAverageRating();
     	showRatings();
@@ -200,6 +202,20 @@ public class Movie
     {
     	this.ticketsSold = newSold;
     }
+
+    public Boolean compareToByTicketsSold(Movie o){
+        if(o.ticketsSold<=ticketsSold)
+            return false;
+        return true;
+    }
+
+    public Boolean compareToByRatings(Movie o){
+        if(o.averageRating<=averageRating)
+            return false;
+        return true;
+    }
+    
+    public boolean isEnded() {return this.status.equals(ended);}
     
     public ArrayList<Rating> getRatings() {return ratings;}
     public ArrayList<MovieShowing> getShowings() {return showings;}
@@ -214,18 +230,6 @@ public class Movie
     	{
     		System.out.println(ratings.get(i).toString());
     	}
-    }
-
-    public Boolean compareToByTicketsSold(Movie o){
-        if(o.ticketsSold<=ticketsSold)
-            return false;
-        return true;
-    }
-
-    public Boolean compareToByRatings(Movie o){
-        if(o.rating<=rating)
-            return false;
-        return true;
     }
 
     /**

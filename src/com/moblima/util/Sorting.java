@@ -1,7 +1,5 @@
 package com.moblima.util;
 
-import java.util.Comparator;
-
 import com.moblima.movie.Movie;
 
 /**
