@@ -6,6 +6,7 @@ import java.util.List;
 import com.moblima.database.DataBase;
 import com.moblima.rating.Rating;
 import com.moblima.user.User;
+import com.moblima.user.UserControl;
 
 public class Movie 
 {
@@ -79,7 +80,7 @@ public class Movie
                 
                 if(!ratingInfo[0].equals(""))
         		{
-        			ratings.add(new Rating(User.getUserByName(ratingInfo[0]),Double.parseDouble(ratingInfo[1]),ratingInfo[2]));
+        			ratings.add(new Rating(UserControl.getUserByName(ratingInfo[0]),Double.parseDouble(ratingInfo[1]),ratingInfo[2]));
         		}
         	}
         	
