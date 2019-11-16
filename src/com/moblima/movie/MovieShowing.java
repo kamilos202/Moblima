@@ -1,17 +1,21 @@
 package com.moblima.movie;
-
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-
 import com.moblima.cinema.CinemaRoom;
 import com.moblima.cinema.Cineplex;
 import com.moblima.database.DataBase;
 import com.moblima.database.IDataBase;
 
+/**
+ * MovieShowing is an Entity class.
+ * It contains all the information about 1 specific showing of 1 specific movie at 1 specific cinema in 1 specific room at 1 specific time
+ * @author Ivo Janssen
+ *
+ */
 public class MovieShowing {
 	private Cineplex cinema;
 	private CinemaRoom room;
@@ -27,9 +31,16 @@ public class MovieShowing {
 	Date today = (Date) Calendar.getInstance().getTime();
 	long forwardScheduling;
 	Date lastDate;
+	
+	
 	/**
-	 * 
-	 * @param details
+	 * Construct a MovieShowing instance based on a Stringwise representation. This stringwise representation can be retrieved from the database.
+	 * Please note that inputting a different format of string can lead to unintended behaviours.
+	 * @param details A stringwise representation of the movieshowing: Entry 0 cntains the cineplex. Entry 1 contains the room of the given
+	 * cineplex. Entry 2-6 contain the information about the date as given by a Java.Util.Date object: Entry 2 contains the year-1900. Entry 3
+	 * contains the month in limits 0-11. Entry 4 contains the day in limits 0-31. Entry5 contains the hours of that day with limits 0-23. Entry
+	 * 6 contains the minutes of that hour with limits 0-59. Entry 7 represents a boolean given as a String which represents if the showing will
+	 * be held every week or just once. Entry 8 contains the duration of the movie in minutes, inclduding breaks and advertisements.   
 	 * @throws IOException
 	 * @throws ParseException
 	 */
@@ -58,12 +69,13 @@ public class MovieShowing {
 
 
 	/**
-	 * 
-	 * @param cineplex
-	 * @param cinemaroom
-	 * @param date
-	 * @param weekly
-	 * @param schedule
+	 * Construct a new MovieShowing instance during the runtime of the program, based on inputted information.
+	 * These inputs can be constructed by AdminBoundary.addShowing()
+	 * @param cineplex the cineplex the showing will be held in
+	 * @param cinemaroom the room the showing will be held in
+	 * @param date the date+time the showing will be held at
+	 * @param weekly determines if the showing will be held each week or just once
+	 * @param schedule the duration of the movie in minutes including breaks,advertisements etc.
 	 * @throws IOException
 	 * @throws ParseException
 	 */
@@ -96,6 +108,12 @@ public class MovieShowing {
 		layoutArray[row][column] = 1;
 	}
 
+	/**
+	 * Get whether a seat is occupied
+	 * @param row the row of the seat
+	 * @param column the column of the seat
+	 * @return 0 is free, 1 is occupied
+	 */
 	public int getOccupied(int row,int column){
 
 		return layoutArray[row][column];
@@ -103,7 +121,7 @@ public class MovieShowing {
 
 	/**
 	 * Getters and setters for MovieShowing class
-	 */
+	**/
 	public Cineplex getCineplex() {return cinema;}
 	public CinemaRoom getCinemaRoom() {return room;}
 	public Date getDate() {return date;}
@@ -111,12 +129,9 @@ public class MovieShowing {
 	public int getScheduleDuration() {return scheduleDuration;}
 	public void setMovie(Movie movie){this.movie = movie;}
 	public Movie getMovie(){return movie;}
-
 	public boolean isCopy()	{return isCopy;}
 	public boolean hasCreatedWeeklyShowings()	{return hasCreatedWeeklyShowings;}
-	
 	public void weeklyShowingsInitiated(boolean initiated) {hasCreatedWeeklyShowings = initiated;}
-
 
 	public void setLayout(int [][] lay){
 		layoutArray = lay;
@@ -135,7 +150,6 @@ public class MovieShowing {
 		layoutArray = room.getLayout();
 		String [] layout= new String[room.getLayout().length+2];
 		layout[0] = "";
-
 
 		List<String> allLayouts = new ArrayList<String>();
 		// if file not exist
@@ -180,7 +194,6 @@ public class MovieShowing {
 						layoutArray[o-2][p] = seatFromString;
 					}
 				}
-			//initLayout();
 		}		
 	}
 	/**
@@ -205,6 +218,9 @@ public class MovieShowing {
 		DataBase.writeToDataBase(layoutTxt, (cinema.getCineplexName()+"_"+room.getCinemaName()+"_"+date+".txt"));
 
 	}
+	/**
+	 * This method writes layout of the showing (after changes)
+	 */
 	public void initLayout(){
 		String [] layoutTxt = new String[1];
 		layoutTxt[0] += "\n"+ date + "\n";
@@ -219,12 +235,13 @@ public class MovieShowing {
 			row++;
 		}
 		DataBase.writeToDataBase(layoutTxt, (cinema.getCineplexName()+"_"+room.getCinemaName()+"_"+date+".txt"));
-
 		layToExport[0] = layoutTxt[0];
 	}
-
+	/**
+	 * This method retrieves layouts from txt file
+	 * @return layout of the showing in String format
+	 */
 	public String [] getLayout(){
-
         List<String> allLayouts = new ArrayList<String>();
         //changes in name
         if(DataBase.ifExists(cinema.getCineplexName()+"_"+room.getCinemaName()+"_"+date+".txt"))
@@ -244,7 +261,6 @@ public class MovieShowing {
             if(line.contains(date.toString())){
                 bound=0;
             }
-    
             if(bound>=0 && bound<=11)
             {   
                 layout[bound]=line+"\n";
@@ -252,38 +268,16 @@ public class MovieShowing {
             }else if(bound>11)
                 break;
             
-
         }
-
         return layout;
     }
-/*
-	public void replaceLayout(){
-		String [] layoutTxt = new String[1];
-		layoutTxt[0] += "\n"+ date + "\n";
-		char row = 'A';
-		layoutTxt[0] += "-------------------------SCREEN-------------------------\n";
-		for(int a=0;a<layoutArray.length;a++){
-			layoutTxt[0] += ""+row+" ";
-			for(int b=0;b<layoutArray[a].length;b++){
-				layoutTxt[0]+=(layoutArray[a][b]+" ");
-			}
-			layoutTxt[0]+=(row+"\n");
-			row++;
-		}
-
-		DataBase.writeToDataBase( (cinema.getCineplexName()+"_"+room.getCinemaName()+".txt"));
-		layToExport[0] = layoutTxt[0];
-	}*/
 	/**
-	 * 
+	 * Returns the string of the showing details
 	 */
 	public String toString()
 	{
 		return ""+cinema.getCineplexName()+"|"+room.getCinemaName()+"|"+date.getYear() + "|" + date.getMonth() + "|" + date.getDate()+ "|"+ date.getHours() + "|"+ date.getMinutes() + "|" +isWeekly+"|"+scheduleDuration;
 	}
-	
-
 }
 	
 

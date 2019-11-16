@@ -1,12 +1,9 @@
 package com.moblima.database;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -80,7 +77,6 @@ public interface IDataBase
 	public static void appendToDataBase(String[] lines,String path) throws IOException
 	{
 		
-		System.out.println("Appending to database: " + lines[0]);
 		FileWriter writer = new FileWriter(new File("./bin/com/moblima/database/"+path),true); //The true indicates appending
 		for(int i =0;i<lines.length;i++)
 		{
@@ -88,12 +84,20 @@ public interface IDataBase
 		}
 		writer.close();
 	}
-
+	/**
+	 * 
+	 * @param fileName name of the file which is checking
+	 * @return boolean variable which indicates if file exists (true) or not (false)
+	 */
 	public static Boolean ifExists(String fileName)
 	{
 		return (new File("./bin/com/moblima/database/"+fileName).isFile());
 	}
-	
+	/**
+	 * This function creates empty txt file 
+	 * @param fileName name of the file which then is created
+	 * @throws IOException
+	 */
 	public static void createEmptyTxtFile(String fileName) throws IOException {
 		File file = new File("./bin/com/moblima/database/"+fileName);
 		file.createNewFile();

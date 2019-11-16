@@ -1,24 +1,20 @@
 package com.moblima.user;
-
-import java.io.IOException;
-import java.text.ParseException;
 import java.util.Date;
-import java.util.List;
 import java.util.Scanner;
-
-import com.moblima.database.DataBase;
-import com.moblima.util.ILogin;
-import com.moblima.util.UserInputs;
-
 /**
- * 
+ * User class is the super class for MovieGoer class and Admin
  */
-public class User implements ILogin
+public class User
 {
 	protected String username, password;
 	protected int id;
 	static Scanner sc = new Scanner(System.in);
-	
+	/**
+	 * This is the contructor for the user.
+	 * @param username name of the user 
+	 * @param password password of the account
+	 * @param id unique number of the user (movie goer or admin)
+	 */
 	public User(String username, String password, int id)
 	{
 		this.username = username;
@@ -27,16 +23,14 @@ public class User implements ILogin
 	}
 	
 	public Date getBirthdate(){return null;}
-
-
 	public String getUsername() {return username;}
-	
 	public UserBoundary getBoundary()
 	{
 		return new UserBoundary();
 	}
-	
-	
+	/**
+	 * Returns the String of the user's details
+	 */
 	public String toString()
 	{
 		return this.username+","+this.password+","+this.id;

@@ -58,8 +58,6 @@ public class CinemaRoom {
     public String getCinemaName(){
         return cinemaName;
     }
-    
-    
     /**
      * 
      * @return the occupation of this particular Cinema room

@@ -1,10 +1,7 @@
 package com.moblima.util;
-
-
 import com.moblima.movie.Movie;
-
 /**
- * 
+ * Class which takes care of sorting
  */
 public class Sorting 
 {
@@ -13,6 +10,11 @@ public class Sorting
 	// Sorts the specified array of objects using the selection
 	// sort algorithm.
 	//-----------------------------------------------------------------
+	/**
+	 * Sorts movies by number of tickets sold
+	 * @param list
+	 * @return
+	 */
 	public static Movie [] selectionSort (Movie[] list)
 	{
 		int min;
@@ -31,7 +33,11 @@ public class Sorting
         
         return list;
     }
-    
+    /**
+	 * Sorts movies by average ratings
+	 * @param list
+	 * @return
+	 */
     public static Movie [] selectionSortByRatings (Movie[] list)
 	{
 		int min;
@@ -54,6 +60,8 @@ public class Sorting
 	// Sorts the specified array of objects using the insertion
 	// sort algorithm.
 	//-----------------------------------------------------------------
+	// not used in the program
+	// might be useful in the future
 	public static Movie [] insertionSort (Movie[] list)
 	{
 		for (int index = 1; index < list.length; index++)
@@ -71,32 +79,4 @@ public class Sorting
         
         return list;
 	}
-        // Used for sorting in ascending order of 
-    // roll number 
-/*
-	public int compareRating(Movie o1, Movie o2) {
-		// TODO Auto-generated method stub
-		if (o1.getRating() < o2.getRating()) 
-			return -1;
-        if (o1.getRating() > o2.getRating())
-        	return 1;
-        return 0;
-	}
-*/	
-//	public int compareTicketSale(Movie o1, Movie o2) {
-//		// TODO Auto-generated method stub
-//		return o1.getTicketSale - o2.getTicketSale;
-//	}
-   
-/*
-    public int compareDate(MovieShowing o1, MovieShowing o2) {
-        return o1.getDate().compareTo(o2.getDate());
-    }
-    */
-
-//	@Override
-//	public int compare(Movie o1, Movie o2) {
-//		// TODO Auto-generated method stub
-//		return 0;
-//	} 
 }

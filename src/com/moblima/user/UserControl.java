@@ -1,8 +1,6 @@
 package com.moblima.user;
-
 import java.util.Date;
 import java.util.List;
-import java.io.IOException;
 import java.text.ParseException;
 
 import com.moblima.database.DataBase;
@@ -13,7 +11,6 @@ public class UserControl implements ILogin
 	public static User getUserFromString(String userString)
 	{
 		String[] userInfo = userString.split(";");
-		System.out.println(userInfo[0]);
 		if(Boolean.parseBoolean(userInfo[2]))
 		{
 			return(new Admin(userInfo[0],userInfo[1],Integer.parseInt(userInfo[3])));
@@ -80,7 +77,12 @@ public class UserControl implements ILogin
 	{
 		return getUserByName(name) == null ? false : true;
 	}
-	
+	/**
+	 * Method which take care of registering the new user
+	 * @param username
+	 * @param password
+	 * @param date
+	 */
 	public static void registerUser(String username, String password, Date date)
 	{
 		int id = DataBase.users.size()+1;
@@ -95,7 +97,12 @@ public class UserControl implements ILogin
 		}
 		
 	}
-	
+	/**
+	 * This method logins user in to the system
+	 * @param username
+	 * @param password
+	 * @return User which is logged in
+	 */
 	public static User login(String username, String password)
 	{
 		if(getUserInfoFromDataBase(username).split(";")[1].equals(password))

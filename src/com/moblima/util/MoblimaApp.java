@@ -14,8 +14,6 @@ import com.moblima.user.UserControl;
 //Main body of the program, contains the welcome screen and provides user with further options to navigate the program
 public class MoblimaApp {
 
-
-
 	/**
 	 * @param args
 	 * @throws ParseException 
@@ -26,44 +24,6 @@ public class MoblimaApp {
 		welcome();
 		init();
 		Boolean programIsRunning = true;
-
-		/*
-		Scanner sc = new Scanner(System.in);
-		System.out.println(DataBaseCommunication.readFile("movies.txt"));
-		System.out.println("Are you a movie-goer or part of a staff?");
-		System.out.print("Select respectively g/s:");	
-		System.out.print("Select r to see movies:");	
-
-		char moduleEntering = sc.next().charAt(0);
-		if(moduleEntering == 's') {
-			/*
-			1. Login
-			2. Create/Update/Remove movie listing
-			3. Create/Update/Remove cinema show times and the movies to be shown
-			4. Configure system settings
-			*/
-		//;}	
-		//else if (moduleEntering == 'g') {
-			
-			//MovieGoerModule movieGoer = new MovieGoerModule();
-			//movieGoer.listMovies();
-				/*
-				1. Search/List movie
-				2. View movie details –including reviews and ratings
-				3. Check seatavailabilityand selection of seat/s.
-				4. Book and purchase ticket
-				5. View booking history
-				6. List the Top 
-				5. ranking by ticket sales OR byoverall reviewers’ratings
-				*/
-				/*
-		}else if (moduleEntering == 'r'){
-			mov.createMovies();
-			mov.printMovieTitle();
-		boolean programIsRunning = true;
-		*/
-
-		//page.initiateCinemas();
 
 		//While the program is running user can continuously use the program functions, until he/she decides to quit the program
 		while(programIsRunning)
@@ -118,7 +78,6 @@ public class MoblimaApp {
 		
 		
 	}
-	
 	/**
 	 * Just prints welcome ASCII art.
 	 */
@@ -140,7 +99,10 @@ public class MoblimaApp {
 		System.out.println("==============MOvie Booking and LIsting Management Application================");
 	
 	}
-	
+	/**
+	 * Static method which login user to the system
+	 * @return
+	 */
 	public static User login()
 	{
 		System.out.println("Enter username");
@@ -154,7 +116,9 @@ public class MoblimaApp {
 		else System.out.println("Error: Username does not exist in the system");
 		return null;
 	}
-	
+	/**
+	 * Static method which registers new user to the system
+	 */
 	public static void registerUser()
 	{
 		System.out.println("Please enter a username: ");

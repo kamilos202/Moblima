@@ -6,7 +6,6 @@ import com.moblima.database.DataBase;
 import com.moblima.movie.Movie;
 import com.moblima.movie.MovieShowing;
 import com.moblima.rating.Rating;
-import com.moblima.user.MovieGoer;
 import com.moblima.user.User;
 import com.moblima.util.Sorting;
 import com.moblima.util.UserInputs;

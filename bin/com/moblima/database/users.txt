@@ -4,5 +4,3 @@ admin2;blabla;true;2;14/5/1982
 user1;lol;false;3;23/8/1998
 user2;loll;false;4;23/8/1998
 user3;lccol;false;5;23/8/1998
-user4;whynotthen;false;6;16/11/2000
-me;12345678;false;7;12/12/1234

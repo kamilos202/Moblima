@@ -27,6 +27,9 @@ public class MovieGoerBoundary extends UserBoundary
 		page = new BookingPage();
 	}
 	
+	/**
+	 * This function takes the imput 
+	 */
 	@Override
 	public void performActions() throws IOException
 	{
@@ -259,10 +262,6 @@ public class MovieGoerBoundary extends UserBoundary
 
             break;
         }
-
         System.out.println("\n");
     }
-
-
-
 }
