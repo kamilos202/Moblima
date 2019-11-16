@@ -13,7 +13,7 @@ import com.moblima.util.UserInputs;
 /**
  * 
  */
-public class User implements ILogin
+public class User
 {
 	protected String username, password;
 	protected int id;

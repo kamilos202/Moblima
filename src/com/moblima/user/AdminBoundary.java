@@ -11,20 +11,33 @@ import com.moblima.cinema.Cineplex;
 import com.moblima.database.DataBase;
 import com.moblima.movie.Movie;
 import com.moblima.movie.MovieControl;
-import com.moblima.movie.MovieListing;
 import com.moblima.movie.MovieShowing;
 import com.moblima.util.UserInputs;
 
+/**
+ * The Admin Boundary is a boundary class which defines all the functions which can be performed by the admin.
+ * This class regulates all the inputs from the admin and passes it on to the control classes in order to manipulate all the objects
+ * @author Ivo Janssen
+ *
+ */
 public class AdminBoundary extends UserBoundary
 {
 	private User userLogedIn;
 	
+	/**
+	 * Construct the boundary based on user
+	 * @param admin the admin which is logged in
+	 */
 	public AdminBoundary(Admin admin)
 	{
 		userLogedIn = admin;
 	}
 	
 	@Override
+	/**
+	 * This method is called by the MoblimaApp when an admin logs in to the program.
+	 * By calling this method the Admin function sequence is initiated
+	 */
 	public void performActions() throws IOException, ParseException {
 		boolean loggedIn = true;
 		while (loggedIn) {
@@ -60,6 +73,10 @@ public class AdminBoundary extends UserBoundary
 
 	}
 	
+	/**
+	 * Creates a new movie status based on the list of valid movie statuses
+	 * @return valid status String
+	 */
 	private String createStatus()
 	{
 		
@@ -76,7 +93,12 @@ public class AdminBoundary extends UserBoundary
 		
 		return status;
 	}
-
+	
+	/**
+	 * Create a new movie object based on user inputs
+	 * @throws IOException
+	 * @throws ParseException
+	 */
 	private void addMovie() throws IOException, ParseException
 	{
 		List<String> movieInfo = new ArrayList<String>();
@@ -91,16 +113,16 @@ public class AdminBoundary extends UserBoundary
 			String director = (UserInputs.getValidLineInput());
 			System.out.println("Please enter the cast of the movie: ");
 			String cast = (UserInputs.getValidLineInput());
+			System.out.println("Please enter the duration of the movie: ");
+			String duration = ""+UserInputs.getValidIntegerInput();
 			System.out.println("Please choose the status of the movie: ");
 			String status = createStatus();
-			
-			
 			movieInfo.add(status);
 			movieInfo.add(director);
 			movieInfo.add(cast);
 			
-			System.out.println("Please enter the duration of the movie: ");
-			movieInfo.add(""+UserInputs.getValidIntegerInput());
+			
+			movieInfo.add(duration);
 			movieInfo.add("0");//Inititial ticket sale is 0
 			movieInfo.add(""); //Initially there are no showings
 			MovieControl.addMovie(movieInfo);
@@ -112,6 +134,10 @@ public class AdminBoundary extends UserBoundary
 		
 	}
 	
+	/**
+	 * Add a showing to a movie based on user inputs
+	 * @param movie to add the showing to
+	 */
 	private void addShowing(Movie movie) //provide with movie = null to choose a movie from list
 	{
 		boolean addShowings = true;
@@ -143,6 +169,9 @@ public class AdminBoundary extends UserBoundary
 		}
 	}
 	
+	/**
+	 * remove a movie specified by inputs of the user
+	 */
 	private void removeMovie()
 	{
 		System.out.println("which movie do you want to remove: ");
@@ -152,6 +181,11 @@ public class AdminBoundary extends UserBoundary
 		
 	}
 	
+	/**
+	 * Edit a movie based on the inputs of the user
+	 * @throws IOException
+	 * @throws ParseException
+	 */
 	private void editMovie() throws IOException, ParseException
 	{
 		boolean editing = true;
@@ -159,7 +193,7 @@ public class AdminBoundary extends UserBoundary
 		
 		while(editing)
     	{
-			String oldInfo = movie.toDataBaseString();
+			String oldInfo = MovieControl.toDateBaseString(movie);
     		System.out.println("What movie information do you want to edit?");
     		System.out.println("1: Movie title");
     		System.out.println("2: synopsis");
@@ -217,10 +251,15 @@ public class AdminBoundary extends UserBoundary
     				break;
     		}
     		System.out.println("Writing to database: ");
-    		DataBase.replaceInDataBase(oldInfo, movie.toDataBaseString(), "movies.txt");
+    		DataBase.replaceInDataBase(oldInfo, MovieControl.toDateBaseString(movie), "movies.txt");
     	}
 	}
 	
+	/**
+	 * Select a showing which is not created based on weekly showings (an original one saved in the database)
+	 * @param movie movie to get orinal showings from
+	 * @return all showings which are not a copy from the given movie.
+	 */
 	private MovieShowing getShowingNoCopy(Movie movie)
 	{
 		ArrayList<MovieShowing> originalShowings = new ArrayList<MovieShowing>();
@@ -238,7 +277,10 @@ public class AdminBoundary extends UserBoundary
 		return originalShowings.get(UserInputs.getValidIntegerInput(0,originalShowings.size()+1)-1);
 	}
 	
-	
+	/**
+	 * Remove a showing based on inputs from the user
+	 * @param movie to remove a showing from
+	 */
 	private void removeShowing(Movie movie)
 	{
 		System.out.println("Which showing do you want to remove: ");
@@ -246,6 +288,9 @@ public class AdminBoundary extends UserBoundary
     	MovieControl.removeShowing(movie, showing);
 	}
 
+	/**
+	 * Give a moviegoer admin permissions based on user inputs
+	 */
 	private void giveAdminPermissions()
 	{
 		System.out.println("Enter username to give admin permission: ");

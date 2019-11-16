@@ -84,7 +84,8 @@ public class UserControl implements ILogin
 	public static void registerUser(String username, String password, Date date)
 	{
 		int id = DataBase.users.size()+1;
-		String birthdate = date.getDate()+"/"+date.getMonth()+1+"/"+date.getYear()+1900;
+		@SuppressWarnings("deprecation")
+		String birthdate = date.getDate()+"/"+(date.getMonth()+1)+"/"+(date.getYear()+1900);
 		String[] info = {"\n"+username+";"+password+";"+"false"+";"+id+";"+birthdate};
 		try {
 			DataBase.appendToDataBase(info, "users.txt");

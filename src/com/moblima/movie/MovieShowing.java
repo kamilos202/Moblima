@@ -12,6 +12,12 @@ import com.moblima.cinema.Cineplex;
 import com.moblima.database.DataBase;
 import com.moblima.database.IDataBase;
 
+/**
+ * MovieShowing is an Entity class.
+ * It contains all the information about 1 specific showing of 1 specific movie at 1 specific cinema in 1 specific room at 1 specific time
+ * @author Ivo Janssen
+ *
+ */
 public class MovieShowing {
 	private Cineplex cinema;
 	private CinemaRoom room;
@@ -27,9 +33,16 @@ public class MovieShowing {
 	Date today = (Date) Calendar.getInstance().getTime();
 	long forwardScheduling;
 	Date lastDate;
+	
+	
 	/**
-	 * 
-	 * @param details
+	 * Construct a MovieShowing instance based on a Stringwise representation. This stringwise representation can be retrieved from the database.
+	 * Please note that inputting a different format of string can lead to unintended behaviours.
+	 * @param details A stringwise representation of the movieshowing: Entry 0 cntains the cineplex. Entry 1 contains the room of the given
+	 * cineplex. Entry 2-6 contain the information about the date as given by a Java.Util.Date object: Entry 2 contains the year-1900. Entry 3
+	 * contains the month in limits 0-11. Entry 4 contains the day in limits 0-31. Entry5 contains the hours of that day with limits 0-23. Entry
+	 * 6 contains the minutes of that hour with limits 0-59. Entry 7 represents a boolean given as a String which represents if the showing will
+	 * be held every week or just once. Entry 8 contains the duration of the movie in minutes, inclduding breaks and advertisements.   
 	 * @throws IOException
 	 * @throws ParseException
 	 */
@@ -58,12 +71,13 @@ public class MovieShowing {
 
 
 	/**
-	 * 
-	 * @param cineplex
-	 * @param cinemaroom
-	 * @param date
-	 * @param weekly
-	 * @param schedule
+	 * Construct a new MovieShowing instance during the runtime of the program, based on inputted information.
+	 * These inputs can be constructed by AdminBoundary.addShowing()
+	 * @param cineplex the cineplex the showing will be held in
+	 * @param cinemaroom the room the showing will be held in
+	 * @param date the date+time the showing will be held at
+	 * @param weekly determines if the showing will be held each week or just once
+	 * @param schedule the duration of the movie in minutes including breaks,advertisements etc.
 	 * @throws IOException
 	 * @throws ParseException
 	 */
@@ -96,6 +110,12 @@ public class MovieShowing {
 		layoutArray[row][column] = 1;
 	}
 
+	/**
+	 * Get whether a seat is occupied
+	 * @param row the row of the seat
+	 * @param column the column of the seat
+	 * @return 0 is free, 1 is occupied
+	 */
 	public int getOccupied(int row,int column){
 
 		return layoutArray[row][column];
@@ -223,6 +243,41 @@ public class MovieShowing {
 
 		layToExport[0] = layoutTxt[0];
 	}
+
+	public String [] getLayout(){
+		
+        List<String> allLayouts = new ArrayList<String>();
+        //changes in name
+        if(DataBase.ifExists(cinema.getCineplexName()+"_"+room.getCinemaName()+"_"+date+".txt"))
+        {
+            allLayouts = IDataBase.readFromDataBase(cinema.getCineplexName()+"_"+room.getCinemaName()+"_"+date+".txt");
+        }else{
+            String [] layout= new String[room.getLayout().length+2];
+            layout[0] = "";
+            return layout;
+        }
+        
+        String [] layout= new String[room.getLayout().length+2];
+        layout[0] = "";
+        int bound = -1;
+        for(String line : allLayouts)
+        {
+            if(line.contains(date.toString())){
+                bound=0;
+            }
+    
+            if(bound>=0 && bound<=11)
+            {   
+                layout[bound]=line+"\n";
+                bound++;
+            }else if(bound>11)
+                break;
+            
+
+        }
+
+        return layout;
+    }
 /*
 	public void replaceLayout(){
 		String [] layoutTxt = new String[1];
@@ -241,8 +296,9 @@ public class MovieShowing {
 		DataBase.writeToDataBase( (cinema.getCineplexName()+"_"+room.getCinemaName()+".txt"));
 		layToExport[0] = layoutTxt[0];
 	}*/
+	
 	/**
-	 * 
+	 * Transforms the MovieShowing instance to a stringwise description of the showing
 	 */
 	public String toString()
 	{

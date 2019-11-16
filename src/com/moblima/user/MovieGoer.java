@@ -14,7 +14,12 @@ import com.moblima.rating.Rating;
 import com.moblima.util.UserInputs;
 
 /**
- * 
+ * MovieGoer is an entity class which extends from the generalized User entity.
+ * Its main purpose is to differentiate between a admin in order to perform the standard MovieGoer functions.
+ * Next to that the moviegoer class can in future expension of the program be used to store more information regarding to the moviegoer object, for
+ * Example: user seat preferences could be stored or creditcard details can be saved to make payments faster.
+ * @author Ivo Janssen
+ *
  */
 public class MovieGoer extends User {
 

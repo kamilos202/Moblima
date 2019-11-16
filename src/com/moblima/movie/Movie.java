@@ -1,13 +1,14 @@
 package com.moblima.movie;
 
 import java.util.ArrayList;
-import java.util.List;
-
-import com.moblima.database.DataBase;
 import com.moblima.rating.Rating;
-import com.moblima.user.User;
-import com.moblima.user.UserControl;
-
+/**
+ * Movie is an entity class.
+ * The class contains all the information related to an individual movie.
+ * The class contains methods to get and set the data of the movie object
+ * @author Ivo Janssen
+ *
+ */
 public class Movie 
 {
     private String title;
@@ -15,23 +16,24 @@ public class Movie
     private String director;
     private String cast;
     private String status;
-    private String movieType;
+    @SuppressWarnings("unused")
+	private String movieType;
     private int duration;
     private ArrayList<MovieShowing> showings;
     private ArrayList<Rating> ratings = new ArrayList<Rating>();
-    private double averageRating;
+    @SuppressWarnings("unused")
+	private double averageRating;
     private int ticketsSold;
-    private static String ended = "End of Showing";
 
     /**
-     * 
-     * @param title
-     * @param synopString
-     * @param status
-     * @param director
-     * @param cast
-     * @param duration
-     * @param showings
+     * Used to initiate a movie object
+     * @param title The title of the movie
+     * @param synopString The Synopsis of the movie
+     * @param status The status of the movie
+     * @param director The director(s) of the movie
+     * @param cast The cast of the movie
+     * @param duration The duration of the movie in minutes
+     * @param showings An ArrayList of MovieShowing Objects, containing all showings of this movie
      */
     public Movie(String title, String synopString, String director,String cast, String status, int duration,ArrayList<MovieShowing> showings,int sold){
     	
@@ -46,214 +48,212 @@ public class Movie
         this.showings = showings;
         this.ticketsSold = sold;
         System.out.println("------------------------------------");
-        retrieveRatingsFromDatabase();
-        showRatings();
+        MovieControl.retrieveRatingsFromDatabase(this);
     }
+    
     /**
-     * 
+     * Get the title of the movie
+     * @return title
      */
-    public void retrieveRatingsFromDatabase()
-    {
-    	System.out.println("Title " + title);
-    	List<String> moviesWithRating = DataBase.readFile("ratings.txt");
-    	String[] ratingString = null;
-    	System.out.println("Ratings:" + moviesWithRating.get(0));
-    	for(int i =0;i<moviesWithRating.size();i++)
-    	{
-    		System.out.println(" We are looking for this"+moviesWithRating.get(i).split(";")[0]);
-    		if(moviesWithRating.get(i).split(";")[0].equals(this.title))
-    		{
-    			ratingString = moviesWithRating.get(i).substring(moviesWithRating.get(i).split(";")[0].length()+1).split(";");
-    			break;
-    		}
-    	}
-    	System.out.println("ratingStringIfNull:::::"+ratingString==null);
-    	if(!(ratingString == null))
-    	{
-            System.out.println("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
-    		for(int j=0;j<ratingString.length;j++)
-        	{
-        		String[] ratingInfo = ratingString[j].split("\\|");
-        		System.out.println("ratingString " + ratingString[j]);
-                System.out.println("ratingInfo: " + ratingInfo[0]);
-
-                
-                if(!ratingInfo[0].equals(""))
-        		{
-        			ratings.add(new Rating(UserControl.getUserByName(ratingInfo[0]),Double.parseDouble(ratingInfo[1]),ratingInfo[2]));
-        		}
-        	}
-        	
-        	updateAverageRating();
-    	}
-    	
-    }
-    /**
-     * 
-     * @param user
-     * @param score
-     * @param description
-     */
-    public void addRating(User user, double score, String description)
-    {
-
-    	String oldRatingInfo = ""+this.title+";";
-    	for(int i = 0;i<ratings.size();i++)
-    	{
-    		oldRatingInfo += ratings.get(i).toString();
-    		if(i!=ratings.size()-1)
-    		{
-    			oldRatingInfo += ";";
-    		}
-    	}
-    	System.out.println(oldRatingInfo);
-    	Rating rating = new Rating(user,score,description);
-    	ratings.add(rating);
-    	
-    	String newRatingInfo = oldRatingInfo+";"+rating.toString();
-    	DataBase.replaceInDataBase(oldRatingInfo, newRatingInfo.replaceAll(";;", ";"), "ratings.txt");
-    	
-    	updateAverageRating();
-    	showRatings();
-    }
-    /**
-     * 
-     */
-    public void updateAverageRating()
-    {
-    	averageRating = 0;
-    	for(int i = 0;i<ratings.size();i++)
-    	{
-    		System.out.println("calculate average: " + ratings.get(i).getScore());
-    		averageRating += ratings.get(i).getScore();
-    		System.out.println(ratings.get(i).getDescription());
-    	}
-    	System.out.println("sum:" + averageRating);
-    	System.out.println("average: "+ averageRating / ((double)ratings.size()));
-    	System.out.println(Math.round(1000*(averageRating / ((double)ratings.size()))));
-    	averageRating = Math.round(100*(averageRating / ((double)ratings.size())))/100.;
-    	System.out.println("the average Rating of " + title+ "is: " + averageRating);
-    }
-
-    /**
-     * 
-     * Getters for Movie class
-     */
-    public String getMovieName(){
-        return title;
-    }
     public String getTitle(){
         return title;
     }
+    
+    /**
+     * Get the synopsis of the movie
+     * @return synopsis
+     */
     public String getSynop(){
         return synopString;
     }
+    
+    /**
+     * Get the cast of the movie
+     * @return cast
+     */
     public String getCast(){
         return cast;
     }
+    
+    /**
+     * Get the director of the movie
+     * @return director
+     */
     public String getDirector(){
         return director;
     }
+    
+    /**
+     * Get the status of the movie
+     * @return status
+     */
     public String getStatus(){
         return status;
     }
+    
+    /**
+     * Get and update the average rating of the movie as defined by the ratings given by all the users
+     * @return average rating
+     */
     public double getRating(){
-        return averageRating;
+        return MovieControl.getAverageRating(this);
     }
+    
+    /**
+     * Get the amount of tickets sold for this movies
+     * @return amount of tickets sold
+     */
     public int getTicketsSold() {
     	return this.ticketsSold;
     }
     
+    /**
+     * Get the duration of the movie in minutes
+     * This is the duration of the movie only, extra time for breaks and advertisements is not incorparated here, but will be accounted for in the movieshowing
+     * @return duration
+     */
+    public int getDuration() {
+    	return this.duration;
+    }
+    
+    /**
+     * Change the title of the movie
+     * @param newTitle the new title of the movie
+     */
     public void setTitle(String newTitle)
     {
     	this.title = newTitle;
     }
     
+    /**
+     * Change the synopsis of the movie
+     * @param newSynopsis the new synopsis of the movie
+     */
     public void setSynopsis(String newSynopsis)
     {
     	this.synopString = newSynopsis;
     }
     
+    /**
+     * Change the director(s) of the movie
+     * @param newDirector String containing the director(s)
+     */
     public void setDirector(String newDirector)
     {
     	this.director = newDirector;
     }
     
+    /**
+     * Change the cast of the movie
+     * @param newCast String containing the new cast of the movie
+     */
     public void setCast(String newCast)
     {
     	this.cast = newCast;
     }
     
+    /**
+     * Change the status of the movie.
+     * Note that the possible statuses are defined by MovieControl.getValidMovieStatus()
+     * @param newStatus the new status of the movie
+     */
     public void setStatus(String newStatus)
     {
     	this.status = newStatus;
     }
     
+    /**
+     * Change the genre of the movie
+     * @param newType the new genre of the movie
+     */
     public void setType(String newType)
     {
     	this.movieType = newType;
     }
     
+    /**
+     * Change the duration of the movie, excluding breaks and advertisements
+     * @param newDuration the new duration of the movie, as integer, in minutes
+     */
     public void setDuration(int newDuration)
     {
     	this.duration = newDuration;
     }
     
+    /**
+     * Change the amount of tickets which have been sold for this movie
+     * @param newSold the total amount of tickets which have been sold for this movie
+     */
     public void setSale(int newSold)
     {
     	this.ticketsSold = newSold;
     }
     
-    public boolean isEnded() {return this.status.equals(ended);}
-    
-    public ArrayList<Rating> getRatings() {return ratings;}
-    public ArrayList<MovieShowing> getShowings() {return showings;}
-
     /**
-     * Displaying movie ratings
+     * Sets the rating of a movie.
+     * No longer used, rating value is calculated based on the ratings given by the users.
+     * Every time getRating() is called the rating will automatically be updated to the actual average
+     * @param newRating new rating of the movie, this should be a double between 1.0 and 5.0
      */
-    public void showRatings()
+    @Deprecated
+    public void setRating(double newRating)
     {
-    	System.out.println("Ratings allready given: ");
-    	for(int i=0;i<ratings.size();i++)
-    	{
-    		System.out.println(ratings.get(i).toString());
-    	}
+    	this.averageRating = newRating;
     }
-
+    
     /**
-     * Set showing
-     * @param newShowings
+     * Determines if the movie can be booked by users.
+     * Movies which have a status of "Coming Soon" or "End Of Showing" can not be booked by the moviegoers.
+     * @return boolean: can the movie be booked by a moviegoer.
      */
+    public boolean canBook() 
+    {
+        String[] possibleStatus = MovieControl.getValidMovieStatus();
+        return ((this.status.equals(possibleStatus[0]))||(this.status.equals(possibleStatus[possibleStatus.length-2])));
+    }
+    
+    /**
+     * Get the ratings given by the moviegoers of this movie 
+     * @return ArrayList of Rating objects
+     */
+    public ArrayList<Rating> getRatings() {return ratings;}
+    
+    /**
+     * Get the showings of this movie.
+     * Showings can be spread over multiple cinemas and dates
+     * @return ArrayList of MovieShowing objects
+     */
+    public ArrayList<MovieShowing> getShowings() {return showings;}
+   
+    /**
+     * Update the ArrayList of MovieShowing objects.
+     * use of this method is possible but discouraged, instead directly manipulate the ArrayList of MovieShowing of the class 
+     * @param newShowings The updated ArrayList of MovieShowing objects for this movie
+     */
+    @Deprecated
     public void setShowings(ArrayList<MovieShowing> newShowings) {showings = newShowings;}
     
-    public String toDataBaseString()
-    {
-    	//System.out.println("STATUS: " + this.status);
-    	String result = "TITLE:"+this.title+";SYNOPSIS:"+this.synopString+";STATUS:"+this.status+";DIRECTOR:"+this.director+";CAST:"+this.cast+";DURATION:"+
-    				this.duration+";TICKETS:"+this.ticketsSold + ";SHOWINGS:";
-    	
-    	for(int i =0;i<showings.size();i++)
-    	{
-    		if(!showings.get(i).isCopy())
-    		{
-    			result = result + showings.get(i).toString() + "/";
-    		}
-    	}
-    	result = (String) result.subSequence(0, result.length()-1) + ";";
-    	//System.out.println("result: " + result);
-    	//System.out.println("result: " + DataBaseCommunication.readFile("movies.txt").get(0));
-    	return result;
-    }
-    
+ 
+    /**
+     * Compares the ticketsale of this movie to a different one.
+     * Used for sorting purposes.
+     * @param o Movie object to compare this movie to
+     * @return boolean logic used for sorting
+     */
     public Boolean compareToByTicketsSold(Movie o){
-        if(o.ticketsSold<=ticketsSold)
+        if(o.getTicketsSold()<=getTicketsSold())
             return false;
         return true;
     }
 
+    /**
+     * Compares the rating of this movie to a different one.
+     * Used for sorting purposes.
+     * @param o Movie object to compare this movie to.
+     * @return boolean logic used for sorting
+     */
     public Boolean compareToByRatings(Movie o){
-        if(o.averageRating<=averageRating)
+        if(o.getRating()<=getRating())
             return false;
         return true;
     }

@@ -9,12 +9,25 @@ import java.util.List;
 import com.moblima.cinema.CinemaRoom;
 import com.moblima.cinema.Cineplex;
 import com.moblima.database.DataBase;
+import com.moblima.rating.Rating;
+import com.moblima.user.User;
+import com.moblima.user.UserControl;
 
+/**
+ * MovieControl connects the user to the program
+ * Methods in this class will be called by the boundary of the program to manipulate Movie, MovieShowing and Rating objects
+ * @author Ivo Janssen
+ *
+ */
 public class MovieControl 
 {
 	
-	private static String ended = "End of Showing";
-	
+	/**
+	 * Checks whether a title is viable for a movie.
+	 * This is done by checking if the entered title is already in use by any of the other movies in the archive
+	 * @param newTitle Title which needs to be checked
+	 * @return boolean true: Title can safely be used, false: title is already in use by a different movie
+	 */
 	public static boolean isNewTitleValid(String newTitle)
 	{
 		for(int i =0;i<DataBase.fullMovieArchive.size();i++)
@@ -24,18 +37,35 @@ public class MovieControl
 		return true;
 	}
 	
+	/**
+	 * Get all valid statusses for a movie
+	 * @return String array of valid movie statusses
+	 */
 	public static String[] getValidMovieStatus()
 	{
-		String[] possibleStatus = {"Coming Soon","Premiere","Now Showing","End of Showing","Custom"};
+		String[] possibleStatus = {"Coming Soon","Premiere","Now Showing","End Of Showing","Custom"};
 		return possibleStatus;
 	}
 	
+	/**
+	 * Adds a movie to the program. This incorporates adding it in real-time, adding it to the archive and saving in the database.
+	 * This way the movie can instantly be used in the program without need for rebooting, but will also be saved to database immidiately
+	 * to make sure it will be retrieved on next boot up, even when program is exited unexpected.
+	 * Please note that not using the exact inputs as stated below will result in unintended behaviour. In order to correctly generate the inputs
+	 * for this method use can be made of AdminBoundary.addMovie()
+	 * @param movieInfo A string-wise description of the movie object in specific order: entry 0 contains the title of the movie. Entry 1 contains
+	 * the synopsis of the movie. Entry 2 contains the status of the movie. Entry 3 contains the director of the movie. Entry 4 contains the cast
+	 * of the movie. Entry 5 contains the duration of the movie in minutes. Entry 6 contains the amount of tickets sold for a movie, for a new
+	 * movie initiate this field as 0. Entry 6 contains the showings of the movie, for a new movie these will be created independently and
+	 * therefore this field should be entered as an empty string.
+	 * 
+	 */
 	public static void addMovie(List<String> movieInfo)
 	{
 		Movie movie = getMovieFromString(movieInfo);
 		DataBase.fullMovieArchive.add(movie);
 		DataBase.moviesPlaying.add(movie);
-		String[] movieString = {"\n"+movie.toDataBaseString()};
+		String[] movieString = {"\n"+toDateBaseString(movie)};
 		try {
 			DataBase.appendToDataBase(movieString, "movies.txt");
 		} catch (IOException e) {
@@ -43,10 +73,22 @@ public class MovieControl
 		}
 	}
 	
+	/**
+	 * Create a showing object, based on its composition of individual data
+	 * All data can easily be inputted by using the AdminBoundary.addShowing() method.
+	 * @param movie The movie object to which the showing belongs
+	 * @param cineplex The cineplex in which the movie will be played.
+	 * @param room The specific room within the given cineplex in which the movie will be played
+	 * @param date The date and time, given as a Java.Util.Date object at which the movie will be played
+	 * @param isWeekly Refers to if this showing will be scheduled weekly, initiating as true will result in automatically creating showings
+	 * every week at the same time for this movie until the final date specified by current date + forwardScheduling property of the given 
+	 * cineplex
+	 * @param duration The total duration the room should be reserved for: this includes advertisements, movie playtime and breaks
+	 */
 	public static void addShowing(Movie movie,Cineplex cineplex, CinemaRoom room, Date date, boolean isWeekly, int duration)
 	{
 		ArrayList<MovieShowing> currentShowings = movie.getShowings();
-		String oldInfo = movie.toDataBaseString();
+		String oldInfo = toDateBaseString(movie);
 		try {
 			currentShowings.add(new MovieShowing(cineplex,room,date,isWeekly,duration,false));
 		} catch (IOException e) {
@@ -55,16 +97,24 @@ public class MovieControl
 		}
 		movie.setShowings(currentShowings);
 		System.out.println("new showing: " + currentShowings.get(currentShowings.size()-1).toString());
-		DataBase.replaceInDataBase(oldInfo, movie.toDataBaseString(), "movies.txt");
+		DataBase.replaceInDataBase(oldInfo, toDateBaseString(movie), "movies.txt");
 		movie.setShowings(MovieControl.createWeeklyShowings(movie));
 	}
 	
+	/**
+	 * Remove a movie from the list of movies which are played at the moment.
+	 * The movie will not be removed from the movie archive, but it's status will automatically be updated to End Of Showing
+	 * Database will be updated such that on fresh bootup the movie will still exist in the movie archive, but will no longer be visible in the
+	 * list of current movies playing.
+	 * @param movie The movie object to be removed from the list of movies which are currently playing
+	 */
 	public static void removeMovie(Movie movie)
 	{
-		String oldInfo = movie.toDataBaseString();
-    	DataBase.moviesPlaying.remove(movie);
-    	movie.setStatus(ended);
-    	DataBase.replaceInDataBase(oldInfo, movie.toDataBaseString(), "movies.txt");
+		String oldInfo = toDateBaseString(movie);
+		DataBase.moviesPlaying.remove(movie);
+		String[] possibleStatus = getValidMovieStatus();
+    	movie.setStatus(possibleStatus[possibleStatus.length-2]);
+    	DataBase.replaceInDataBase(oldInfo, toDateBaseString(movie), "movies.txt");
     	
     	for(int i = 0;i<DataBase.fullMovieArchive.size();i++)
     	{
@@ -79,13 +129,31 @@ public class MovieControl
     	
 	}
 	
+	/**
+	 * Remove 1 particular showing of a movie. If this showing is initiated with the isWeekly parameter as true, then also all showings
+	 * created based on this one will no longer be scheduled in starting from the next bootup of the program. Please note however that these
+	 * other showings are still present in the program and will only disappear on reboot of the proram
+	 * The movie and showings can easily be selected using the AdminBoundary.removeShowing() method.
+	 * @param movie The movie the showing belongs to
+	 * @param showing The showing to be removed
+	 */
 	public static void removeShowing(Movie movie, MovieShowing showing)
 	{
 		movie.getShowings().remove(showing);
 	}
 	
 	
-	
+	/**
+	 * Used to create a movie object based on its String-wise definition.
+	 * Please not that the inputted parameters are really specific and wrong inputs might lead to unintended behaviour.
+	 * @param movieInfo A string-wise description of the movie object in specific order: entry 0 contains the title of the movie. Entry 1 contains
+	 * the synopsis of the movie. Entry 2 contains the status of the movie. Entry 3 contains the director of the movie. Entry 4 contains the cast
+	 * of the movie. Entry 5 contains the duration of the movie in minutes. Entry 6 contains the amount of tickets sold for a movie, for a new
+	 * movie initiate this field as 0. Entry 6 contains the showings of the movie, for a new movie these will be created independently and
+	 * therefore this field should be entered as an empty string, however when showings are inputted using the correct format as described by 
+	 * the database structure showings will automatically be added to the movieobject.
+	 * @return The movie object defined by the String-wise composition
+	 */
 	public static Movie getMovieFromString(List<String> movieInfo)
 	{
 		System.out.println("createMovies");
@@ -139,6 +207,11 @@ public class MovieControl
 				
 	}
 	
+	/**
+	 * Create weekly showings for all showings with the characteristic isWeekly = true.
+	 * @param movie The movie object to create weekly showings for
+	 * @return allShowings: ArrayList of MovieShowing which includes the MovieShowing which will be shown on weekly basis
+	 */
 	public static ArrayList<MovieShowing> createWeeklyShowings(Movie movie)
 	{
 		ArrayList<MovieShowing> currentShowings = movie.getShowings();
@@ -175,5 +248,138 @@ public class MovieControl
 		
 		return allShowings;
 	}
+	
+	/**
+	 * Defines if a user can rate a movie. Every user can rate every movie only once
+	 * @param movie movie to check if the user can rate it
+	 * @param user the user who tries to give a rating 
+	 * @return
+	 */
+	public static boolean canUserRate(Movie movie, User user)
+	{
+		for(int i = 0;i<movie.getRatings().size();i++)
+		{
+			if(movie.getRatings().get(i).getUser().equals(user)) 
+			{
+				System.out.println("Error: You have already rated this movie, action cancelled");
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	/**
+	 * Add a rating to a movie.
+	 * Inputs can be generated using MovieGoerBoundary.giveRating()
+	 * @param movie Movie to be rated
+	 * @param user User who gives the rating
+	 * @param score	Rating given by the user, this is a double between 1.0 and 5.0
+	 * @param description An additional description of the rating specified by the user
+	 */
+	 public static void addRating(Movie movie, User user, double score, String description)
+	    {
+
+	    	String oldRatingInfo = ""+movie.getTitle()+";";
+	    	for(int i = 0;i<movie.getRatings().size();i++)
+	    	{
+	    		oldRatingInfo += movie.getRatings().get(i).toString();
+	    		if(i!=movie.getRatings().size()-1)
+	    		{
+	    			oldRatingInfo += ";";
+	    		}
+	    	}
+	    	System.out.println(oldRatingInfo);
+	    	Rating rating = new Rating(user,score,description);
+	    	movie.getRatings().add(rating);
+	    	
+	    	String newRatingInfo = oldRatingInfo+";"+rating.toString();
+	    	DataBase.replaceInDataBase(oldRatingInfo, newRatingInfo.replaceAll(";;", ";"), "ratings.txt");
+	    	
+	    	getAverageRating(movie);
+	    }
+	 
+	 /**
+	  * Calculates the average rating of a movie based on the ratings the users have given
+	  * @param movie the movie to calculate the rating for
+	  * @return average rating of all users, given as a double between 1.0 and 5.0, if no ratings are present 0.0 will be returned
+	  */
+	 public static double getAverageRating(Movie movie)
+	    {
+	    	double averageRating = 0;
+	    	for(int i = 0;i<movie.getRatings().size();i++)
+	    	{
+	    		System.out.println("calculate average: " + movie.getRatings().get(i).getScore());
+	    		averageRating += movie.getRatings().get(i).getScore();
+	    		System.out.println(movie.getRatings().get(i).getDescription());
+	    	}
+	    	averageRating = Math.round(100*(averageRating / ((double)movie.getRatings().size())))/100.;
+	    	System.out.println("Calculated new averageRating: " + averageRating);
+	    	return averageRating;
+	    }
+	 
+	 /**
+	  * Used during initialization of the program after reboot to load all ratings from the database into the program
+	  * @param movie to retrieve the ratings for
+	  */
+	    public static void retrieveRatingsFromDatabase(Movie movie)
+	    {
+	    	System.out.println("Title " + movie.getTitle());
+	    	List<String> moviesWithRating = DataBase.readFile("ratings.txt");
+	    	String[] ratingString = null;
+	    	System.out.println("Ratings:" + moviesWithRating.get(0));
+	    	for(int i =0;i<moviesWithRating.size();i++)
+	    	{
+	    		System.out.println(" We are looking for this"+moviesWithRating.get(i).split(";")[0]);
+	    		if(moviesWithRating.get(i).split(";")[0].equals(movie.getTitle()))
+	    		{
+	    			ratingString = moviesWithRating.get(i).substring(moviesWithRating.get(i).split(";")[0].length()+1).split(";");
+	    			break;
+	    		}
+	    	}
+	    	System.out.println("ratingStringIfNull:::::"+ratingString==null);
+	    	if(!(ratingString == null))
+	    	{
+	            System.out.println("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+	    		for(int j=0;j<ratingString.length;j++)
+	        	{
+	        		String[] ratingInfo = ratingString[j].split("\\|");
+	        		System.out.println("ratingString " + ratingString[j]);
+	                System.out.println("ratingInfo: " + ratingInfo[0]);
+
+	                
+	                if(!ratingInfo[0].equals(""))
+	        		{
+	        			movie.getRatings().add(new Rating(UserControl.getUserByName(ratingInfo[0]),Double.parseDouble(ratingInfo[1]),ratingInfo[2]));
+	        		}
+	        	}
+	        	
+	        	getAverageRating(movie);
+	    	}
+	    	
+	    }
+	    
+	    /**
+	     * Converts a movie object to a string which is used to save information to the database
+	     * @param movie to convert to stringwise description
+	     * @return A string containing all information of the move object to be saved to database
+	     */
+	    public static String toDateBaseString(Movie movie)
+	    {
+	    	String result = "TITLE:"+movie.getTitle()+";SYNOPSIS:"+movie.getSynop()+";STATUS:"+movie.getStatus()+
+	    			";DIRECTOR:"+movie.getDirector()+";CAST:"+movie.getCast()+";DURATION:"+
+	    				movie.getDuration()+";TICKETS:"+movie.getTicketsSold() + ";SHOWINGS:";
+	    	
+	    	for(int i =0;i<movie.getShowings().size();i++)
+	    	{
+	    		if(!movie.getShowings().get(i).isCopy())
+	    		{
+	    			result = result + movie.getShowings().get(i).toString() + "/";
+	    		}
+	    	}
+	    	result = (String) result.subSequence(0, result.length()-1) + ";";
+	    	//System.out.println("result: " + result);
+	    	//System.out.println("result: " + DataBaseCommunication.readFile("movies.txt").get(0));
+	    	return result;
+	    }
 	
 }

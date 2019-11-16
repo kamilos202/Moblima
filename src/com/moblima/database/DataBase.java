@@ -55,6 +55,28 @@ public class DataBase implements IDataBase
 	
 	private static void initiateCineplexes()
 	{
+		List<String> cineplexFile = readFile("cineplex.txt");
+		for(int i =0;i<cineplexFile.size();i++)
+		{
+			System.out.println("cineplex in file: "+ cineplexFile.get(i));
+			String[] cineplexInfo = cineplexFile.get(i).split(";");
+			System.out.println(cineplexInfo[0]);
+			System.out.println(cineplexInfo[1]);
+			System.out.println(cineplexInfo[2]);
+			Cineplex cineplex = new Cineplex(cineplexInfo[0],Double.parseDouble(cineplexInfo[1]),Integer.parseInt(cineplexInfo[2]));
+			String[] roomInfo = cineplexInfo[3].split("/");
+			for(int j = 0;j<roomInfo.length;j++)
+			{
+				String[] roomString = roomInfo[j].split("\\|");
+				System.out.println("New Cinemaroom: ");
+				System.out.println(roomString[0]);
+				System.out.println(roomString[1]);
+				cineplex.createCinema(roomString[0], Boolean.parseBoolean(roomString[1]));
+			}
+			cineplexes.add(cineplex);
+		}
+		
+		/*
 		cineplexes.add(new Cineplex("The Cathay Cineplex",13.5,14));
 
         cineplexes.get(0).createCinema("Screen1", false);
@@ -66,7 +88,7 @@ public class DataBase implements IDataBase
         cineplexes.get(1).createCinema("Screen1", false);
         cineplexes.get(1).createCinema("Screen2", false);
         cineplexes.get(1).createCinema("Screen3", false);
-        cineplexes.get(1).createCinema("Screen4", false);
+        cineplexes.get(1).createCinema("Screen4", false);*/
 	}
 	
 	private static void initiateMovies()
@@ -79,8 +101,8 @@ public class DataBase implements IDataBase
         	System.out.println("the map is equal to: " + map.get(i));
         	Movie movie = MovieControl.getMovieFromString(map.get(i));
         	fullMovieArchive.add(movie);
-        	if(!movie.isEnded()) moviesPlaying.add(movie);
-        	System.out.println("THE MOVIE RESULT: \n" + movie.toDataBaseString());
+        	if(!movie.canBook()) moviesPlaying.add(movie);
+        	System.out.println("THE MOVIE RESULT: \n" + MovieControl.toDateBaseString(movie));
         }
         
         
