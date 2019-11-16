@@ -9,6 +9,9 @@ import java.util.List;
 import com.moblima.cinema.CinemaRoom;
 import com.moblima.cinema.Cineplex;
 import com.moblima.database.DataBase;
+import com.moblima.rating.Rating;
+import com.moblima.user.User;
+import com.moblima.user.UserControl;
 
 public class MovieControl 
 {
@@ -35,7 +38,7 @@ public class MovieControl
 		Movie movie = getMovieFromString(movieInfo);
 		DataBase.fullMovieArchive.add(movie);
 		DataBase.moviesPlaying.add(movie);
-		String[] movieString = {"\n"+movie.toDataBaseString()};
+		String[] movieString = {"\n"+toDataBaseString(movie)};
 		try {
 			DataBase.appendToDataBase(movieString, "movies.txt");
 		} catch (IOException e) {
@@ -46,7 +49,7 @@ public class MovieControl
 	public static void addShowing(Movie movie,Cineplex cineplex, CinemaRoom room, Date date, boolean isWeekly, int duration)
 	{
 		ArrayList<MovieShowing> currentShowings = movie.getShowings();
-		String oldInfo = movie.toDataBaseString();
+		String oldInfo = toDataBaseString(movie);
 		try {
 			currentShowings.add(new MovieShowing(cineplex,room,date,isWeekly,duration,false));
 		} catch (IOException e) {
@@ -55,16 +58,16 @@ public class MovieControl
 		}
 		movie.setShowings(currentShowings);
 		System.out.println("new showing: " + currentShowings.get(currentShowings.size()-1).toString());
-		DataBase.replaceInDataBase(oldInfo, movie.toDataBaseString(), "movies.txt");
+		DataBase.replaceInDataBase(oldInfo, toDataBaseString(movie), "movies.txt");
 		movie.setShowings(MovieControl.createWeeklyShowings(movie));
 	}
 	
 	public static void removeMovie(Movie movie)
 	{
-		String oldInfo = movie.toDataBaseString();
+		String oldInfo = toDataBaseString(movie);
     	DataBase.moviesPlaying.remove(movie);
     	movie.setStatus(ended);
-    	DataBase.replaceInDataBase(oldInfo, movie.toDataBaseString(), "movies.txt");
+    	DataBase.replaceInDataBase(oldInfo, toDataBaseString(movie), "movies.txt");
     	
     	for(int i = 0;i<DataBase.fullMovieArchive.size();i++)
     	{
@@ -175,5 +178,110 @@ public class MovieControl
 		
 		return allShowings;
 	}
+	
+	public static boolean canUserRate(Movie movie, User user)
+	{
+		for(int i = 0;i<movie.getRatings().size();i++)
+		{
+			if(movie.getRatings().get(i).getUser().equals(user)) 
+			{
+				System.out.println("Error: You have already rated this movie, action cancelled");
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	 public static void addRating(Movie movie, User user, double score, String description)
+	    {
+
+	    	String oldRatingInfo = ""+movie.getTitle()+";";
+	    	for(int i = 0;i<movie.getRatings().size();i++)
+	    	{
+	    		oldRatingInfo += movie.getRatings().get(i).toString();
+	    		if(i!=movie.getRatings().size()-1)
+	    		{
+	    			oldRatingInfo += ";";
+	    		}
+	    	}
+	    	System.out.println(oldRatingInfo);
+	    	Rating rating = new Rating(user,score,description);
+	    	movie.getRatings().add(rating);
+	    	
+	    	String newRatingInfo = oldRatingInfo+";"+rating.toString();
+	    	DataBase.replaceInDataBase(oldRatingInfo, newRatingInfo.replaceAll(";;", ";"), "ratings.txt");
+	    	
+	    	getAverageRating(movie);
+	    }
+	 
+	 public static double getAverageRating(Movie movie)
+	    {
+	    	double averageRating = 0;
+	    	for(int i = 0;i<movie.getRatings().size();i++)
+	    	{
+	    		System.out.println("calculate average: " + movie.getRatings().get(i).getScore());
+	    		averageRating += movie.getRatings().get(i).getScore();
+	    		System.out.println(movie.getRatings().get(i).getDescription());
+	    	}
+	    	averageRating = Math.round(100*(averageRating / ((double)movie.getRatings().size())))/100.;
+	    	System.out.println("Calculated new averageRating: " + averageRating);
+	    	return averageRating;
+	    }
+	 
+	    public static void retrieveRatingsFromDatabase(Movie movie)
+	    {
+	    	System.out.println("Title " + movie.getTitle());
+	    	List<String> moviesWithRating = DataBase.readFile("ratings.txt");
+	    	String[] ratingString = null;
+	    	System.out.println("Ratings:" + moviesWithRating.get(0));
+	    	for(int i =0;i<moviesWithRating.size();i++)
+	    	{
+	    		System.out.println(" We are looking for this"+moviesWithRating.get(i).split(";")[0]);
+	    		if(moviesWithRating.get(i).split(";")[0].equals(movie.getTitle()))
+	    		{
+	    			ratingString = moviesWithRating.get(i).substring(moviesWithRating.get(i).split(";")[0].length()+1).split(";");
+	    			break;
+	    		}
+	    	}
+	    	System.out.println("ratingStringIfNull:::::"+ratingString==null);
+	    	if(!(ratingString == null))
+	    	{
+	            System.out.println("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+	    		for(int j=0;j<ratingString.length;j++)
+	        	{
+	        		String[] ratingInfo = ratingString[j].split("\\|");
+	        		System.out.println("ratingString " + ratingString[j]);
+	                System.out.println("ratingInfo: " + ratingInfo[0]);
+
+	                
+	                if(!ratingInfo[0].equals(""))
+	        		{
+	        			movie.getRatings().add(new Rating(UserControl.getUserByName(ratingInfo[0]),Double.parseDouble(ratingInfo[1]),ratingInfo[2]));
+	        		}
+	        	}
+	        	
+	        	getAverageRating(movie);
+	    	}
+	    	
+	    }
+	    
+	    public static String toDataBaseString(Movie movie)
+	    {
+	    	String result = "TITLE:"+movie.getTitle()+";SYNOPSIS:"+movie.getSynop()+";STATUS:"+movie.getStatus()+
+	    			";DIRECTOR:"+movie.getDirector()+";CAST:"+movie.getCast()+";DURATION:"+
+	    				movie.getDuration()+";TICKETS:"+movie.getTicketsSold() + ";SHOWINGS:";
+	    	
+	    	for(int i =0;i<movie.getShowings().size();i++)
+	    	{
+	    		if(!movie.getShowings().get(i).isCopy())
+	    		{
+	    			result = result + movie.getShowings().get(i).toString() + "/";
+	    		}
+	    	}
+	    	result = (String) result.subSequence(0, result.length()-1) + ";";
+	    	//System.out.println("result: " + result);
+	    	//System.out.println("result: " + DataBaseCommunication.readFile("movies.txt").get(0));
+	    	return result;
+	    }
 	
 }

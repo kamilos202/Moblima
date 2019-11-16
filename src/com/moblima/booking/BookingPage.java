@@ -8,6 +8,7 @@ import com.moblima.cinema.CinemaRoom;
 import com.moblima.cinema.Cineplex;
 import com.moblima.database.DataBase;
 import com.moblima.movie.Movie;
+import com.moblima.movie.MovieControl;
 import com.moblima.movie.MovieListing;
 import com.moblima.movie.MovieShowing;
 import com.moblima.util.UserInputs;
@@ -205,11 +206,11 @@ public class BookingPage {
             Booking booking= new Booking(showsForUser.get(choiceDate-1),movieGoer, birthday, seatsNum);
             booking.printAndSaveReceipt();
 /////////////////////////////////////////////////
-            String oldMovieInfo = tempArrMoviesPerCineplex.get(choiceMov-1).toDataBaseString();
+            String oldMovieInfo = MovieControl.toDataBaseString(tempArrMoviesPerCineplex.get(choiceMov-1));
      
             tempArrMoviesPerCineplex.get(choiceMov-1).setSale(tempArrMoviesPerCineplex.get(choiceMov-1).getTicketsSold()+seatsNum);
 
-            DataBase.replaceInDataBase(oldMovieInfo, tempArrMoviesPerCineplex.get(choiceMov-1).toDataBaseString(), "movies.txt");
+            DataBase.replaceInDataBase(oldMovieInfo, MovieControl.toDataBaseString(tempArrMoviesPerCineplex.get(choiceMov-1)), "movies.txt");
             //chosen time slot tempArrMoviesPerCineplex.get(choiceMov-1).getShowings().get(choiceDate-1).
             //System.out.println(tempArrMoviesPerCineplex.get(choiceMov-1).getShowings().get(choiceDate-1).getCinemaRoom().getLayout(tempArrMoviesPerCineplex.get(choiceMov-1).getShowings().get(choiceDate-1)));
             
