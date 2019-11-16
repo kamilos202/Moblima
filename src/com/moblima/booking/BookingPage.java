@@ -187,16 +187,28 @@ public class BookingPage {
 
             System.out.println("Type respectively letter of chosen row and number of column example: (A 1)");
 
-
+            Boolean validBooking = true;
             for(int seat=0;seat<seatsNum;seat++){
 
                 char r = UserInputs.gatValidCharInput();
                 int c = UserInputs.getValidIntegerInput();
 
-                showsForUser.get(choiceDate-1).setOccupied((int)r-65, c-1);
+                if(showsForUser.get(choiceDate-1).getOccupied((int)r-65, c-1)!=1){
+                    showsForUser.get(choiceDate-1).setOccupied((int)r-65, c-1);
+                }else{
+                    validBooking=false;
+                }
                 
             }
-            showsForUser.get(choiceDate-1).getCinemaRoom().setLayouts();
+            if(validBooking){
+                //showsForUser.get(choiceDate-1).getCinemaRoom().setLayouts();
+                //showsForUser.get(choiceDate-1).replaceLayout();
+                showsForUser.get(choiceDate-1).initLayout();;
+            }else{
+                System.out.println("Sorry! Seat you have already chosen is occupied.");
+                break;
+            }
+            
 
 
 

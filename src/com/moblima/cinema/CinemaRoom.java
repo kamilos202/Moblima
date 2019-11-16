@@ -1,8 +1,11 @@
 package com.moblima.cinema;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import javax.xml.crypto.Data;
 
 import com.moblima.database.DataBase;
 import com.moblima.database.IDataBase;
@@ -10,41 +13,38 @@ import com.moblima.movie.Movie;
 import com.moblima.movie.MovieListing;
 import com.moblima.movie.MovieShowing;
 
-public class CinemaRoom
-{
+public class CinemaRoom {
     String cineplexName;
     String cinemaName;
     double basicPrice;
     double cinemaPrice;
-    int [][] cinemaLayout;
+    int[][] cinemaLayout;
 
     Boolean suite;
 
-    public CinemaRoom(String cineplexName, String cinemaName, double basicPrice, Boolean suite){
+    public CinemaRoom(String cineplexName, String cinemaName, double basicPrice, Boolean suite) {
         this.cineplexName = cineplexName;
         this.cinemaName = cinemaName;
         this.suite = false;
-        cinemaPrice=basicPrice;
-        if(suite == true){
+        cinemaPrice = basicPrice;
+        if (suite == true) {
             this.suite = true;
-            cinemaPrice+=7;
+            cinemaPrice += 7;
             cinemaLayout = Cineplex.suiteLayout();
-        }else{
+        } else {
             cinemaLayout = Cineplex.standardLayout();
         }
 
-        //setLayouts();
+        // setLayouts();
 
     }
 
-    public int [][] getLayout(){
+    public int[][] getLayout() {
         return cinemaLayout;
     }
 
-
-
-
-    public void setLayouts(){
+    /*
+    public void setLayouts() throws IOException {
 
         
             ArrayList<MovieShowing> showingList = new ArrayList<MovieShowing>();
@@ -52,15 +52,15 @@ public class CinemaRoom
 
             int movieNum =0;
 
+            DataBase.createEmptyTxtFile(cineplexName+"_"+cinemaName+".txt");
 
             for(int j=0;j<showingList.size();j++)
             {
                 //check if layout already exist
 
                 if(showingList.get(j).getCineplex().getCineplexName() == cineplexName && showingList.get(j).getCinemaRoom().getCinemaName() == cinemaName){
-                    //showingList.get(j).setLayout(cinemaLayout);
 
-                                        movieNum++;
+                    movieNum++;
                 }
             }
 
@@ -99,26 +99,30 @@ public class CinemaRoom
                         row++;
                     }
 
+                    String [] toPass = new String[1];
+                    toPass[0] = layout[movieField];
+                    DataBase.appendToDataBase(toPass, (cineplexName+"_"+cinemaName+".txt"));
+
                     movieField++;
 
                 }//end if
             }
 
 
-            DataBase.writeToDataBase(layout, (cineplexName+"_"+cinemaName+".txt"));
             System.out.println("File created");
 
 
-    }
+    }*/
 
   //  }
 
     public String [] getLayout(MovieShowing sh){
 
         List<String> allLayouts = new ArrayList<String>();
-        if(DataBase.ifExists(cineplexName+"_"+cinemaName+".txt"))
+        //changes in name
+        if(DataBase.ifExists(cineplexName+"_"+cinemaName+"_"+sh.getDate()+".txt"))
         {
-            allLayouts = IDataBase.readFromDataBase(cineplexName+"_"+cinemaName+".txt");
+            allLayouts = IDataBase.readFromDataBase(cineplexName+"_"+cinemaName+"_"+sh.getDate()+".txt");
         }else{
             String [] layout= new String[cinemaLayout.length+2];
             layout[0] = "";
@@ -131,7 +135,9 @@ public class CinemaRoom
         for(String line : allLayouts)
         {
             if(line.contains(sh.getDate().toString())){
+
                 bound=0;
+            
             }
     
             if(bound>=0 && bound<=11)

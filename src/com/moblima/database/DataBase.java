@@ -49,7 +49,6 @@ public class DataBase implements IDataBase
 		for(int i =1;i<usersInDataBase.size();i++)
 		{
 			users.add(UserControl.getUserFromString(usersInDataBase.get(i)));
-			System.out.println("IIIIIIIIIIIIIIINITTTT"+UserControl.getUserFromString(usersInDataBase.get(i)));
 		}
 		
 	}
@@ -119,16 +118,13 @@ public class DataBase implements IDataBase
 	{
 		List<String> currentFile = IDataBase.readFromDataBase(path);
 		String[] newLines = new String[currentFile.size()];
-		System.out.println("New Line: " + newLine);
 		
 		for(int i =0;i<currentFile.size();i++)
 		{
-			System.out.println("Line to replace:" + lineToReplace);
-			System.out.println("Line to compare:" + currentFile.get(i));
+
 			if(i!=currentFile.size()-1){
 				if(currentFile.get(i).replaceAll("\n","").equals(lineToReplace.replaceAll("\n", ""))) 
 				{
-					System.out.println("Replace content in file: " + path);
 					newLines[i] = newLine.replaceAll("\n", "")+"\n";
 				}
 				else newLines[i] = currentFile.get(i).replaceAll("\n", "")+"\n";
@@ -136,12 +132,10 @@ public class DataBase implements IDataBase
 			else{
 				if(currentFile.get(i).replaceAll("\n","").equals(lineToReplace.replaceAll("\n", ""))) 
 				{
-					System.out.println("Replace content in file: " + path);
 					newLines[i] = newLine.replaceAll("\n", "");
 				}
 				else newLines[i] = currentFile.get(i).replaceAll("\n", "");
 			}
-			System.out.println("Line i will write to document: " + newLines[i]+ "; and the line i should write: " + newLine);
 		}
 		writeToDataBase(newLines, path);
 	}

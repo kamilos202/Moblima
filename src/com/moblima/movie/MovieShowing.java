@@ -21,6 +21,7 @@ public class MovieShowing {
 	private boolean hasCreatedWeeklyShowings = false;
 	private int scheduleDuration;
 	private int [][] layoutArray;
+	private String [] layToExport = new String[1];
 //	private Date lastDayOfShowing;
 
 	Date today = (Date) Calendar.getInstance().getTime();
@@ -95,6 +96,11 @@ public class MovieShowing {
 		layoutArray[row][column] = 1;
 	}
 
+	public int getOccupied(int row,int column){
+
+		return layoutArray[row][column];
+	}
+
 	/**
 	 * Getters and setters for MovieShowing class
 	 */
@@ -133,11 +139,11 @@ public class MovieShowing {
 
 		List<String> allLayouts = new ArrayList<String>();
 		// if file not exist
-        if(!DataBase.ifExists(cinema.getCineplexName()+"_"+room.getCinemaName()+".txt")){
-			DataBase.createEmptyTxtFile(cinema.getCineplexName()+"_"+room.getCinemaName()+".txt");
+        if(!DataBase.ifExists(cinema.getCineplexName()+"_"+room.getCinemaName()+"_"+date+".txt")){
+			DataBase.createEmptyTxtFile(cinema.getCineplexName()+"_"+room.getCinemaName()+"_"+date+".txt");
 		}else{//check if showing already exists
         
-			allLayouts = IDataBase.readFromDataBase(cinema.getCineplexName()+"_"+room.getCinemaName()+".txt");
+			allLayouts = IDataBase.readFromDataBase(cinema.getCineplexName()+"_"+room.getCinemaName()+"_"+date+".txt");
 			
 			int bound = -1;
 			for(String line : allLayouts)
@@ -174,10 +180,9 @@ public class MovieShowing {
 						layoutArray[o-2][p] = seatFromString;
 					}
 				}
-        
+			//initLayout();
 		}		
 	}
-
 	/**
 	 * This function writes in file empty layout if there is no layout for this show.
 	 * @throws IOException
@@ -196,9 +201,46 @@ public class MovieShowing {
 			layoutTxt[0]+=(row+"\n");
 			row++;
 		}
-		DataBase.appendToDataBase(layoutTxt, (cinema.getCineplexName()+"_"+room.getCinemaName()+".txt"));
+		layToExport[0] = layoutTxt[0];
+		DataBase.writeToDataBase(layoutTxt, (cinema.getCineplexName()+"_"+room.getCinemaName()+"_"+date+".txt"));
+		//DataBase.appendToDataBase(layoutTxt, (cinema.getCineplexName()+"_"+room.getCinemaName()+".txt"));
 
 	}
+	public void initLayout(){
+		String [] layoutTxt = new String[1];
+		layoutTxt[0] += "\n"+ date + "\n";
+		char row = 'A';
+		layoutTxt[0] += "-------------------------SCREEN-------------------------\n";
+		for(int a=0;a<layoutArray.length;a++){
+			layoutTxt[0] += ""+row+" ";
+			for(int b=0;b<layoutArray[a].length;b++){
+				layoutTxt[0]+=(layoutArray[a][b]+" ");
+			}
+			layoutTxt[0]+=(row+"\n");
+			row++;
+		}
+		DataBase.writeToDataBase(layoutTxt, (cinema.getCineplexName()+"_"+room.getCinemaName()+"_"+date+".txt"));
+
+		layToExport[0] = layoutTxt[0];
+	}
+/*
+	public void replaceLayout(){
+		String [] layoutTxt = new String[1];
+		layoutTxt[0] += "\n"+ date + "\n";
+		char row = 'A';
+		layoutTxt[0] += "-------------------------SCREEN-------------------------\n";
+		for(int a=0;a<layoutArray.length;a++){
+			layoutTxt[0] += ""+row+" ";
+			for(int b=0;b<layoutArray[a].length;b++){
+				layoutTxt[0]+=(layoutArray[a][b]+" ");
+			}
+			layoutTxt[0]+=(row+"\n");
+			row++;
+		}
+
+		DataBase.writeToDataBase( (cinema.getCineplexName()+"_"+room.getCinemaName()+".txt"));
+		layToExport[0] = layoutTxt[0];
+	}*/
 	/**
 	 * 
 	 */

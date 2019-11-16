@@ -12,8 +12,6 @@ public class UserInputs
 {
 	static Scanner sc = new Scanner(System.in);
 	
-	static public String format = "%-40s%s%n";
-
 	/**
 	 * Only works if not seperated by spaces
 	 * @return

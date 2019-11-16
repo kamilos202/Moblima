@@ -6,6 +6,7 @@ import java.util.List;
 import com.moblima.database.DataBase;
 import com.moblima.rating.Rating;
 import com.moblima.user.User;
+import com.moblima.user.UserControl;
 
 public class Movie 
 {
@@ -79,7 +80,7 @@ public class Movie
                 
                 if(!ratingInfo[0].equals(""))
         		{
-        			ratings.add(new Rating(User.getUserByName(ratingInfo[0]),Double.parseDouble(ratingInfo[1]),ratingInfo[2]));
+        			ratings.add(new Rating(UserControl.getUserByName(ratingInfo[0]),Double.parseDouble(ratingInfo[1]),ratingInfo[2]));
         		}
         	}
         	
@@ -202,18 +203,6 @@ public class Movie
     {
     	this.ticketsSold = newSold;
     }
-
-    public Boolean compareToByTicketsSold(Movie o){
-        if(o.ticketsSold<=ticketsSold)
-            return false;
-        return true;
-    }
-
-    public Boolean compareToByRatings(Movie o){
-        if(o.averageRating<=averageRating)
-            return false;
-        return true;
-    }
     
     public boolean isEnded() {return this.status.equals(ended);}
     
@@ -257,6 +246,16 @@ public class Movie
     	return result;
     }
     
-    
+    public Boolean compareToByTicketsSold(Movie o){
+        if(o.ticketsSold<=ticketsSold)
+            return false;
+        return true;
+    }
+
+    public Boolean compareToByRatings(Movie o){
+        if(o.averageRating<=averageRating)
+            return false;
+        return true;
+    }
 
 }

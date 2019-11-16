@@ -11,14 +11,16 @@ import com.moblima.rating.Rating;
 import com.moblima.util.Sorting;
 import com.moblima.util.UserInputs;
 
-public class MovieGoerBoundary extends UserBoundary {
+public class MovieGoerBoundary extends UserBoundary
+{
 
 	User userLogedIn;
-
-	public MovieGoerBoundary(MovieGoer movieGoer) {
+	String format = "%-40s%s%n";
+	public MovieGoerBoundary(MovieGoer movieGoer)
+	{
 		userLogedIn = movieGoer;
 	}
-
+	
 	@Override
 	public void performActions() throws IOException
 	{
@@ -37,6 +39,7 @@ public class MovieGoerBoundary extends UserBoundary {
 			System.out.println("8: logout");
 			System.out.println("\n=============================================");
 
+
 			
 			int actionChoice = UserInputs.getValidIntegerInput();
 			switch(actionChoice)
@@ -48,7 +51,7 @@ public class MovieGoerBoundary extends UserBoundary {
 					listMovies();
 					break;
 				case 3:
-					BookingPage page = new BookingPage(userLogedIn.getUsername(),userLogedIn.getBirthDate());
+					BookingPage page = new BookingPage(userLogedIn.getUsername(),userLogedIn.getBirthdate());
 					page.bookMovie();
 					break;
 				case 4:
@@ -69,12 +72,10 @@ public class MovieGoerBoundary extends UserBoundary {
 			}
 		}
 	}
-	/**
-	 * 
-	 */
+	
 	public void giveRating()
 	{
-		MovieListing.addRatingToMovie(this);
+		MovieListing.addRatingToMovie(userLogedIn);
 	}
 
 	/**
@@ -98,12 +99,12 @@ public class MovieGoerBoundary extends UserBoundary {
 
 				if(movieChoice>=1 && movieChoice<=movies.size()){
 
-					System.out.printf(UserInputs.format,"Title: ",movies.get(movieChoice-1).getTitle());
-					System.out.printf(UserInputs.format,"Director: ",movies.get(movieChoice-1).getDirector());
-					System.out.printf(UserInputs.format,"Cast: ",movies.get(movieChoice-1).getCast());
-					System.out.printf(UserInputs.format,"Description: ",movies.get(movieChoice-1).getSynop());
-					System.out.printf(UserInputs.format,"Rating: ",movies.get(movieChoice-1).getRating());
-					System.out.printf(UserInputs.format,"Status: ",movies.get(movieChoice-1).getStatus());
+					System.out.printf(format,"Title: ",movies.get(movieChoice-1).getTitle());
+					System.out.printf(format,"Director: ",movies.get(movieChoice-1).getDirector());
+					System.out.printf(format,"Cast: ",movies.get(movieChoice-1).getCast());
+					System.out.printf(format,"Description: ",movies.get(movieChoice-1).getSynop());
+					System.out.printf(format,"Rating: ",movies.get(movieChoice-1).getRating());
+					System.out.printf(format,"Status: ",movies.get(movieChoice-1).getStatus());
 					System.out.println("\n");
 
 					while(true){
@@ -138,7 +139,6 @@ public class MovieGoerBoundary extends UserBoundary {
 
 	}
 
-
 	public void listTicketOrderMovies(){
 
 		ArrayList<Movie> movies = new ArrayList<>();
@@ -171,6 +171,5 @@ public class MovieGoerBoundary extends UserBoundary {
 			System.out.println(i+1+". "+moviesArr[i].getTitle());
 		}
 	}
-
 
 }

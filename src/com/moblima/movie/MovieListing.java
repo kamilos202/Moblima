@@ -13,7 +13,6 @@ import com.moblima.cinema.Cineplex;
 import com.moblima.database.DataBase;
 import com.moblima.rating.Rating;
 import com.moblima.user.Admin;
-import com.moblima.user.MovieGoerBoundary;
 import com.moblima.user.User;
 import com.moblima.util.UserInputs;
 
@@ -39,7 +38,7 @@ public class MovieListing{
     	return null;
     }
     
-    public static void addRatingToMovie(MovieGoerBoundary movieGoerBoundary)
+    public static void addRatingToMovie(User user)
     {
 		System.out.println("Please enter the movie you want to give a rating for: ");
 		System.out.println("Movie.size::::::::::"+DataBase.moviesPlaying.size());
@@ -57,7 +56,7 @@ public class MovieListing{
 			for(int j = 0;j<currentRatings.size();j++)
 			{
 				System.out.println("currratings"+currentRatings.get(j).toString());
-				if(currentRatings.get(j).getUser().equals(movieGoerBoundary))
+				if(currentRatings.get(j).getUser().equals(user))
 				{
 					System.out.println("Error: You have already rated this movie");
 					canRate = false;
@@ -78,7 +77,7 @@ public class MovieListing{
 		    	}
 		    	else
 		    	{
-		    		DataBase.moviesPlaying.get(choice).addRating(movieGoerBoundary, score, description);
+		    		DataBase.moviesPlaying.get(choice).addRating(user, score, description);
 		    		System.out.println("Rating succesfully added to the system");
 		    	}
 				
