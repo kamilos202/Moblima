@@ -1,13 +1,9 @@
 package com.moblima.movie;
-
 import java.util.ArrayList;
-import java.util.List;
-
-import com.moblima.database.DataBase;
 import com.moblima.rating.Rating;
-import com.moblima.user.User;
-import com.moblima.user.UserControl;
-
+/**
+ * Movie class represents movie which then can be showed in Cinema
+ */
 public class Movie 
 {
     private String title;
@@ -15,7 +11,7 @@ public class Movie
     private String director;
     private String cast;
     private String status;
-    private String movieType;
+    private String type;
     private int duration;
     private ArrayList<MovieShowing> showings;
     private ArrayList<Rating> ratings = new ArrayList<Rating>();
@@ -23,7 +19,7 @@ public class Movie
     private int ticketsSold;
 
     /**
-     * 
+     * Movie class constructor 
      * @param title
      * @param synopString
      * @param status
@@ -49,22 +45,10 @@ public class Movie
     }
     /**
      * 
-     */
+     * Getters and setters for Movie class
+    **/
 
-    /**
-     * 
-     * @param user
-     * @param score
-     * @param description
-     */
-   
-    /**
-     * 
-     */
-    /**
-     * 
-     * Getters for Movie class
-     */
+    
     public String getMovieName(){
         return title;
     }
@@ -117,12 +101,9 @@ public class Movie
     {
     	this.status = newStatus;
     }
-    
-    public void setType(String newType)
-    {
-    	this.movieType = newType;
-    }
-    
+    public void setType(String validLineInput) {
+        type = validLineInput;
+	}
     public void setDuration(int newDuration)
     {
     	this.duration = newDuration;
@@ -132,38 +113,37 @@ public class Movie
     {
     	this.ticketsSold = newSold;
     }
-    
     public void setRating(double newRating)
     {
     	this.averageRating = newRating;
     }
-    
     public boolean canBook() 
     {
         String[] possibleStatus = MovieControl.getValidMovieStatus();
         return ((this.status.equals(possibleStatus[0]))||(this.status.equals(possibleStatus[possibleStatus.length-2])));
     }
-    
     public ArrayList<Rating> getRatings() {return ratings;}
     public ArrayList<MovieShowing> getShowings() {return showings;}
-
-    /**
-     * Displaying movie ratings
-     */
     /**
      * Set showing
      * @param newShowings
      */
     public void setShowings(ArrayList<MovieShowing> newShowings) {showings = newShowings;}
-    
- 
-    
+    /**
+     * Method used for Sorting by number of ticket sold;
+     * @param o
+     * @return true or false
+     */
     public Boolean compareToByTicketsSold(Movie o){
         if(o.getTicketsSold()<=getTicketsSold())
             return false;
         return true;
     }
-
+    /**
+     * Method used for Sorting by average rating
+     * @param o
+     * @return true or false
+     */
     public Boolean compareToByRatings(Movie o){
         if(o.getRating()<=getRating())
             return false;

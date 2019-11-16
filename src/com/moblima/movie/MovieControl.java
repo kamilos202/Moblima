@@ -220,40 +220,29 @@ public class MovieControl
 	    	double averageRating = 0;
 	    	for(int i = 0;i<movie.getRatings().size();i++)
 	    	{
-	    		System.out.println("calculate average: " + movie.getRatings().get(i).getScore());
 	    		averageRating += movie.getRatings().get(i).getScore();
-	    		System.out.println(movie.getRatings().get(i).getDescription());
 	    	}
 	    	averageRating = Math.round(100*(averageRating / ((double)movie.getRatings().size())))/100.;
-	    	System.out.println("Calculated new averageRating: " + averageRating);
 	    	return averageRating;
 	    }
 	 
 	    public static void retrieveRatingsFromDatabase(Movie movie)
 	    {
-	    	System.out.println("Title " + movie.getTitle());
 	    	List<String> moviesWithRating = DataBase.readFile("ratings.txt");
 	    	String[] ratingString = null;
-	    	System.out.println("Ratings:" + moviesWithRating.get(0));
 	    	for(int i =0;i<moviesWithRating.size();i++)
 	    	{
-	    		System.out.println(" We are looking for this"+moviesWithRating.get(i).split(";")[0]);
 	    		if(moviesWithRating.get(i).split(";")[0].equals(movie.getTitle()))
 	    		{
 	    			ratingString = moviesWithRating.get(i).substring(moviesWithRating.get(i).split(";")[0].length()+1).split(";");
 	    			break;
 	    		}
 	    	}
-	    	System.out.println("ratingStringIfNull:::::"+ratingString==null);
 	    	if(!(ratingString == null))
 	    	{
-	            System.out.println("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
 	    		for(int j=0;j<ratingString.length;j++)
 	        	{
 	        		String[] ratingInfo = ratingString[j].split("\\|");
-	        		System.out.println("ratingString " + ratingString[j]);
-	                System.out.println("ratingInfo: " + ratingInfo[0]);
-
 	                
 	                if(!ratingInfo[0].equals(""))
 	        		{

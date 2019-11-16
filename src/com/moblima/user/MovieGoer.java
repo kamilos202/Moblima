@@ -1,18 +1,7 @@
 package com.moblima.user;
-
-import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-
-import com.moblima.booking.Booking;
-import com.moblima.booking.BookingPage;
-import com.moblima.movie.Movie;
-import com.moblima.movie.MovieListing;
-import com.moblima.rating.Rating;
-import com.moblima.util.UserInputs;
-
 /**
  * 
  */
@@ -59,10 +48,5 @@ public class MovieGoer extends User {
 	}
 
 
-	
-	/**
-	 * 
-	 */
-	
 
 }

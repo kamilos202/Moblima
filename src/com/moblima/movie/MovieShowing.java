@@ -203,7 +203,6 @@ public class MovieShowing {
 		}
 		layToExport[0] = layoutTxt[0];
 		DataBase.writeToDataBase(layoutTxt, (cinema.getCineplexName()+"_"+room.getCinemaName()+"_"+date+".txt"));
-		//DataBase.appendToDataBase(layoutTxt, (cinema.getCineplexName()+"_"+room.getCinemaName()+".txt"));
 
 	}
 	public void initLayout(){
@@ -225,7 +224,7 @@ public class MovieShowing {
 	}
 
 	public String [] getLayout(){
-		
+
         List<String> allLayouts = new ArrayList<String>();
         //changes in name
         if(DataBase.ifExists(cinema.getCineplexName()+"_"+room.getCinemaName()+"_"+date+".txt"))

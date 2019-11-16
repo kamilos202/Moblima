@@ -1,5 +1,4 @@
 package com.moblima.database;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.io.File;
@@ -9,13 +8,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import com.moblima.cinema.Cineplex;
 import com.moblima.movie.Movie;
 import com.moblima.movie.MovieControl;
-import com.moblima.movie.MovieListing;
-import com.moblima.user.Admin;
-import com.moblima.user.MovieGoer;
+
 import com.moblima.user.User;
 import com.moblima.user.UserControl;
 

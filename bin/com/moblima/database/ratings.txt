@@ -5,7 +5,7 @@ Charlie's Angels;user1|5.0|Niceeeeeee
 Ford V. Ferrari;
 Disney's Frozen 2;
 Wet Season 热带雨;
-Terminator: Dark Fate;
+Terminator: Dark Fate;me|4.0|Comment
 The Addams Family;me|5.0|good
 Disney's Maleficent: Mistress of Evil;
 Hustlers;
