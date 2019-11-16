@@ -84,13 +84,13 @@ public class Booking {
         }
 
         //  check if there is a weekend
-        if(today.getDay() == 5 || today.getDay() == 6 || today.getDay() == 0){
-            System.out.println("Type of sale: Weekend purchase: +$"+2*numOfTickets);
-            toSave[0] += "\nType of sale: Weekend purchase: +$"+2*numOfTickets;
+        if(showingTime.getDay() == 5 || showingTime.getDay() == 6 || showingTime.getDay() == 0){
+            System.out.println("Type of sale: Weekend showing: +$"+2*numOfTickets);
+            toSave[0] += "\nType of sale: Weekend showing: +$"+2*numOfTickets;
             totalPrice += 2*numOfTickets;
         }else{
-            System.out.println("Type of sale: Cheap Weekday (Mon-Thu) purchase  ");
-            toSave[0] += "\nType of sale: Cheap Weekday (Mon-Thu) purchase";
+            System.out.println("Type of sale: Cheap Weekday (Mon-Thu) showing  ");
+            toSave[0] += "\nType of sale: Cheap Weekday (Mon-Thu) showing";
         }
         
         System.out.println("\t\tTotal price of purchase: "+totalPrice);

@@ -1,0 +1,2 @@
+The Cathay Cineplex;13.5;14;Screen1|false/Screen2|false/Screen3|true
+Cathay Cineplex Causeway Point;13;14;Screen1|false/Screen2|false/Screen3|false/Screen4|false

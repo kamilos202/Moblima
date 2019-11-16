@@ -1,6 +1,5 @@
 package com.moblima.util;
 
-import java.util.Comparator;
 
 import com.moblima.movie.Movie;
 
@@ -10,7 +9,7 @@ import com.moblima.movie.Movie;
 public class Sorting 
 {
 
-    	//-----------------------------------------------------------------
+    //-----------------------------------------------------------------
 	// Sorts the specified array of objects using the selection
 	// sort algorithm.
 	//-----------------------------------------------------------------

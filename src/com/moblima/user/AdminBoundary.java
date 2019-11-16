@@ -11,7 +11,6 @@ import com.moblima.cinema.Cineplex;
 import com.moblima.database.DataBase;
 import com.moblima.movie.Movie;
 import com.moblima.movie.MovieControl;
-import com.moblima.movie.MovieListing;
 import com.moblima.movie.MovieShowing;
 import com.moblima.util.UserInputs;
 
@@ -91,16 +90,16 @@ public class AdminBoundary extends UserBoundary
 			String director = (UserInputs.getValidLineInput());
 			System.out.println("Please enter the cast of the movie: ");
 			String cast = (UserInputs.getValidLineInput());
+			System.out.println("Please enter the duration of the movie: ");
+			String duration = ""+UserInputs.getValidIntegerInput();
 			System.out.println("Please choose the status of the movie: ");
 			String status = createStatus();
-			
-			
 			movieInfo.add(status);
 			movieInfo.add(director);
 			movieInfo.add(cast);
 			
-			System.out.println("Please enter the duration of the movie: ");
-			movieInfo.add(""+UserInputs.getValidIntegerInput());
+			
+			movieInfo.add(duration);
 			movieInfo.add("0");//Inititial ticket sale is 0
 			movieInfo.add(""); //Initially there are no showings
 			MovieControl.addMovie(movieInfo);
@@ -159,7 +158,7 @@ public class AdminBoundary extends UserBoundary
 		
 		while(editing)
     	{
-			String oldInfo = movie.toDataBaseString();
+			String oldInfo = MovieControl.toDateBaseString(movie);
     		System.out.println("What movie information do you want to edit?");
     		System.out.println("1: Movie title");
     		System.out.println("2: synopsis");
@@ -217,7 +216,7 @@ public class AdminBoundary extends UserBoundary
     				break;
     		}
     		System.out.println("Writing to database: ");
-    		DataBase.replaceInDataBase(oldInfo, movie.toDataBaseString(), "movies.txt");
+    		DataBase.replaceInDataBase(oldInfo, MovieControl.toDateBaseString(movie), "movies.txt");
     	}
 	}
 	
