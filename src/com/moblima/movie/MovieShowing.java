@@ -223,6 +223,41 @@ public class MovieShowing {
 
 		layToExport[0] = layoutTxt[0];
 	}
+
+	public String [] getLayout(){
+		
+        List<String> allLayouts = new ArrayList<String>();
+        //changes in name
+        if(DataBase.ifExists(cinema.getCineplexName()+"_"+room.getCinemaName()+"_"+date+".txt"))
+        {
+            allLayouts = IDataBase.readFromDataBase(cinema.getCineplexName()+"_"+room.getCinemaName()+"_"+date+".txt");
+        }else{
+            String [] layout= new String[room.getLayout().length+2];
+            layout[0] = "";
+            return layout;
+        }
+        
+        String [] layout= new String[room.getLayout().length+2];
+        layout[0] = "";
+        int bound = -1;
+        for(String line : allLayouts)
+        {
+            if(line.contains(date.toString())){
+                bound=0;
+            }
+    
+            if(bound>=0 && bound<=11)
+            {   
+                layout[bound]=line+"\n";
+                bound++;
+            }else if(bound>11)
+                break;
+            
+
+        }
+
+        return layout;
+    }
 /*
 	public void replaceLayout(){
 		String [] layoutTxt = new String[1];

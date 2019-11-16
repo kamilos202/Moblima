@@ -10,6 +10,7 @@ import java.util.Scanner;
  */
 public class UserInputs 
 {
+	static public String format = "%-40s%s%n";
 	static Scanner sc = new Scanner(System.in);
 	
 	/**

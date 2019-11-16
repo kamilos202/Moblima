@@ -10,6 +10,8 @@ import com.moblima.database.DataBase;
 import com.moblima.movie.Movie;
 import com.moblima.movie.MovieListing;
 import com.moblima.movie.MovieShowing;
+import com.moblima.rating.Rating;
+import com.moblima.util.Sorting;
 import com.moblima.util.UserInputs;
 
 public class BookingPage {
@@ -111,7 +113,7 @@ public class BookingPage {
             System.out.print("\nI want to watch:   ");
             int choiceMov = UserInputs.getValidIntegerInput();
             if(choice<=cineplexes.size() && choice>=1){
-                if(tempArrMoviesPerCineplex.get(choiceMov-1).getStatus() == "Coming soon" || tempArrMoviesPerCineplex.get(choiceMov-1).getStatus() == "End Of Showing"){
+                if(tempArrMoviesPerCineplex.get(choiceMov-1).getStatus() == "Coming Soon" || tempArrMoviesPerCineplex.get(choiceMov-1).getStatus() == "End Of Showing"){
                     System.out.println("Movie does not have any showing. Sorry");
                 }else{
                     System.out.println("\nYour chosen movie is "+tempArrMoviesPerCineplex.get(choiceMov-1).getTitle()+"\n");
@@ -123,6 +125,7 @@ public class BookingPage {
 
 
             //cineplexes.get(choice-1).get
+
             //CHECK FOR PREMIUM ROOMS
             String premiumRooms="| ";
             for(CinemaRoom cr : cineplexes.get(choice-1).getScreens()){
@@ -160,8 +163,8 @@ public class BookingPage {
                 break;
             }
 
-            String [] layoutInArray = new String[showsForUser.get(choiceDate-1).getCinemaRoom().getLayout().length+2];
-            layoutInArray = showsForUser.get(choiceDate-1).getCinemaRoom().getLayout(showsForUser.get(choiceDate-1));
+            String [] layoutInArray = new String[showsForUser.get(choiceDate-1).getLayout().length+2];
+            layoutInArray = showsForUser.get(choiceDate-1).getLayout();
 
             System.out.println("\nChose your seat:  \n1 - already occupied\n0 - free\n");
 
@@ -232,9 +235,97 @@ public class BookingPage {
         System.out.println("\n");
     }
 
+	public void listTicketOrderMovies(){
 
+		ArrayList<Movie> movies = new ArrayList<>();
+		movies = MovieListing.getMovies();
+		Movie [] moviesArr = new Movie[movies.size()];
+
+		for(int i=0;i<movies.size();i++){
+			moviesArr[i] = movies.get(i);
+		}
+
+		moviesArr = Sorting.selectionSort(moviesArr);
+
+		for(int i=0;i<moviesArr.length;i++){
+			System.out.println(i+1+". "+moviesArr[i].getTitle());
+		}
+	}
+
+	public void listRatingOrderMovies(){
+		ArrayList<Movie> movies = new ArrayList<>();
+		movies = MovieListing.getMovies();
+		Movie [] moviesArr = new Movie[movies.size()];
+
+		for(int i=0;i<movies.size();i++){
+			moviesArr[i] = movies.get(i);
+		}
+
+		moviesArr = Sorting.selectionSort(moviesArr);
+
+		for(int i=0;i<moviesArr.length;i++){
+			System.out.println(i+1+". "+moviesArr[i].getTitle());
+		}
+	}
 
     public int cineplexesNum(){
         return cineplexes.size();
     }
+
+    	/**
+	 * Shows movies and all information about them.
+	 */
+	public void listMovies(){
+		ArrayList<Movie> movies = new ArrayList<>();
+		movies = MovieListing.getMovies();
+
+		for(int i = 0; i<movies.size() ; i++){
+			System.out.println((i+1)+". "+movies.get(i).getTitle());
+		}
+		System.out.println("Do you want to find out more about any movie? (y/n)");
+		char ans = UserInputs.gatValidCharInputForAnswer();
+		
+		if(ans == 'y'){
+			while(true){
+				System.out.println("Type the number of the movie you want to get more information about\nor type any other number to get back to previous menu:");
+
+				int movieChoice = UserInputs.getValidIntegerInput();
+
+				if(movieChoice>=1 && movieChoice<=movies.size()){
+
+					System.out.printf(UserInputs.format,"Title: ",movies.get(movieChoice-1).getTitle());
+					System.out.printf(UserInputs.format,"Director: ",movies.get(movieChoice-1).getDirector());
+					System.out.printf(UserInputs.format,"Cast: ",movies.get(movieChoice-1).getCast());
+					System.out.printf(UserInputs.format,"Description: ",movies.get(movieChoice-1).getSynop());
+					System.out.printf(UserInputs.format,"Rating: ",movies.get(movieChoice-1).getRating());
+					System.out.printf(UserInputs.format,"Status: ",movies.get(movieChoice-1).getStatus());
+					System.out.println("\n");
+
+					while(true){
+						System.out.println("Do you want to see previous ratings? y/n");
+						char ansR = UserInputs.gatValidCharInputForAnswer();
+
+						if(ansR == 'y'){
+							ArrayList<Rating> ratings = new ArrayList<Rating>();
+							ratings = movies.get(movieChoice-1).getRatings();
+
+							for(int i = 0;i<ratings.size();i++){
+								System.out.println("\n\n"+ratings.get(i).getUser().getUsername()+"\n"+ratings.get(i).getDescription()+"\n\n");
+							}
+							break;
+						}else{
+							break;
+						}
+					}
+
+
+
+
+				}else{
+					break;
+				}
+			}
+		}
+
+	}
 }
