@@ -41,7 +41,7 @@ public class AdminBoundary extends UserBoundary
 	public void performActions() throws IOException, ParseException {
 		boolean loggedIn = true;
 		while (loggedIn) {
-			System.out.println("What action do you want to perform: ");
+			System.out.println("\n=========== Admin Menu ===========");
 			System.out.println("1: Add a movie to the movie listing");
 			System.out.println("2: Remove a movie from the movie listing");
 			System.out.println("3: Edit a movie from the movie listing");

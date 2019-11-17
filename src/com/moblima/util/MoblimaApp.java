@@ -95,7 +95,7 @@ public class MoblimaApp {
 		System.out.println("                               '  `'-'`                           \\ \\._,\\ '/ ");
 		System.out.println("                                                                   `--'  `\"  ");
 		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-		System.out.println("==============MOvie Booking and LIsting Management Application================");
+		System.out.println("============  MOvie Booking and LIsting Management Application  ==============");
 	
 	}
 	/**

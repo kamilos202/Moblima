@@ -39,8 +39,7 @@ public class MovieGoerBoundary extends UserBoundary
 		boolean loggedIn = true;
 		while(loggedIn)
 		{
-			System.out.println("=========== MovieGoer module MENU ===========\n");
-			System.out.println("What action do you want to perform: ");
+			System.out.println("\n=========== MovieGoer MENU ===========");
 			System.out.println("1: Rate a movie");
 			System.out.println("2: Display available movies in all Cineplexes");
 			System.out.println("3: Book a movie");

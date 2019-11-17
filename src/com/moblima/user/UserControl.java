@@ -107,7 +107,7 @@ public class UserControl implements ILogin
 	{
 		if(getUserInfoFromDataBase(username).split(";")[1].equals(password))
 		{
-			System.out.println("Login succesfull");
+			System.out.println("Login succesful\n");
 			return getUserByName(username);
 		}
 		else
