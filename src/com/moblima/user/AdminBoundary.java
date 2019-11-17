@@ -43,10 +43,10 @@ public class AdminBoundary extends UserBoundary
 		while (loggedIn) {
 			System.out.println("What action do you want to perform: ");
 			System.out.println("1: Add a movie to the movie listing");
-			System.out.println("2: remove a movie from the movie listing");
+			System.out.println("2: Remove a movie from the movie listing");
 			System.out.println("3: Edit a movie from the movie listing");
 			System.out.println("4: Give a user administrator permissions");
-			System.out.println("5: logout");
+			System.out.println("5: Logout");
 
 			int actionChoice = UserInputs.getValidIntegerInput();
 			switch (actionChoice) {
@@ -154,7 +154,7 @@ public class AdminBoundary extends UserBoundary
 			//System.out.println("At which screen will the movie be shown: ");
 			CinemaRoom room = chooseRoomFromList(cinema);
 			
-			Date date = UserInputs.getValidDate(true);
+			Date date = UserInputs.getValidDate(true,"the movie starting date");
 			
 			//System.out.println("Will this showing be the same each week: ");
 			boolean isWeekly = UserInputs.getValidBooleanInput();

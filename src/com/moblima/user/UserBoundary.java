@@ -23,7 +23,7 @@ public class UserBoundary
 		System.out.println("Please select a movie: ");
 		for(int i =0;i<DataBase.moviesPlaying.size();i++)
 		{
-			System.out.println(i+1+":" + DataBase.moviesPlaying.get(i).getTitle());
+			System.out.println(i+1+": " + DataBase.moviesPlaying.get(i).getTitle());
 		}
 		
 		return DataBase.moviesPlaying.get(UserInputs.getValidIntegerInput(0,DataBase.moviesPlaying.size()+1)-1);
@@ -37,7 +37,7 @@ public class UserBoundary
 		System.out.println("Please select a Cineplex: ");
 		for(int i =0;i<DataBase.cineplexes.size();i++)
 		{
-			System.out.println(i+1+":" + DataBase.cineplexes.get(i).getCineplexName());
+			System.out.println(i+1+": " + DataBase.cineplexes.get(i).getCineplexName());
 		}
 		
 		return DataBase.cineplexes.get(UserInputs.getValidIntegerInput(0,DataBase.cineplexes.size()+1)-1);
@@ -52,7 +52,7 @@ public class UserBoundary
 		System.out.println("Please select a room: ");
 		for(int i =0;i<cineplex.getScreens().size();i++)
 		{
-			System.out.println(i+1+":" + cineplex.getScreens().get(i).getCinemaName());
+			System.out.println(i+1+": " + cineplex.getScreens().get(i).getCinemaName());
 		}
 		
 		return cineplex.getScreens().get(UserInputs.getValidIntegerInput(0,cineplex.getScreens().size()+1)-1);

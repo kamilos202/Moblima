@@ -13,38 +13,20 @@ import com.moblima.util.UserInputs;
 public class BookingPage {
 
 
-    static ArrayList<Cineplex> cineplexes = new ArrayList<Cineplex>();
-
-    public static void initiateCinemas() throws IOException {
-        cineplexes.add(new Cineplex("The Cathay Cineplex",13.5,14));
-
-        cineplexes.get(0).createCinema("Screen1", false);
-        cineplexes.get(0).createCinema("Screen2", false);
-        cineplexes.get(0).createCinema("Screen3", true);
-
-        cineplexes.add(new Cineplex("Cathay Cineplex Causeway Point",13,14));
-
-        cineplexes.get(1).createCinema("Screen1", false);
-        cineplexes.get(1).createCinema("Screen2", false);
-        cineplexes.get(1).createCinema("Screen3", false);
-        cineplexes.get(1).createCinema("Screen4", false);
-        
-    }
-
     public ArrayList<Cineplex> getCineplexes(){
-        return cineplexes;
+        return DataBase.cineplexes;
     }
     
     public void showShowings()
     {
-    	ArrayList<MovieShowing> occupation = cineplexes.get(0).getRoomByName("Screen1").getHallOccupation();
+    	ArrayList<MovieShowing> occupation = DataBase.cineplexes.get(0).getRoomByName("Screen1").getHallOccupation();
         System.out.println("cinema 1");
         for(int i =0;i<occupation.size();i++)
         {
         	System.out.println(occupation.get(i).toString());
         }
         
-        ArrayList<MovieShowing> occupation2 = cineplexes.get(1).getRoomByName("Screen2").getHallOccupation();
+        ArrayList<MovieShowing> occupation2 = DataBase.cineplexes.get(1).getRoomByName("Screen2").getHallOccupation();
         System.out.println("cinema 2");
         for(int j = 0;j<occupation2.size();j++)
         {
@@ -86,7 +68,7 @@ public class BookingPage {
 	}
 
     public int cineplexesNum(){
-        return cineplexes.size();
+        return DataBase.cineplexes.size();
     }
 
     /**

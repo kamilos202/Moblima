@@ -12,6 +12,8 @@ import com.moblima.movie.Movie;
 import com.moblima.movie.MovieControl;
 import com.moblima.movie.MovieShowing;
 import com.moblima.util.UserInputs;
+import sun.lwawt.macosx.CSystemTray;
+
 /**
  * Plays the role of the User's (MovieGoer's) boundary class 
  */
@@ -45,7 +47,7 @@ public class MovieGoerBoundary extends UserBoundary
 			System.out.println("4: Retrieve booking history");
 			System.out.println("5: List movies ordered by sold tickets");
 			System.out.println("6: List movies by ratings");
-			System.out.println("8: logout");
+			System.out.println("8: Logout");
 			System.out.println("\n=============================================");
 
 
@@ -141,7 +143,9 @@ public class MovieGoerBoundary extends UserBoundary
                 showingsOfMov = mov.getShowings();
                 // checking if movie is displaying in chosen cinema
                 for(int h=0;h<showingsOfMov.size();h++){
+
                     if(showingsOfMov.get(h).getMovie().getTitle() == mov.getTitle() && showingsOfMov.get(h).getCineplex().getCineplexName() == page.getCineplexes().get(choice-1).getCineplexName() && showingsOfMov!=null){
+//                        System.out.println("Test: "+ mov==null);
                         System.out.print("\t"+num+". "+mov.getTitle());
                         tempArrMoviesPerCineplex.add(mov);
                         num++;

@@ -1,6 +1,7 @@
 #name;password;adminBoolean;id;birthdate
-admin1;test;true;1;10/2/2000
+admin1;passadmin;true;1;10/2/2000
 admin2;blabla;true;2;14/5/1982
 user1;lol;false;3;23/8/1998
 user2;loll;false;4;23/8/1998
 user3;lccol;false;5;23/8/1998
+john;password;false;6;24/9/1991

@@ -29,8 +29,8 @@ public class MoblimaApp {
 		while(programIsRunning)
 		{
 			System.out.println("What do you want to do?");
-			System.out.println("1: login using an existing account");
-			System.out.println("2: register a new account");
+			System.out.println("1: Login using an existing account");
+			System.out.println("2: Register a new account");
 			System.out.println("3: Quit application");
 
 			int moduleEntering = UserInputs.getValidIntegerInput();
@@ -72,7 +72,6 @@ public class MoblimaApp {
 	public static void init() throws IOException, ParseException
 	{
 		
-		BookingPage.initiateCinemas();
 		DataBase.init();
 		
 		
@@ -125,17 +124,17 @@ public class MoblimaApp {
 		String username = UserInputs.getValidLineInput();
 		if(!UserControl.doesUserExist(username))
 		{
-			System.out.println("Please choose a password with atleast 8 characters: ");
+			System.out.println("Please choose a password with at least 8 characters: ");
 			String password = "";
 			boolean valid = false;
 			while(!valid)
 			{
 				password = UserInputs.getValidLineInput();
 				if(password.length()>=8) valid = true;
-				else System.out.println("Please enter a password with atleast 8 characters: ");
+				else System.out.println("Please enter a password with at least 8 characters: ");
 			}
 			
-			Date birthdate = UserInputs.getValidDate(false);
+			Date birthdate = UserInputs.getValidDate(false,"your birthday");
 			
 			UserControl.registerUser(username,password,birthdate);
 			System.out.println("Registration Succesful!");

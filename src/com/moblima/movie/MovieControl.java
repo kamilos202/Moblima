@@ -75,7 +75,7 @@ public class MovieControl
 	 * Create a showing object, based on its composition of individual data
 	 * All data can easily be inputted by using the AdminBoundary.addShowing() method.
 	 * @param movie The movie object to which the showing belongs
-	 * @param cineplex The cineplex in which the movie will be played.
+	 * @param cineplex The cineplex in which the movie will be played.®
 	 * @param room The specific room within the given cineplex in which the movie will be played
 	 * @param date The date and time, given as a Java.Util.Date object at which the movie will be played
 	 * @param isWeekly Refers to if this showing will be scheduled weekly, initiating as true will result in automatically creating showings
@@ -89,6 +89,7 @@ public class MovieControl
 		String oldInfo = toDateBaseString(movie);
 		try {
 			currentShowings.add(new MovieShowing(cineplex,room,date,isWeekly,duration,false));
+			currentShowings.get(currentShowings.size()-1).setMovie(movie);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -212,6 +213,7 @@ public class MovieControl
     					try {
 							allShowings.add(new MovieShowing(currentShowings.get(j).getCineplex(),currentShowings.get(j).getCinemaRoom(),nextDate,
 									currentShowings.get(j).isWeekly(),currentShowings.get(j).getScheduleDuration(),true));
+							allShowings.get(allShowings.size()-1).setMovie(movie);
 						} catch (IOException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();

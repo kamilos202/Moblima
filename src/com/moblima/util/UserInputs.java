@@ -147,17 +147,15 @@ public class UserInputs
 		return true;
 	}
 	
-	public static Date getValidDate(boolean getHours)
+	public static Date getValidDate(boolean getHours,String type)
 	{
 		boolean isValid = false;
 		Date date = null;
 		while(!isValid)
 		{
-			System.out.println("Please enter the date at which the movie will be played (dd): ");
+			System.out.println("Please enter "+type+" in (DD MM YYYY) format:");
 			int day = UserInputs.getValidIntegerInput();
-			System.out.println("Please enter the date at which the movie will be played (mm): ");
 			int month = UserInputs.getValidIntegerInput();
-			System.out.println("Please enter the date at which the movie will be played (yyyy): ");
 			int year = UserInputs.getValidIntegerInput();
 			if(isDateValid(day+"/"+month+"/"+year))
 			{
@@ -166,7 +164,7 @@ public class UserInputs
 				{
 					System.out.println("Please enter the hour (0-23): ");
 					int hours = getValidIntegerInput(-1,24);
-					System.out.println("Please enter the minutes (0-59");
+					System.out.println("Please enter the minutes (0-59)");
 					int minutes = getValidIntegerInput(-1,60);
 					date = new Date(year-1900,month-1,day,hours,minutes);
 				}
